@@ -930,9 +930,27 @@ const SmartLearnApp = (function () {
         `;
         })
         .join("");
+    // Render server-graded question breakdown & explanations
+    const reviewContainer = document.getElementById("quiz-result-questions-review");
+    if (reviewContainer) {
+      if (result.breakdown && result.breakdown.length > 0) {
+        reviewContainer.innerHTML = result.breakdown.map((item, idx) => `
+          <div class="p-3 rounded-xl ${item.is_correct ? 'bg-emerald-950/40 border border-emerald-500/30' : 'bg-rose-950/40 border border-rose-500/30'} flex flex-col gap-1 text-[12px]">
+            <div class="flex items-center justify-between font-semibold">
+              <span class="text-white">Q${idx + 1}: ${item.question}</span>
+              <span class="${item.is_correct ? 'text-emerald-400' : 'text-rose-400'} font-mono">${item.is_correct ? `+${item.points_earned || 10} pts ✓` : '0 pts ✗'}</span>
+            </div>
+            <div class="text-slate-300">Your choice: <strong class="${item.is_correct ? 'text-emerald-300' : 'text-rose-300'}">${item.selected_answer || "Unanswered"}</strong></div>
+            ${!item.is_correct ? `<div class="text-emerald-300">Correct answer: <strong>${item.correct_answer}</strong></div>` : ''}
+            ${item.explanation ? `<div class="text-slate-400 text-[11px] mt-1 bg-surface-container-lowest p-2 rounded-lg leading-relaxed"><strong class="text-slate-300">Explanation:</strong> ${item.explanation}</div>` : ''}
+          </div>
+        `).join("");
+      } else {
+        reviewContainer.innerHTML = `<span class="text-[12px] text-slate-400">Assessment reviewed and verified with cloud grading engine.</span>`;
+      }
     }
 
-    notify("Quiz Submitted", `Completed with score ${result.percentage}%. Performance analyzed.`, isPassed ? "success" : "error");
+    notify("Quiz Submitted", `Completed with score ${result.percentage}%. Performance analyzed and saved to Supabase.`, isPassed ? "success" : "error");
   }
 
   // 10. ADAPTIVE PRACTICE DRILLS
