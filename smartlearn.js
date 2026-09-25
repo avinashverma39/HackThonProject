@@ -216,7 +216,6 @@ const SmartLearnApp = (function () {
     }
 
     // Refresh dynamic content for tab
-    if (tabName === "dashboard") renderDashboardOverview();
     if (tabName === "courses") renderCourses();
     if (tabName === "subjects") renderSubjects();
     if (tabName === "materials") renderMaterials();
@@ -226,7 +225,6 @@ const SmartLearnApp = (function () {
     if (tabName === "recommendations") renderRecommendations();
     if (tabName === "practice") startPracticeSession(state.activePracticeTopic || "Pointers");
     if (tabName === "progress") renderProgressDashboard();
-    if (tabName === "profile") renderProfileView();
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -262,7 +260,6 @@ const SmartLearnApp = (function () {
   async function renderAllViews() {
     renderLandingStats();
     renderLandingFeatures();
-    renderDashboardOverview();
     renderCourses();
     renderSubjects();
     renderMaterials();
@@ -933,27 +930,9 @@ const SmartLearnApp = (function () {
         `;
         })
         .join("");
-    // Render server-graded question breakdown & explanations
-    const reviewContainer = document.getElementById("quiz-result-questions-review");
-    if (reviewContainer) {
-      if (result.breakdown && result.breakdown.length > 0) {
-        reviewContainer.innerHTML = result.breakdown.map((item, idx) => `
-          <div class="p-3 rounded-xl ${item.is_correct ? 'bg-emerald-950/40 border border-emerald-500/30' : 'bg-rose-950/40 border border-rose-500/30'} flex flex-col gap-1 text-[12px]">
-            <div class="flex items-center justify-between font-semibold">
-              <span class="text-white">Q${idx + 1}: ${item.question}</span>
-              <span class="${item.is_correct ? 'text-emerald-400' : 'text-rose-400'} font-mono">${item.is_correct ? `+${item.points_earned || 10} pts ✓` : '0 pts ✗'}</span>
-            </div>
-            <div class="text-slate-300">Your choice: <strong class="${item.is_correct ? 'text-emerald-300' : 'text-rose-300'}">${item.selected_answer || "Unanswered"}</strong></div>
-            ${!item.is_correct ? `<div class="text-emerald-300">Correct answer: <strong>${item.correct_answer}</strong></div>` : ''}
-            ${item.explanation ? `<div class="text-slate-400 text-[11px] mt-1 bg-surface-container-lowest p-2 rounded-lg leading-relaxed"><strong class="text-slate-300">Explanation:</strong> ${item.explanation}</div>` : ''}
-          </div>
-        `).join("");
-      } else {
-        reviewContainer.innerHTML = `<span class="text-[12px] text-slate-400">Assessment reviewed and verified with cloud grading engine.</span>`;
-      }
     }
 
-    notify("Quiz Submitted", `Completed with score ${result.percentage}%. Performance analyzed and saved to Supabase.`, isPassed ? "success" : "error");
+    notify("Quiz Submitted", `Completed with score ${result.percentage}%. Performance analyzed.`, isPassed ? "success" : "error");
   }
 
   // 10. ADAPTIVE PRACTICE DRILLS
@@ -1061,224 +1040,11 @@ const SmartLearnApp = (function () {
     showStudentTab("weak-topics");
   }
 
-  // 11. DASHBOARD & PROGRESS OVERVIEW (SUPABASE POWERED)
-  async function renderDashboardOverview() {
-    const stats = await SmartLearnAPI.getStudentDashboardStats();
-
-    // Welcome Header
-    const nameEl = document.getElementById("dash-welcome-name");
-    const deptEl = document.getElementById("dash-welcome-dept");
-    const subEl = document.getElementById("dash-welcome-subtitle");
-    if (nameEl) nameEl.textContent = `Welcome back, ${stats.fullName.split(" ")[0]}!`;
-    if (deptEl) deptEl.textContent = "Computer Science & Engineering";
-    if (subEl) subEl.textContent = `You've maintained your ${stats.streakDays}-day study streak. All progress is securely synchronized with Supabase PostgreSQL cloud.`;
-
-    // Analytics Cards
-    const overallProgEl = document.getElementById("dash-stat-overall-progress");
-    const circleEl = document.getElementById("dash-progress-circle");
-    if (overallProgEl) overallProgEl.textContent = `${stats.overallProgress}%`;
-    if (circleEl) {
-      const offset = Math.max(0, Math.min(113, 113 * (1 - (stats.overallProgress / 100))));
-      circleEl.style.strokeDashoffset = offset;
-    }
-
-    const quizAvgEl = document.getElementById("dash-stat-quiz-avg");
-    if (quizAvgEl) quizAvgEl.textContent = `${stats.quizAverage}%`;
-
-    const enrolledEl = document.getElementById("dash-stat-enrolled-count");
-    const completedEl = document.getElementById("dash-stat-completed-lessons");
-    if (enrolledEl) enrolledEl.textContent = `${stats.enrolledCount}`;
-    if (completedEl) completedEl.textContent = `${stats.completedLessonsCount} Completed Lessons`;
-
-    const streakEl = document.getElementById("dash-stat-streak");
-    if (streakEl) streakEl.textContent = `${stats.streakDays} Days`;
-
-    // Continue Learning Action
-    const continueCourseEl = document.getElementById("dash-continue-course-title");
-    const continueLessonEl = document.getElementById("dash-continue-lesson-title");
-    if (continueCourseEl && stats.continueCourse) {
-      continueCourseEl.textContent = stats.continueCourse.title;
-    }
-    if (continueLessonEl && stats.continueCourse) {
-      continueLessonEl.textContent = stats.continueCourse.nextLesson || "Active Course";
-    }
-  }
-
-  async function continueLastLearning() {
-    const stats = await SmartLearnAPI.getStudentDashboardStats();
-    if (stats.continueCourse && stats.continueCourse.id) {
-      openCourseDetail(stats.continueCourse.id);
-    } else {
-      showStudentTab("courses");
-    }
-  }
-
-  async function renderProgressDashboard() {
-    const stats = await SmartLearnAPI.getStudentDashboardStats();
+  // 11. PROGRESS DASHBOARD
+  function renderProgressDashboard() {
+    // Dynamic refresh of charts and progress data
     const streakEl = document.getElementById("progress-streak-count");
-    if (streakEl) streakEl.textContent = `${stats.streakDays} Days`;
-
-    const lessonsEl = document.getElementById("progress-completed-lessons");
-    if (lessonsEl) lessonsEl.textContent = `${stats.completedLessonsCount} Lessons`;
-
-    // 1. Render Unlocked Achievements from Supabase
-    const achievementsContainer = document.getElementById("progress-achievements-container");
-    if (achievementsContainer) {
-      const achievements = await SmartLearnAPI.getUserAchievements();
-      achievementsContainer.innerHTML = achievements.map(ach => `
-        <div class="p-4 rounded-xl bg-surface-container-low border border-amber-500/20 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
-            <span class="material-symbols-outlined text-[20px]">${ach.icon || "emoji_events"}</span>
-          </div>
-          <div>
-            <span class="text-[13px] font-bold text-white block">${ach.title}</span>
-            <span class="text-[11px] text-slate-400 block">${ach.description}</span>
-            <span class="text-[10px] text-emerald-400 font-mono">Unlocked: ${ach.unlockedAt || "Verified"}</span>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    // 2. Render Verified Learning History Log
-    const historyContainer = document.getElementById("progress-history-container");
-    if (historyContainer) {
-      const history = await SmartLearnAPI.getLearningHistory();
-      if (history.length === 0) {
-        historyContainer.innerHTML = `<span class="text-[12px] text-slate-400 p-2">Learning activities (lessons, quizzes, enrollments) will appear here in real-time.</span>`;
-      } else {
-        historyContainer.innerHTML = history.slice(0, 8).map(h => {
-          const icon = h.action_type === "quiz_completed" ? "quiz" : h.action_type === "course_started" ? "school" : "smart_display";
-          const color = h.action_type === "quiz_completed" ? "text-purple-400" : h.action_type === "course_started" ? "text-emerald-400" : "text-secondary";
-          return `
-            <div class="p-3 rounded-xl bg-surface-container-lowest border border-white/5 flex items-center justify-between text-[12px]">
-              <div class="flex items-center gap-2.5">
-                <span class="material-symbols-outlined text-[18px] ${color}">${icon}</span>
-                <div>
-                  <span class="font-semibold text-white block">${h.title || h.action_type}</span>
-                  <span class="text-[11px] text-slate-400 font-mono">${new Date(h.timestamp).toLocaleDateString()} at ${new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                </div>
-              </div>
-              <span class="px-2 py-0.5 rounded bg-surface-container text-[10px] font-mono text-slate-300 capitalize">${h.action_type.replace('_', ' ')}</span>
-            </div>
-          `;
-        }).join("");
-      }
-    }
-  }
-
-  // 11B. PROFILE MANAGEMENT (SUPABASE STORAGE & PROFILES)
-  async function renderProfileView() {
-    const user = (window.SmartLearnSupabase && window.SmartLearnSupabase.getActiveUser()) || SmartLearnData.currentUser;
-    const nameEl = document.getElementById("profile-name-display");
-    const metaEl = document.getElementById("profile-meta-display");
-    const roleBadge = document.getElementById("profile-role-badge");
-    const deptBadge = document.getElementById("profile-dept-badge");
-    const avatarEl = document.getElementById("profile-avatar-display");
-
-    const fullName = user.full_name || user.name || "Alex Rivera";
-    const email = user.email || "alex.rivera@smartlearn.edu";
-    const department = user.department || "Computer Science & Engineering";
-    const avatar = user.avatar_url || user.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80";
-
-    if (nameEl) nameEl.textContent = fullName;
-    if (metaEl) metaEl.textContent = `${email} • Institute of Technology`;
-    if (roleBadge) roleBadge.textContent = `Role: ${(user.role || "student").toUpperCase()}`;
-    if (deptBadge) deptBadge.textContent = department;
-    if (avatarEl) avatarEl.src = avatar;
-
-    // Form inputs
-    const inputName = document.getElementById("profile-input-fullname");
-    const inputDept = document.getElementById("profile-input-department");
-    if (inputName) inputName.value = fullName;
-    if (inputDept) inputDept.value = department;
-  }
-
-  async function handleAvatarUpload(file) {
-    if (!file) return;
-    notify("Uploading Photo...", "Saving avatar to Supabase Storage (avatars bucket)...", "info");
-
-    if (window.SmartLearnSupabase) {
-      const res = await window.SmartLearnSupabase.uploadAvatar(file);
-      if (res.success) {
-        notify("Photo Updated! 📸", "Your profile photo is live on Supabase.", "success");
-        const user = window.SmartLearnSupabase.getActiveUser();
-        updateUserUI(user);
-        renderProfileView();
-      } else {
-        notify("Upload Failed", res.message || "Could not upload image.", "error");
-      }
-    }
-  }
-
-  async function handleProfileSave(event) {
-    if (event) event.preventDefault();
-    const fullName = document.getElementById("profile-input-fullname")?.value;
-    const department = document.getElementById("profile-input-department")?.value;
-    const bio = document.getElementById("profile-input-bio")?.value;
-
-    const saveBtn = document.getElementById("profile-save-btn");
-    if (saveBtn) {
-      saveBtn.disabled = true;
-      saveBtn.innerHTML = `<span>Saving to Supabase...</span>`;
-    }
-
-    try {
-      if (window.SmartLearnSupabase) {
-        const res = await window.SmartLearnSupabase.updateProfile({
-          full_name: fullName,
-          department: department,
-          bio: bio
-        });
-        if (res.success) {
-          notify("Profile Updated", "Your profile information has been saved to cloud.", "success");
-          updateUserUI(res.profile);
-          renderProfileView();
-        }
-      }
-    } catch (e) {
-      console.error(e);
-      notify("Profile Update Failed", "Could not save details to Supabase.", "error");
-    } finally {
-      if (saveBtn) {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">save</span><span>Save Profile Changes</span>`;
-      }
-    }
-  }
-
-  async function saveUserSetting(key, value) {
-    if (window.SmartLearnSupabase) {
-      await window.SmartLearnSupabase.updateUserSettings({ [key]: value });
-      notify("Preference Saved", "Settings synchronized with Supabase.", "info");
-    }
-  }
-
-  async function syncWithCloud() {
-    notify("Cloud Sync", "Synchronizing all state with Supabase project...", "info");
-    await renderDashboardOverview();
-    await renderCourses();
-    await renderQuizzes();
-    await renderNotifications();
-    notify("Cloud Synchronized ✓", "All learning records are up to date.", "success");
-  }
-
-  async function handleForgotPasswordSubmit(event) {
-    if (event) event.preventDefault();
-    const emailInput = document.getElementById("auth-forgot-email");
-    const msgBox = document.getElementById("auth-forgot-msg");
-    const email = emailInput ? emailInput.value.trim() : "";
-
-    if (!email) return;
-
-    if (window.SmartLearnSupabase) {
-      const res = await window.SmartLearnSupabase.resetPasswordForEmail(email);
-      if (msgBox) {
-        msgBox.className = `p-2.5 rounded-xl text-[12px] ${res.success ? 'bg-emerald-950/80 text-emerald-200 border border-emerald-500/30' : 'bg-rose-950/80 text-rose-200 border border-rose-500/30'}`;
-        msgBox.textContent = res.message;
-        msgBox.classList.remove("hidden");
-      }
-      notify(res.success ? "Reset Email Sent" : "Reset Failed", res.message, res.success ? "success" : "error");
-    }
+    if (streakEl) streakEl.textContent = `${SmartLearnData.currentUser.streakDays} Days`;
   }
 
   // 12. TEACHER MANAGEMENT
@@ -1947,14 +1713,6 @@ const SmartLearnApp = (function () {
     handleLoginSubmit,
     handleRegisterSubmit,
     handleForgotPasswordSubmit,
-    renderDashboardOverview,
-    continueLastLearning,
-    renderProgressDashboard,
-    renderProfileView,
-    handleAvatarUpload,
-    handleProfileSave,
-    saveUserSetting,
-    syncWithCloud,
     closeModal,
     toggleTheme,
     handleGlobalSearch,
