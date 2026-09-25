@@ -62,13 +62,95 @@ const SmartLearnApp = (function () {
     }, 3500);
   }
 
-  // --- INITIALIZATION ---
+  // --- INITIALIZATION (SUPABASE CLOUD RESTORATION) ---
   async function init() {
     console.log("Initializing SmartLearn Hub — Team HACKSMITH (SIH 2026)");
     setupGlobalEventListeners();
     setupTheme();
-    renderAllViews();
+
+    // 1. Restore active Supabase session
+    if (window.SmartLearnSupabase) {
+      try {
+        const user = await window.SmartLearnSupabase.restoreSession();
+        if (user) {
+          state.currentUser = user;
+          state.currentRole = user.role;
+          updateUserUI(user);
+        }
+      } catch (err) {
+        console.warn("Could not restore Supabase session:", err);
+      }
+    }
+
+    await renderAllViews();
     // Default to Landing view if not logged in
+    showMainView("landing");
+  }
+
+  // Dynamic User UI Sync across Header, Navbar, and Dashboards
+  function updateUserUI(user) {
+    const navContainer = document.getElementById("nav-auth-container");
+    if (!user) {
+      if (navContainer) {
+        navContainer.innerHTML = `
+          <button class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3.5 !py-1.5 text-[13px]" onclick="SmartLearnApp.openLoginModal('student')">
+            <span class="material-symbols-outlined text-[15px]">login</span>
+            <span class="hidden sm:inline">Sign In</span>
+          </button>
+          <button class="uiverse-btn-3d text-[13px] !py-2 !px-4 navbar-cta-shimmer" onclick="SmartLearnApp.openRegisterModal()">
+            <span class="relative z-10 font-bold">Sign Up Free</span>
+            <span class="material-symbols-outlined text-[16px] relative z-10">arrow_forward</span>
+          </button>
+        `;
+      }
+      return;
+    }
+
+    const userName = user.full_name || user.name || "Learner";
+    const userRole = user.role || "student";
+    const isTeacher = userRole === "teacher";
+    const avatar = user.avatar_url || user.avatar || (isTeacher
+      ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
+      : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80");
+
+    // 1. Update Navigation Bar Pill
+    if (navContainer) {
+      navContainer.innerHTML = `
+        <div class="flex items-center gap-2">
+          <button class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-[12px] text-white transition-all shadow-sm" onclick="SmartLearnApp.showMainView('${isTeacher ? 'teacher-dashboard' : 'student-dashboard'}')">
+            <img src="${avatar}" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20">
+            <span class="font-medium">${userName.split(" ")[0]}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${isTeacher ? 'bg-emerald-500/20 text-emerald-400' : 'bg-primary-indigo/20 text-primary-indigo'} uppercase">${userRole}</span>
+          </button>
+          <button class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" onclick="SmartLearnApp.signOut()" title="Sign Out">
+            <span class="material-symbols-outlined text-[18px]">logout</span>
+          </button>
+        </div>
+      `;
+    }
+
+    // 2. Update Student Header Profile
+    const stuName = document.getElementById("student-header-name");
+    const stuRole = document.getElementById("student-header-role");
+    const stuAvatar = document.getElementById("student-header-avatar");
+    if (stuName) stuName.textContent = userName;
+    if (stuRole) stuRole.textContent = `Student • ${user.department || "Computer Science"}`;
+    if (stuAvatar) stuAvatar.src = avatar;
+
+    // 3. Update Teacher Header Profile
+    const teachName = document.getElementById("teacher-header-name");
+    const teachRole = document.getElementById("teacher-header-role");
+    const teachAvatar = document.getElementById("teacher-header-avatar");
+    if (teachName) teachName.textContent = userName;
+    if (teachRole) teachRole.textContent = `Faculty • ${user.department || "Dept. of Computer Science & Engineering"}`;
+    if (teachAvatar) teachAvatar.src = avatar;
+  }
+
+  async function signOut() {
+    await SmartLearnAPI.signOut();
+    state.currentUser = null;
+    updateUserUI(null);
+    notify("Signed Out", "You have been logged out securely.", "info");
     showMainView("landing");
   }
 
@@ -252,53 +334,99 @@ const SmartLearnApp = (function () {
     }
   }
 
-  // 2. Courses Rendering
+  // 2. Courses Rendering (Integrated with Supabase Cloud Enrollment)
   async function renderCourses() {
     const courses = await SmartLearnAPI.getCourses();
     const container = document.getElementById("courses-grid");
     if (!container) return;
 
+    // Check enrollment status for each course asynchronously
+    const enrollmentStatuses = await Promise.all(
+      courses.map(async c => {
+        const enrolled = await SmartLearnAPI.isEnrolled(c.id);
+        return { id: c.id, enrolled };
+      })
+    );
+    const enrolledMap = {};
+    enrollmentStatuses.forEach(s => { enrolledMap[s.id] = s.enrolled; });
+
     container.innerHTML = courses
       .map(
-        c => `
-      <div class="rounded-2xl bg-surface-container border border-white/5 overflow-hidden flex flex-col hover:border-primary-indigo/30 transition-all duration-300 hover:shadow-xl group">
+        c => {
+          const isEnrolled = !!enrolledMap[c.id];
+          const totalL = c.total_lessons || c.totalLessons || 12;
+          const compL = c.completed_lessons || c.completedLessons || 0;
+          const enrolledCount = c.students_enrolled || c.studentsEnrolled || 0;
+          const progressVal = c.progress || 0;
+
+          return `
+      <div class="rounded-2xl bg-surface-container border ${isEnrolled ? 'border-primary-indigo/40 ring-1 ring-primary-indigo/20' : 'border-white/5'} overflow-hidden flex flex-col hover:border-primary-indigo/50 transition-all duration-300 hover:shadow-xl group">
         <div class="relative h-44 overflow-hidden">
           <img src="${c.thumbnail}" alt="${c.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
           <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent"></div>
           <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-surface-container-lowest/80 backdrop-blur-md text-[11px] font-semibold text-secondary border border-white/10">
-            ${c.difficulty}
+            ${c.difficulty || 'Intermediate'}
           </span>
+          ${
+            isEnrolled
+              ? `<span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-emerald-950/80 backdrop-blur-md text-[11px] font-bold text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shadow-md">
+                  <span class="material-symbols-outlined text-[13px]">check_circle</span> Enrolled ✓
+                </span>`
+              : `<span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-indigo-950/80 backdrop-blur-md text-[11px] font-semibold text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">school</span> Available
+                </span>`
+          }
           <span class="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[11px] font-mono text-slate-300">
-            ${c.completedLessons}/${c.totalLessons} Lessons
+            ${compL}/${totalL} Lessons
           </span>
         </div>
         <div class="p-5 flex flex-col flex-1 justify-between gap-4">
           <div class="flex flex-col gap-1.5">
             <h4 class="text-[16px] font-bold text-white leading-snug line-clamp-2">${c.title}</h4>
-            <span class="text-[12px] text-slate-400 flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-[14px]">person</span> ${c.instructor}
-            </span>
+            <div class="flex items-center justify-between text-[12px] text-slate-400">
+              <span class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[14px]">person</span> ${c.instructor}
+              </span>
+              <span class="font-mono text-emerald-400 text-[11px] flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">group</span> ${enrolledCount} enrolled
+              </span>
+            </div>
           </div>
           
           <div class="flex flex-col gap-1.5">
             <div class="flex items-center justify-between text-[12px]">
               <span class="text-slate-400">Course Progress</span>
-              <span class="font-mono text-primary-indigo font-bold">${c.progress}%</span>
+              <span class="font-mono text-primary-indigo font-bold">${progressVal}%</span>
             </div>
             <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-primary-indigo to-secondary rounded-full" style="width: ${c.progress}%"></div>
+              <div class="h-full bg-gradient-to-r from-primary-indigo to-secondary rounded-full" style="width: ${progressVal}%"></div>
             </div>
           </div>
 
           <div class="flex items-center gap-2 pt-2 border-t border-white/5">
-            <button class="flex-1 py-2 px-3 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm" onclick="SmartLearnApp.openCourseDetail('${c.id}')">
-              <span>Continue Learning</span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </button>
+            ${
+              isEnrolled
+                ? `
+              <button class="flex-1 py-2 px-3 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm" onclick="SmartLearnApp.openCourseDetail('${c.id}')">
+                <span>Continue Learning</span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </button>
+            `
+                : `
+              <button class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95" onclick="SmartLearnApp.enrollInCourse('${c.id}', '${encodeURIComponent(c.title)}')">
+                <span class="material-symbols-outlined text-[16px]">school</span>
+                <span>Enroll Now</span>
+              </button>
+              <button class="p-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-slate-300 hover:text-white transition-colors" onclick="SmartLearnApp.openCourseDetail('${c.id}')" title="Course Curriculum">
+                <span class="material-symbols-outlined text-[16px]">info</span>
+              </button>
+            `
+            }
           </div>
         </div>
       </div>
-    `
+    `;
+        }
       )
       .join("");
   }
@@ -1078,18 +1206,39 @@ const SmartLearnApp = (function () {
 
     document.getElementById("course-detail-title").textContent = course.title;
     document.getElementById("course-detail-instructor").textContent = `Instructor: ${course.instructor}`;
-    document.getElementById("course-detail-difficulty").textContent = course.difficulty;
-    document.getElementById("course-detail-progress").textContent = `${course.progress}%`;
+    document.getElementById("course-detail-difficulty").textContent = course.difficulty || "Intermediate";
+    document.getElementById("course-detail-progress").textContent = `${course.progress || 0}%`;
+
+    const isEnrolled = await SmartLearnAPI.isEnrolled(course.id);
+    const actions = document.getElementById("course-detail-actions");
+    if (actions) {
+      if (isEnrolled) {
+        actions.innerHTML = `
+          <button class="px-5 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold flex items-center gap-1.5 shadow-md" onclick="SmartLearnApp.launchLessonVideo()">
+            <span>Enrolled ✓ Continue Learning</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        `;
+      } else {
+        actions.innerHTML = `
+          <button class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[13px] font-bold flex items-center gap-1.5 shadow-md active:scale-95" onclick="SmartLearnApp.enrollInCourse('${course.id}', '${encodeURIComponent(course.title)}')">
+            <span class="material-symbols-outlined text-[16px]">school</span>
+            <span>Enroll in Course</span>
+          </button>
+        `;
+      }
+    }
 
     const modulesTarget = document.getElementById("course-detail-modules");
     if (modulesTarget) {
-      modulesTarget.innerHTML = course.modules
+      const modules = course.modules || [];
+      modulesTarget.innerHTML = modules
         .map(
           (m, idx) => `
         <div class="p-4 rounded-xl bg-surface-container border border-white/5 flex flex-col gap-2">
           <span class="text-[13px] font-bold text-white">${m.title}</span>
           <div class="flex flex-col gap-1.5 pl-2">
-            ${m.lessons
+            ${(m.lessons || [])
               .map(
                 (lesson, lidx) => `
               <div class="flex items-center justify-between text-[12px] text-slate-300 py-1 border-b border-white/5 last:border-0">
@@ -1107,6 +1256,30 @@ const SmartLearnApp = (function () {
       `
         )
         .join("");
+    }
+  }
+
+  async function enrollInCourse(courseId, rawTitle = null) {
+    const courseTitle = rawTitle ? decodeURIComponent(rawTitle) : null;
+    notify("Enrolling...", "Saving enrollment to Supabase cloud...", "info");
+
+    const res = await SmartLearnAPI.enrollInCourse(courseId, courseTitle);
+    if (res.alreadyEnrolled) {
+      notify("Already Enrolled", res.message, "info");
+    } else if (res.success) {
+      notify("Enrollment Successful! 🎉", res.message, "success");
+      await renderCourses();
+      const actions = document.getElementById("course-detail-actions");
+      if (actions) {
+        actions.innerHTML = `
+          <button class="px-5 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold flex items-center gap-1.5 shadow-md" onclick="SmartLearnApp.launchLessonVideo()">
+            <span>Enrolled ✓ Continue Learning</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        `;
+      }
+    } else {
+      notify("Enrollment Notice", res.message || "Could not complete enrollment.", "error");
     }
   }
 
@@ -1186,11 +1359,14 @@ const SmartLearnApp = (function () {
     notify("Personalized Path Sent", `Remediation drill and study notes dispatched to student.`, "success");
   }
 
-  // --- AUTH FLOWS ---
+  // --- AUTH FLOWS (SUPABASE REAL CLOUD AUTHENTICATION) ---
   function openLoginModal(prefillRole = "student") {
     const modal = document.getElementById("modal-auth-login");
     if (!modal) return;
     modal.classList.remove("hidden");
+
+    const errBox = document.getElementById("auth-login-error");
+    if (errBox) errBox.classList.add("hidden");
 
     if (prefillRole === "teacher") {
       document.getElementById("auth-login-email").value = "s.jenkins@smartlearn.edu";
@@ -1205,12 +1381,12 @@ const SmartLearnApp = (function () {
 
   function openRegisterModal() {
     closeModal("modal-auth-login");
-    if (window.SmartLearn3D && window.SmartLearn3D.openStudentOnboarding) {
-      window.SmartLearn3D.openStudentOnboarding();
-      return;
-    }
     const modal = document.getElementById("modal-auth-register");
-    if (modal) modal.classList.remove("hidden");
+    if (modal) {
+      modal.classList.remove("hidden");
+      const errBox = document.getElementById("auth-reg-error");
+      if (errBox) errBox.classList.add("hidden");
+    }
   }
 
   function openForgotPasswordModal() {
@@ -1224,17 +1400,49 @@ const SmartLearnApp = (function () {
     const email = document.getElementById("auth-login-email").value;
     const password = document.getElementById("auth-login-password").value;
     const role = document.getElementById("auth-role-select").value;
+    const errBox = document.getElementById("auth-login-error");
+    const submitBtn = document.getElementById("auth-login-btn");
 
-    const res = await SmartLearnAPI.login(email, password, role);
-    closeModal("modal-auth-login");
+    if (errBox) errBox.classList.add("hidden");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Signing in to Supabase...</span>`;
+    }
 
-    state.currentRole = res.user.role;
-    if (res.user.role === "teacher") {
-      notify("Welcome, Professor Jenkins", "Teacher dashboard initialized.", "success");
-      showMainView("teacher-dashboard");
-    } else {
-      notify("Welcome back, Alex!", "Personalized learning hub ready.", "success");
-      showMainView("student-dashboard");
+    try {
+      const res = await SmartLearnAPI.login(email, password, role);
+      if (!res.success) {
+        if (errBox) {
+          errBox.textContent = res.message || "Failed to sign in. Please verify your credentials.";
+          errBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      closeModal("modal-auth-login");
+
+      state.currentUser = res.user;
+      state.currentRole = res.user.role;
+      updateUserUI(res.user);
+
+      if (res.user.role === "teacher") {
+        notify("Welcome, " + (res.user.full_name || "Professor"), "Faculty dashboard initialized via Supabase.", "success");
+        showMainView("teacher-dashboard");
+      } else {
+        notify("Welcome back, " + (res.user.full_name || "Student") + "!", "Personalized learning hub ready via Supabase.", "success");
+        showMainView("student-dashboard");
+      }
+    } catch (err) {
+      console.error(err);
+      if (errBox) {
+        errBox.textContent = "An unexpected error occurred during sign in.";
+        errBox.classList.remove("hidden");
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Sign In to Cloud</span><span class="material-symbols-outlined text-[16px]">arrow_forward</span>`;
+      }
     }
   }
 
@@ -1243,16 +1451,111 @@ const SmartLearnApp = (function () {
     const name = document.getElementById("auth-reg-name").value;
     const email = document.getElementById("auth-reg-email").value;
     const role = document.getElementById("auth-reg-role").value;
+    const password = document.getElementById("auth-reg-password")?.value || "";
+    const errBox = document.getElementById("auth-reg-error");
+    const submitBtn = document.getElementById("auth-reg-btn");
 
-    const res = await SmartLearnAPI.register({ fullName: name, email, role });
-    closeModal("modal-auth-register");
+    if (errBox) errBox.classList.add("hidden");
 
-    state.currentRole = role;
-    notify("Account Created", "Welcome to SmartLearn!", "success");
-    if (role === "teacher") {
-      showMainView("teacher-dashboard");
-    } else {
-      showMainView("student-dashboard");
+    if (!password || password.length < 6) {
+      if (errBox) {
+        errBox.textContent = "Password must be at least 6 characters long.";
+        errBox.classList.remove("hidden");
+      }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Creating Supabase Account...</span>`;
+    }
+
+    try {
+      const res = await SmartLearnAPI.register({ fullName: name, email, password, role });
+      if (!res.success) {
+        if (errBox) {
+          errBox.textContent = res.message || "Could not complete registration.";
+          errBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      closeModal("modal-auth-register");
+
+      state.currentUser = res.user;
+      state.currentRole = role;
+      updateUserUI(res.user);
+
+      notify("Account Saved in Supabase! 🎉", `Welcome ${res.user.full_name || name}! Role: ${role.toUpperCase()}.`, "success");
+      if (role === "teacher") {
+        showMainView("teacher-dashboard");
+      } else {
+        showMainView("student-dashboard");
+      }
+    } catch (err) {
+      console.error(err);
+      if (errBox) {
+        errBox.textContent = "Error saving profile to cloud.";
+        errBox.classList.remove("hidden");
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">cloud_done</span><span>Create Account & Save Profile</span>`;
+      }
+    }
+  }
+
+  // --- TEACHER COURSE CREATION MODAL HANDLERS ---
+  function openCreateCourseModal() {
+    const modal = document.getElementById("modal-create-course");
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  async function handleCreateCourseSubmit(event) {
+    if (event) event.preventDefault();
+    const title = document.getElementById("create-course-title").value;
+    const subjectId = document.getElementById("create-course-subject").value;
+    const difficulty = document.getElementById("create-course-difficulty").value;
+    const totalLessons = parseInt(document.getElementById("create-course-lessons").value) || 16;
+    const thumbnail = document.getElementById("create-course-thumbnail").value;
+    const module1 = document.getElementById("create-course-module1").value || "Foundations";
+
+    const submitBtn = document.getElementById("create-course-btn");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Publishing to Supabase...</span>`;
+    }
+
+    try {
+      const created = await SmartLearnAPI.createTeacherCourse({
+        title,
+        subjectId,
+        difficulty,
+        totalLessons,
+        thumbnail,
+        modules: [
+          {
+            title: `Module 1: ${module1}`,
+            lessons: ["Course Overview & Environment", "Core Architectural Foundations", "Interactive Drill"]
+          }
+        ]
+      });
+
+      closeModal("modal-create-course");
+      notify("Course Published! 🚀", `"${title}" has been saved to Supabase cloud and published for all students.`, "success");
+
+      // Refresh both views
+      await renderTeacherCourses();
+      await renderCourses();
+    } catch (e) {
+      console.error("Course creation failed:", e);
+      notify("Publish Error", "Could not publish course to Supabase cloud.", "error");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">cloud_upload</span><span>Publish Course to Supabase Cloud</span>`;
+      }
     }
   }
 
@@ -1379,6 +1682,15 @@ const SmartLearnApp = (function () {
     previewMaterial,
     downloadMaterial,
     openCourseDetail,
+    enrollInCourse,
+    signOut,
+    updateUserUI,
+    renderCourses,
+    renderTeacherCourses,
+    renderTeacherStudents,
+    renderNotifications,
+    openCreateCourseModal,
+    handleCreateCourseSubmit,
     launchLessonVideo,
     openVideoPlayer,
     seekVideoTo,

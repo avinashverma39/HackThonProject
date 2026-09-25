@@ -182,17 +182,17 @@
               </button>
             </div>
 
-            <!-- Sign In Tactile CTA -->
-            <button class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3.5 !py-1.5 text-[13px]" onclick="SmartLearnApp.openLoginModal('student')">
-              <span class="material-symbols-outlined text-[15px]">login</span>
-              <span class="hidden sm:inline">Sign In</span>
-            </button>
-
-            <!-- Start Learning 3D Shimmer CTA -->
-            <button class="uiverse-btn-3d text-[13px] !py-2 !px-4 navbar-cta-shimmer" onclick="SmartLearn3D.openStudentOnboarding()">
-              <span class="relative z-10 font-bold">Start Free</span>
-              <span class="material-symbols-outlined text-[16px] relative z-10">arrow_forward</span>
-            </button>
+            <!-- Dynamic Auth Container -->
+            <div id="nav-auth-container" class="flex items-center gap-2">
+              <button class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3.5 !py-1.5 text-[13px]" onclick="SmartLearnApp.openLoginModal('student')">
+                <span class="material-symbols-outlined text-[15px]">login</span>
+                <span class="hidden sm:inline">Sign In</span>
+              </button>
+              <button class="uiverse-btn-3d text-[13px] !py-2 !px-4 navbar-cta-shimmer" onclick="SmartLearnApp.openRegisterModal()">
+                <span class="relative z-10 font-bold">Sign Up Free</span>
+                <span class="material-symbols-outlined text-[16px] relative z-10">arrow_forward</span>
+              </button>
+            </div>
 
             <!-- Dynamic Animated Mobile Menu Toggle Button -->
             <button id="mobile-menu-toggle-btn" class="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-colors" aria-label="Toggle navigation menu" onclick="SmartLearn3D.toggleMobileNav()">
@@ -1283,13 +1283,18 @@
             <span class="material-symbols-outlined text-[19px]">dark_mode</span>
           </button>
 
-          <!-- Student Profile Avatar -->
-          <div class="flex items-center gap-2 pl-2 cursor-pointer" onclick="SmartLearnApp.showStudentTab('profile')">
-            <div class="flex flex-col text-right hidden sm:flex">
-              <span class="text-[13px] font-semibold text-white leading-tight">Alex Rivera</span>
-              <span class="text-[10px] text-slate-400">Student • Sem 5</span>
+          <!-- Student Profile Avatar & Sign Out -->
+          <div class="flex items-center gap-2 pl-2">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="SmartLearnApp.showStudentTab('profile')">
+              <div class="flex flex-col text-right hidden sm:flex">
+                <span id="student-header-name" class="text-[13px] font-semibold text-white leading-tight">Alex Rivera</span>
+                <span id="student-header-role" class="text-[10px] text-slate-400">Student • Sem 5</span>
+              </div>
+              <img id="student-header-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-indigo/40" alt="Student Avatar">
             </div>
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-indigo/40">
+            <button class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-1" onclick="SmartLearnApp.signOut()" title="Sign Out">
+              <span class="material-symbols-outlined text-[18px]">logout</span>
+            </button>
           </div>
         </div>
 
@@ -1786,10 +1791,13 @@
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-2 pl-2">
             <div class="flex flex-col text-right">
-              <span class="text-[13px] font-semibold text-white leading-tight">Prof. Sarah Jenkins</span>
-              <span class="text-[10px] text-emerald-400">Lead Faculty • CSE</span>
+              <span id="teacher-header-name" class="text-[13px] font-semibold text-white leading-tight">Prof. Sarah Jenkins</span>
+              <span id="teacher-header-role" class="text-[10px] text-emerald-400">Lead Faculty • CSE</span>
             </div>
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80" class="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/40">
+            <img id="teacher-header-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80" class="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/40" alt="Faculty Avatar">
+            <button class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-1" onclick="SmartLearnApp.signOut()" title="Sign Out">
+              <span class="material-symbols-outlined text-[18px]">logout</span>
+            </button>
           </div>
         </div>
       </header>
@@ -2077,6 +2085,7 @@
   </div>
 
   <!-- LOGIN MODAL -->
+  <!-- LOGIN MODAL (SUPABASE AUTH) -->
   <div id="modal-auth-login" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-auth-login')"></div>
     <div class="relative w-full max-w-md rounded-3xl glass-modal p-7 shadow-2xl z-10 flex flex-col gap-5 border border-white/12">
@@ -2085,7 +2094,12 @@
           <div class="w-8 h-8 rounded-lg bg-primary-indigo flex items-center justify-center text-white shadow-sm">
             <span class="material-symbols-outlined text-[18px]">lock</span>
           </div>
-          <h3 class="text-[18px] font-bold text-white">Sign In to SmartLearn</h3>
+          <div>
+            <h3 class="text-[18px] font-bold text-white">Sign In to SmartLearn</h3>
+            <span class="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Supabase Cloud Auth Active
+            </span>
+          </div>
         </div>
         <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-auth-login')">
           <span class="material-symbols-outlined text-[18px]">close</span>
@@ -2096,29 +2110,32 @@
       <div class="p-3 rounded-xl bg-surface-container/70 border border-white/5 flex items-center justify-between text-[12px]">
         <span class="text-slate-300 font-medium">Quick Demo:</span>
         <div class="flex items-center gap-2">
-          <button type="button" class="uiverse-btn-tactile text-primary hover:text-white text-[11px]" onclick="document.getElementById('auth-login-email').value='alex.rivera@smartlearn.edu'; document.getElementById('auth-role-select').value='student';">
+          <button type="button" class="uiverse-btn-tactile text-primary hover:text-white text-[11px]" onclick="document.getElementById('auth-login-email').value='alex.rivera@smartlearn.edu'; document.getElementById('auth-login-password').value='Student@2026'; document.getElementById('auth-role-select').value='student';">
             Student (Alex)
           </button>
-          <button type="button" class="uiverse-btn-tactile text-emerald-400 hover:text-white text-[11px]" onclick="document.getElementById('auth-login-email').value='s.jenkins@smartlearn.edu'; document.getElementById('auth-role-select').value='teacher';">
+          <button type="button" class="uiverse-btn-tactile text-emerald-400 hover:text-white text-[11px]" onclick="document.getElementById('auth-login-email').value='s.jenkins@smartlearn.edu'; document.getElementById('auth-login-password').value='Teacher@2026'; document.getElementById('auth-role-select').value='teacher';">
             Teacher (Sarah)
           </button>
         </div>
       </div>
 
+      <!-- Error / Status Box -->
+      <div id="auth-login-error" class="hidden text-rose-300 text-[12px] bg-rose-500/10 p-3 rounded-xl border border-rose-500/20"></div>
+
       <form onsubmit="SmartLearnApp.handleLoginSubmit(event)" class="flex flex-col gap-3.5">
         <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Email / Username</label>
-          <input type="email" id="auth-login-email" required class="uiverse-input" value="alex.rivera@smartlearn.edu">
+          <label class="text-[12px] font-medium text-slate-300">Email Address</label>
+          <input type="email" id="auth-login-email" required class="uiverse-input" placeholder="e.g. alex@smartlearn.edu" value="alex.rivera@smartlearn.edu">
         </div>
         <div class="uiverse-input-group">
           <label class="text-[12px] font-medium text-slate-300">Password</label>
-          <input type="password" id="auth-login-password" required class="uiverse-input" value="Student@2026">
+          <input type="password" id="auth-login-password" required class="uiverse-input" value="Student@2026" placeholder="Enter password">
         </div>
         <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Role</label>
+          <label class="text-[12px] font-medium text-slate-300">Select Role</label>
           <select id="auth-role-select" class="uiverse-input">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher / Faculty</option>
+            <option value="student">Student — Learning Hub &amp; Course Enrollment</option>
+            <option value="teacher">Teacher / Faculty — Course Authoring &amp; Student Roster</option>
           </select>
         </div>
         <div class="flex items-center justify-between text-[12px] text-slate-400 pt-1">
@@ -2127,8 +2144,8 @@
           </label>
           <button type="button" class="text-secondary hover:underline" onclick="SmartLearnApp.openForgotPasswordModal()">Forgot password?</button>
         </div>
-        <button type="submit" class="uiverse-btn-3d w-full !py-2.5 text-[14px] mt-2">
-          <span>Sign In</span>
+        <button id="auth-login-btn" type="submit" class="uiverse-btn-3d w-full !py-2.5 text-[14px] mt-2 flex items-center justify-center gap-2">
+          <span>Sign In to Cloud</span>
           <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
         </button>
       </form>
@@ -2139,41 +2156,57 @@
     </div>
   </div>
 
-  <!-- REGISTER MODAL -->
+  <!-- REGISTER MODAL (SUPABASE AUTH & PROFILES) -->
   <div id="modal-auth-register" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-auth-register')"></div>
     <div class="relative w-full max-w-md rounded-3xl bg-surface-container-lowest border border-white/10 p-7 shadow-2xl z-10 flex flex-col gap-5">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <h3 class="text-[18px] font-bold text-white">Join SmartLearn</h3>
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">person_add</span>
+          </div>
+          <div>
+            <h3 class="text-[18px] font-bold text-white">Create SmartLearn Account</h3>
+            <span class="text-[10px] text-emerald-400 font-mono">Saved in Supabase Cloud Database</span>
+          </div>
+        </div>
         <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-auth-register')">
           <span class="material-symbols-outlined text-[18px]">close</span>
         </button>
       </div>
 
-      <form onsubmit="SmartLearnApp.handleRegisterSubmit(event)" class="flex flex-col gap-3">
-        <div>
-          <label class="text-[12px] font-medium text-slate-300 block mb-1">Full Name</label>
-          <input type="text" id="auth-reg-name" required class="w-full bg-surface-container rounded-xl p-2.5 text-[13px] text-white border border-white/10" placeholder="e.g. Alex Rivera">
+      <!-- Error / Status Box -->
+      <div id="auth-reg-error" class="hidden text-rose-300 text-[12px] bg-rose-500/10 p-3 rounded-xl border border-rose-500/20"></div>
+
+      <form onsubmit="SmartLearnApp.handleRegisterSubmit(event)" class="flex flex-col gap-3.5">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Full Name</label>
+          <input type="text" id="auth-reg-name" required class="uiverse-input" placeholder="e.g. John Doe">
         </div>
-        <div>
-          <label class="text-[12px] font-medium text-slate-300 block mb-1">Email</label>
-          <input type="email" id="auth-reg-email" required class="w-full bg-surface-container rounded-xl p-2.5 text-[13px] text-white border border-white/10" placeholder="alex@smartlearn.edu">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Email Address</label>
+          <input type="email" id="auth-reg-email" required class="uiverse-input" placeholder="e.g. john@university.edu">
         </div>
-        <div>
-          <label class="text-[12px] font-medium text-slate-300 block mb-1">Role</label>
-          <select id="auth-reg-role" class="w-full bg-surface-container rounded-xl p-2.5 text-[13px] text-white border border-white/10">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">I am joining as a</label>
+          <select id="auth-reg-role" class="uiverse-input">
+            <option value="student">Student (Learn, Take Quizzes &amp; Enroll in Courses)</option>
+            <option value="teacher">Teacher / Faculty (Publish Courses, Upload Notes &amp; Review Students)</option>
           </select>
         </div>
-        <div>
-          <label class="text-[12px] font-medium text-slate-300 block mb-1">Password</label>
-          <input type="password" required class="w-full bg-surface-container rounded-xl p-2.5 text-[13px] text-white border border-white/10">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Password (min. 6 characters)</label>
+          <input type="password" id="auth-reg-password" required minlength="6" class="uiverse-input" placeholder="••••••••">
         </div>
-        <button type="submit" class="mt-2 w-full py-2.5 rounded-xl bg-primary-indigo text-white font-semibold text-[14px]">
-          Create Account
+        <button id="auth-reg-btn" type="submit" class="mt-2 w-full py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white font-semibold text-[14px] flex items-center justify-center gap-2 shadow-lg shadow-primary-indigo/30 transition-all">
+          <span class="material-symbols-outlined text-[18px]">cloud_done</span>
+          <span>Create Account &amp; Save Profile</span>
         </button>
       </form>
+
+      <div class="text-center text-[12px] text-slate-400 pt-2 border-t border-white/5">
+        Already have an account? <button class="text-primary font-semibold hover:underline" onclick="SmartLearnApp.openLoginModal()">Sign In here</button>
+      </div>
     </div>
   </div>
 
@@ -2361,11 +2394,78 @@
         <div class="flex flex-col gap-3 max-h-72 overflow-y-auto" id="course-detail-modules"></div>
       </div>
 
-      <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10" id="course-detail-actions">
         <button class="px-5 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold" onclick="SmartLearnApp.launchLessonVideo()">
           Continue Learning →
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- CREATE COURSE MODAL (FOR TEACHERS / FACULTY) -->
+  <div id="modal-create-course" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-create-course')"></div>
+    <div class="relative w-full max-w-lg rounded-3xl bg-surface-container-lowest border border-white/10 p-7 shadow-2xl z-10 flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">school</span>
+          </div>
+          <div>
+            <h3 class="text-[18px] font-bold text-white">Create New Curriculum Course</h3>
+            <span class="text-[10px] text-emerald-400 font-mono">Publishes to Supabase Cloud Database</span>
+          </div>
+        </div>
+        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-create-course')">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="SmartLearnApp.handleCreateCourseSubmit(event)" class="flex flex-col gap-3.5">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Course Title</label>
+          <input type="text" id="create-course-title" required class="uiverse-input" placeholder="e.g. Advanced Distributed Systems & Cloud Architecture">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Subject Category</label>
+            <select id="create-course-subject" class="uiverse-input">
+              <option value="subj-dsa">Data Structures &amp; Algorithms</option>
+              <option value="subj-c">C Systems Programming</option>
+              <option value="subj-dbms">Database Systems</option>
+              <option value="subj-os">Operating Systems</option>
+              <option value="subj-springboot">Spring Boot &amp; Java</option>
+              <option value="subj-web">Modern Web Dev</option>
+            </select>
+          </div>
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Difficulty Level</label>
+            <select id="create-course-difficulty" class="uiverse-input">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate" selected>Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Total Lessons</label>
+            <input type="number" id="create-course-lessons" class="uiverse-input" value="16" min="1" max="100">
+          </div>
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Cover Thumbnail URL</label>
+            <input type="url" id="create-course-thumbnail" class="uiverse-input" value="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80">
+          </div>
+        </div>
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Module 1 Syllabus / Topic</label>
+          <input type="text" id="create-course-module1" class="uiverse-input" value="Foundations, Architecture & Core Theory">
+        </div>
+        <button id="create-course-btn" type="submit" class="mt-2 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-[14px] flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 transition-all">
+          <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+          <span>Publish Course to Supabase Cloud</span>
+        </button>
+      </form>
     </div>
   </div>
 
@@ -2436,6 +2536,9 @@
   <!-- SCRIPT INTEGRATION (IN ORDER) -->
   <script src="course_lectures_data.js"></script>
   <script src="smartlearn_data.js"></script>
+  <!-- Supabase Cloud Auth & Database Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_client.js"></script>
   <script src="api_service.js"></script>
   <script src="ai_engine.js"></script>
   <script src="app.js"></script>

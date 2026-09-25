@@ -65,8 +65,23 @@ const SmartLearnAPI = (function () {
     }
   }
 
-  // --- AUTH SERVICES (Spring Boot Auth Controller) ---
+  // --- AUTH SERVICES (Supabase + Spring Boot fallback) ---
   async function login(email, password, role = "student") {
+    // 1. Supabase Cloud Authentication
+    if (window.SmartLearnSupabase) {
+      try {
+        const res = await window.SmartLearnSupabase.signIn(email, password, role);
+        if (res.success && res.user) {
+          const store = getLocalStore();
+          store.currentUser = res.user;
+          saveLocalStore(store);
+          return res;
+        }
+      } catch (err) {
+        console.warn("Supabase signIn failed, falling back to local:", err);
+      }
+    }
+
     if (IS_CONNECTED_SPRINGBOOT) {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
@@ -93,6 +108,25 @@ const SmartLearnAPI = (function () {
   }
 
   async function register(userData) {
+    // 1. Supabase Cloud User Registration
+    if (window.SmartLearnSupabase) {
+      try {
+        const res = await window.SmartLearnSupabase.signUp(
+          userData.email,
+          userData.password,
+          { fullName: userData.fullName, role: userData.role }
+        );
+        if (res.success && res.user) {
+          const store = getLocalStore();
+          store.currentUser = res.user;
+          saveLocalStore(store);
+          return res;
+        }
+      } catch (err) {
+        console.warn("Supabase signUp error:", err);
+      }
+    }
+
     if (IS_CONNECTED_SPRINGBOOT) {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
@@ -121,7 +155,57 @@ const SmartLearnAPI = (function () {
     return { success: true, user: newUser, token: "jwt_mock_token" };
   }
 
-  // --- COURSES & SUBJECTS SERVICES (Spring Boot Course Controller) ---
+  async function signOut() {
+    if (window.SmartLearnSupabase) {
+      try {
+        await window.SmartLearnSupabase.signOut();
+      } catch (e) {}
+    }
+    const store = getLocalStore();
+    store.currentUser = null;
+    saveLocalStore(store);
+    return { success: true };
+  }
+
+  // --- ENROLLMENT SERVICES (Supabase Persistent Cloud Storage) ---
+  async function enrollInCourse(courseId, courseTitle = null) {
+    if (window.SmartLearnSupabase) {
+      const res = await window.SmartLearnSupabase.enrollInCourse(courseId, courseTitle);
+      const store = getLocalStore();
+      const course = store.courses.find(c => c.id === courseId);
+      if (course) {
+        course.studentsEnrolled = (course.studentsEnrolled || 0) + 1;
+      }
+      if (store.currentUser) {
+        store.currentUser.enrolledCoursesCount = (store.currentUser.enrolledCoursesCount || 0) + 1;
+      }
+      saveLocalStore(store);
+      return res;
+    }
+    const store = getLocalStore();
+    const course = store.courses.find(c => c.id === courseId);
+    if (course) {
+      course.studentsEnrolled = (course.studentsEnrolled || 0) + 1;
+    }
+    saveLocalStore(store);
+    return { success: true, message: "Enrolled in course successfully." };
+  }
+
+  async function isEnrolled(courseId, userId = null) {
+    if (window.SmartLearnSupabase) {
+      return await window.SmartLearnSupabase.isEnrolled(courseId, userId);
+    }
+    return false;
+  }
+
+  async function getUserEnrollments(userId = null) {
+    if (window.SmartLearnSupabase) {
+      return await window.SmartLearnSupabase.getUserEnrollments(userId);
+    }
+    return [];
+  }
+
+  // --- COURSES & SUBJECTS SERVICES ---
   async function getSubjects() {
     if (IS_CONNECTED_SPRINGBOOT) {
       const res = await fetch(`${API_BASE}/subjects`);
@@ -132,6 +216,14 @@ const SmartLearnAPI = (function () {
   }
 
   async function getCourses() {
+    if (window.SmartLearnSupabase) {
+      try {
+        const cloudCourses = await window.SmartLearnSupabase.getCourses();
+        if (cloudCourses && cloudCourses.length > 0) {
+          return cloudCourses;
+        }
+      } catch (e) {}
+    }
     if (IS_CONNECTED_SPRINGBOOT) {
       const res = await fetch(`${API_BASE}/courses`);
       return await res.json();
@@ -141,6 +233,12 @@ const SmartLearnAPI = (function () {
   }
 
   async function getCourseById(courseId) {
+    if (window.SmartLearnSupabase) {
+      try {
+        const course = await window.SmartLearnSupabase.getCourseById(courseId);
+        if (course) return course;
+      } catch (e) {}
+    }
     if (IS_CONNECTED_SPRINGBOOT) {
       const res = await fetch(`${API_BASE}/courses/${courseId}`);
       return await res.json();
@@ -149,7 +247,7 @@ const SmartLearnAPI = (function () {
     return store.courses.find(c => c.id === courseId) || store.courses[0];
   }
 
-  // --- STUDY MATERIALS SERVICES (Spring Boot StudyMaterial Controller) ---
+  // --- STUDY MATERIALS SERVICES ---
   async function getMaterials(filterSubject = null, filterType = null) {
     if (IS_CONNECTED_SPRINGBOOT) {
       const params = new URLSearchParams();
@@ -167,6 +265,11 @@ const SmartLearnAPI = (function () {
   }
 
   async function addMaterial(materialData) {
+    if (window.SmartLearnSupabase) {
+      try {
+        await window.SmartLearnSupabase.saveStudyMaterial(materialData);
+      } catch (e) {}
+    }
     const store = getLocalStore();
     const newMat = {
       id: "mat-" + Date.now(),
@@ -214,15 +317,6 @@ const SmartLearnAPI = (function () {
     return store.quizzes.find(q => q.id === quizId) || store.quizzes[0];
   }
 
-  /**
-   * Submit quiz attempt and trigger continuous Performance Analysis:
-   *   Quiz Results
-   *   → Analyze Score
-   *   → Identify Weak Topics
-   *   → Find Related Learning Material
-   *   → Recommend Content
-   *   → Recalculate Performance
-   */
   async function submitQuiz(quizId, answers, timeSpentSeconds = 180) {
     const store = getLocalStore();
     const quiz = store.quizzes.find(q => q.id === quizId);
@@ -325,6 +419,12 @@ const SmartLearnAPI = (function () {
     });
 
     saveLocalStore(store);
+
+    // Save attempt in Supabase
+    if (window.SmartLearnSupabase) {
+      window.SmartLearnSupabase.saveQuizAttempt(attempt).catch(() => {});
+    }
+
     return attempt;
   }
 
@@ -348,18 +448,34 @@ const SmartLearnAPI = (function () {
 
   // --- TEACHER SERVICES ---
   async function getTeacherStudents() {
+    if (window.SmartLearnSupabase) {
+      try {
+        const students = await window.SmartLearnSupabase.getTeacherStudents();
+        if (students && students.length > 0) return students;
+      } catch (e) {}
+    }
     const store = getLocalStore();
     return store.teacherStudents;
   }
 
   async function createTeacherCourse(coursePayload) {
+    if (window.SmartLearnSupabase) {
+      try {
+        const newCourse = await window.SmartLearnSupabase.createTeacherCourse(coursePayload);
+        const store = getLocalStore();
+        store.courses.unshift(newCourse);
+        saveLocalStore(store);
+        return newCourse;
+      } catch (e) {}
+    }
+
     const store = getLocalStore();
     const newCourse = {
       id: "course-" + Date.now(),
       subjectId: coursePayload.subjectId || "subj-dsa",
       title: coursePayload.title,
       instructor: store.currentTeacher.name,
-      thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+      thumbnail: coursePayload.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
       progress: 0,
       totalLessons: coursePayload.totalLessons || 12,
       completedLessons: 0,
@@ -414,6 +530,10 @@ const SmartLearnAPI = (function () {
     getLocalStore,
     login,
     register,
+    signOut,
+    enrollInCourse,
+    isEnrolled,
+    getUserEnrollments,
     getSubjects,
     getCourses,
     getCourseById,

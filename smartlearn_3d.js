@@ -528,6 +528,19 @@ const SmartLearn3D = (function () {
 
     localStorage.setItem('smartlearn_custom_student', JSON.stringify(studentProfile));
 
+    // Sync with active Supabase user profile
+    if (window.SmartLearnSupabase) {
+      const user = window.SmartLearnSupabase.getActiveUser();
+      if (user) {
+        user.full_name = name;
+        user.department = year;
+        localStorage.setItem('smartlearn_active_profile', JSON.stringify(user));
+        if (window.SmartLearnApp && window.SmartLearnApp.updateUserUI) {
+          window.SmartLearnApp.updateUserUI(user);
+        }
+      }
+    }
+
     // Close modal
     const modal = document.getElementById('modal-student-onboarding');
     if (modal) modal.classList.add('hidden');
