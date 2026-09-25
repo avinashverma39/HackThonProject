@@ -102,72 +102,151 @@
       <span class="floating-edu-icon" style="top: 35%; right: 38%; animation-delay: 2.5s;">✓</span>
     </div>
     
-    <!-- Top Landing Navigation -->
-    <header class="sticky top-0 z-50 w-full bg-surface/85 backdrop-blur-xl border-b border-white/10 shadow-sm transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
-        <!-- Brand & SIH Badge -->
-        <div class="flex items-center gap-3 cursor-pointer group" onclick="SmartLearnApp.showMainView('landing')">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-            <span class="material-symbols-outlined text-[24px]">school</span>
-          </div>
-          <div class="flex flex-col">
-            <div class="flex items-center gap-2">
-              <span class="text-[20px] font-extrabold text-white tracking-tight">SmartLearn</span>
-              <span class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30 uiverse-badge-3d">SIH 2026</span>
+    <!-- ======================================================================
+         TOP LANDING DYNAMIC NAVBAR (SMOOTH FLOATING ISLAND & MORPHING DOCK)
+         ====================================================================== -->
+    <header id="main-landing-navbar" class="dynamic-navbar-header sticky top-0 z-50 w-full transition-all duration-500 ease-out">
+      
+      <!-- Ambient Horizon Glow Line -->
+      <div class="navbar-horizon-glow"></div>
+
+      <!-- Main Navbar Container / Floating Pill Island -->
+      <div class="navbar-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 transition-all duration-500 ease-out">
+        <div class="navbar-island flex items-center justify-between px-4 sm:px-6 h-16 sm:h-[68px] rounded-2xl transition-all duration-500 ease-out relative">
+          
+          <!-- Brand & SIH Live Badge -->
+          <div class="flex items-center gap-3 cursor-pointer group flex-shrink-0" onclick="SmartLearnApp.showMainView('landing')" title="SmartLearn Home">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-all duration-300 group-hover:scale-105 group-hover:rotate-6 group-hover:shadow-primary-indigo/50">
+                <span class="material-symbols-outlined text-[24px] navbar-logo-icon">school</span>
+              </div>
+              <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
             </div>
-            <span class="text-[11px] text-slate-400 font-medium">By Team HACKSMITH • Smart Education</span>
+            <div class="flex flex-col">
+              <div class="flex items-center gap-2">
+                <span class="text-[20px] font-extrabold text-white tracking-tight navbar-brand-title">SmartLearn</span>
+                <span class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30 uiverse-badge-3d flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary-indigo animate-pulse"></span>
+                  SIH 2026
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">By Team HACKSMITH • Smart Education</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Gliding Navigation Links Dock (Desktop) -->
+          <nav class="hidden lg:flex items-center relative p-1 rounded-xl bg-surface-container-lowest/70 border border-white/5 backdrop-blur-md nav-dock" id="dynamic-nav-dock">
+            <!-- Sliding Indicator Glider Pill -->
+            <div id="nav-glider-pill" class="nav-glider-pill"></div>
+
+            <a href="#why-smartlearn" class="dynamic-nav-item active" data-section="why-smartlearn">
+              <span class="material-symbols-outlined nav-icon">help_outline</span>
+              <span>Why SmartLearn</span>
+            </a>
+            <a href="#how-it-works" class="dynamic-nav-item" data-section="how-it-works">
+              <span class="material-symbols-outlined nav-icon">account_tree</span>
+              <span>How It Works</span>
+            </a>
+            <a href="#features" class="dynamic-nav-item" data-section="features">
+              <span class="material-symbols-outlined nav-icon">auto_awesome</span>
+              <span>Features</span>
+            </a>
+            <a href="#experiences" class="dynamic-nav-item" data-section="experiences">
+              <span class="material-symbols-outlined nav-icon">view_in_ar</span>
+              <span>Experience</span>
+            </a>
+            <a href="#impact" class="dynamic-nav-item" data-section="impact">
+              <span class="material-symbols-outlined nav-icon">trending_up</span>
+              <span>Impact</span>
+            </a>
+            <a href="#technology" class="dynamic-nav-item" data-section="technology">
+              <span class="material-symbols-outlined nav-icon">memory</span>
+              <span>Architecture</span>
+            </a>
+          </nav>
+
+          <!-- Action CTAs & Portal Switchers -->
+          <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+            <!-- Quick 1-Click Prototypes for SIH Jury (Pill Segment) -->
+            <div class="hidden xl:flex items-center p-0.5 rounded-xl bg-surface-container-lowest/80 border border-white/5">
+              <button class="px-2.5 py-1 rounded-lg text-secondary hover:text-white hover:bg-surface-container-high text-[11px] font-semibold transition-all flex items-center gap-1.5" onclick="SmartLearnApp.showMainView('student-dashboard')" title="Enter demo student portal">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span>Student</span>
+              </button>
+              <button class="px-2.5 py-1 rounded-lg text-emerald-400 hover:text-white hover:bg-surface-container-high text-[11px] font-semibold transition-all flex items-center gap-1.5" onclick="SmartLearnApp.showMainView('teacher-dashboard')" title="Enter demo teacher portal">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Teacher</span>
+              </button>
+            </div>
+
+            <!-- Sign In Tactile CTA -->
+            <button class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3.5 !py-1.5 text-[13px]" onclick="SmartLearnApp.openLoginModal('student')">
+              <span class="material-symbols-outlined text-[15px]">login</span>
+              <span class="hidden sm:inline">Sign In</span>
+            </button>
+
+            <!-- Start Learning 3D Shimmer CTA -->
+            <button class="uiverse-btn-3d text-[13px] !py-2 !px-4 navbar-cta-shimmer" onclick="SmartLearn3D.openStudentOnboarding()">
+              <span class="relative z-10 font-bold">Start Free</span>
+              <span class="material-symbols-outlined text-[16px] relative z-10">arrow_forward</span>
+            </button>
+
+            <!-- Dynamic Animated Mobile Menu Toggle Button -->
+            <button id="mobile-menu-toggle-btn" class="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-colors" aria-label="Toggle navigation menu" onclick="SmartLearn3D.toggleMobileNav()">
+              <span class="hamburger-line line-1 w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-300"></span>
+              <span class="hamburger-line line-2 w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-300"></span>
+              <span class="hamburger-line line-3 w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-300"></span>
+            </button>
+          </div>
+
+          <!-- Dynamic Reading Scroll Progress Bar Along Bottom Edge of Island -->
+          <div class="navbar-progress-track">
+            <div id="navbar-scroll-progress" class="navbar-progress-bar" style="width: 0%"></div>
           </div>
         </div>
-
-        <!-- Navigation Links -->
-        <nav class="hidden lg:flex items-center gap-6 text-[14px] font-medium text-slate-300">
-          <a href="#why-smartlearn" class="nav-link-3d">Why SmartLearn</a>
-          <a href="#how-it-works" class="nav-link-3d">How It Works</a>
-          <a href="#features" class="nav-link-3d">Features</a>
-          <a href="#experiences" class="nav-link-3d">Experience</a>
-          <a href="#impact" class="nav-link-3d">Impact</a>
-          <a href="#technology" class="nav-link-3d">Architecture</a>
-        </nav>
-
-        <!-- Action CTAs & Portal Switchers -->
-        <div class="flex items-center gap-2.5">
-          <button class="uiverse-btn-tactile text-slate-300 hover:text-white" onclick="SmartLearnApp.openLoginModal('student')">
-            <span class="material-symbols-outlined text-[15px]">login</span>
-            <span>Sign In</span>
-          </button>
-          <button class="uiverse-btn-3d text-[13px] !py-2 !px-4" onclick="SmartLearn3D.openStudentOnboarding()">
-            <span>Start Learning</span>
-            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </button>
-          <!-- Quick 1-Click Prototypes for SIH Jury -->
-          <div class="hidden sm:flex items-center gap-1.5 pl-2 border-l border-white/10">
-            <button class="uiverse-btn-tactile text-secondary border border-secondary/20" onclick="SmartLearnApp.showMainView('student-dashboard')" title="Enter demo student portal">
-              Student View →
-            </button>
-            <button class="uiverse-btn-tactile text-emerald-400 border border-emerald-500/20" onclick="SmartLearnApp.showMainView('teacher-dashboard')" title="Enter demo teacher portal">
-              Teacher View →
-            </button>
-          </div>
-          <!-- Mobile Menu Toggle Button -->
-          <button class="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container" onclick="document.getElementById('mobile-nav-drawer').classList.toggle('hidden')">
-            <span class="material-symbols-outlined text-[24px]">menu</span>
-          </button>
-        </div>
-
       </div>
 
-      <!-- Mobile Navigation Drawer -->
-      <div id="mobile-nav-drawer" class="hidden lg:hidden px-4 pt-2 pb-4 bg-surface-container-low border-b border-white/10 flex flex-col gap-2">
-        <a href="#why-smartlearn" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">Why SmartLearn</a>
-        <a href="#how-it-works" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">How It Works</a>
-        <a href="#features" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">Features</a>
-        <a href="#experiences" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">Experience</a>
-        <a href="#impact" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">Impact</a>
-        <a href="#technology" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-surface-container text-[14px]" onclick="document.getElementById('mobile-nav-drawer').classList.add('hidden')">Architecture</a>
-        <div class="flex gap-2 pt-2 border-t border-white/10">
-          <button class="flex-1 py-2 rounded-lg bg-surface-container text-secondary text-[12px] font-semibold" onclick="SmartLearnApp.showMainView('student-dashboard')">Student View →</button>
-          <button class="flex-1 py-2 rounded-lg bg-surface-container text-emerald-400 text-[12px] font-semibold" onclick="SmartLearnApp.showMainView('teacher-dashboard')">Teacher View →</button>
+      <!-- Mobile Navigation Drawer with Smooth Slide & Frosted Glass -->
+      <div id="mobile-nav-drawer" class="mobile-drawer-hidden lg:hidden max-w-7xl mx-auto px-4 sm:px-6 transition-all duration-300 ease-in-out">
+        <div class="p-4 rounded-2xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-1.5">
+          <a href="#why-smartlearn" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-primary">help_outline</span>
+            <span>Why SmartLearn</span>
+          </a>
+          <a href="#how-it-works" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-secondary">account_tree</span>
+            <span>How It Works</span>
+          </a>
+          <a href="#features" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-emerald-400">auto_awesome</span>
+            <span>Features</span>
+          </a>
+          <a href="#experiences" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-indigo-400">view_in_ar</span>
+            <span>Interactive Experience</span>
+          </a>
+          <a href="#impact" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-amber-400">trending_up</span>
+            <span>Impact & Outcomes</span>
+          </a>
+          <a href="#technology" class="mobile-nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container text-[14px] font-medium transition-all" onclick="SmartLearn3D.closeMobileNav()">
+            <span class="material-symbols-outlined text-[18px] text-purple-400">memory</span>
+            <span>Technical Architecture</span>
+          </a>
+          
+          <div class="flex items-center gap-2 pt-3 mt-1 border-t border-white/10">
+            <button class="flex-1 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-secondary text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all" onclick="SmartLearn3D.closeMobileNav(); SmartLearnApp.showMainView('student-dashboard')">
+              <span class="material-symbols-outlined text-[15px]">person</span>
+              <span>Student View →</span>
+            </button>
+            <button class="flex-1 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-emerald-400 text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all" onclick="SmartLearn3D.closeMobileNav(); SmartLearnApp.showMainView('teacher-dashboard')">
+              <span class="material-symbols-outlined text-[15px]">school</span>
+              <span>Teacher View →</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>

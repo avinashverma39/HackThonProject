@@ -243,27 +243,128 @@ const SmartLearn3D = (function () {
     revealElements.forEach(el => observer.observe(el));
   }
 
-  // --- 6. NAVBAR SCROLL DYNAMICS & ACTIVE INDICATOR ---
+  // --- 6. DYNAMIC NAVBAR WITH SMOOTH TRANSITIONS & GLIDING PILL ---
+  let activeNavElement = null;
+
   function initNavbarScroll() {
-    const header = document.querySelector('header.sticky');
+    const header = document.getElementById('main-landing-navbar') || document.querySelector('.dynamic-navbar-header') || document.querySelector('header.sticky');
     if (!header) return;
 
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 25) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    }, { passive: true });
-
-    // Active Section Tracking
+    const navDock = document.getElementById('dynamic-nav-dock');
+    const gliderPill = document.getElementById('nav-glider-pill');
+    const navItems = document.querySelectorAll('.dynamic-nav-item, .nav-link-3d');
+    const progressBar = document.getElementById('navbar-scroll-progress');
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link-3d');
 
-    if (sections.length && navLinks.length) {
-      window.addEventListener('scroll', () => {
+    let lastScrollY = window.scrollY;
+    let isHoveringNav = false;
+
+    // Helper: Position the sliding glider pill behind target link
+    function moveGliderPill(targetEl) {
+      if (!gliderPill || !targetEl || !navDock) return;
+      const dockRect = navDock.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      
+      const leftOffset = targetRect.left - dockRect.left;
+      const width = targetRect.width;
+
+      gliderPill.style.left = `${leftOffset}px`;
+      gliderPill.style.width = `${width}px`;
+      gliderPill.classList.add('active');
+    }
+
+    // Set initial active item
+    if (navItems.length) {
+      activeNavElement = document.querySelector('.dynamic-nav-item.active, .nav-link-3d.active') || navItems[0];
+      // Delay slightly for font & layout settlement
+      setTimeout(() => {
+        if (activeNavElement) moveGliderPill(activeNavElement);
+      }, 150);
+
+      // Glider pill hover transitions
+      navItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          isHoveringNav = true;
+          moveGliderPill(item);
+        });
+
+        // Smooth scroll on link click with dynamic header offset
+        item.addEventListener('click', (e) => {
+          const href = item.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+              const headerHeight = header.offsetHeight || 64;
+              const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - (headerHeight + 20);
+              
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+
+              // Set active item immediately
+              navItems.forEach(i => i.classList.remove('active'));
+              item.classList.add('active');
+              activeNavElement = item;
+              moveGliderPill(item);
+
+              if (history.pushState) {
+                history.pushState(null, null, href);
+              }
+            }
+          }
+        });
+      });
+
+      if (navDock) {
+        navDock.addEventListener('mouseleave', () => {
+          isHoveringNav = false;
+          if (activeNavElement) {
+            moveGliderPill(activeNavElement);
+          }
+        });
+      }
+    }
+
+    // Scroll listener: Dock Morphing, Reading Progress, & Smart Directional Hide/Reveal
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+
+      // 1. Morph to floating dock pill when scrolled past 25px
+      if (currentScrollY > 25) {
+        header.classList.add('scrolled', 'is-scrolled');
+      } else {
+        header.classList.remove('scrolled', 'is-scrolled');
+      }
+
+      // 2. Reading Scroll Progress Bar
+      if (progressBar) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progressPercent = docHeight > 0 ? Math.min(100, Math.max(0, (currentScrollY / docHeight) * 100)) : 0;
+        progressBar.style.width = `${progressPercent}%`;
+      }
+
+      // 3. Directional Auto-Hide on Fast Scroll Down, Smooth Reveal on Scroll Up
+      if (currentScrollY > 160 && scrollDelta > 8) {
+        // Fast scroll down -> hide navbar smoothly
+        header.classList.add('navbar-hidden');
+        header.classList.remove('navbar-visible');
+        closeMobileNav();
+      } else if (scrollDelta < -4 || currentScrollY < 60) {
+        // Scrolling up or near top -> reveal navbar smoothly
+        header.classList.remove('navbar-hidden');
+        header.classList.add('navbar-visible');
+      }
+
+      lastScrollY = currentScrollY;
+
+      // 4. Active Section Tracking (ScrollSpy)
+      if (sections.length && navItems.length && !isHoveringNav) {
         let currentSectionId = '';
-        const scrollPosition = window.scrollY + 120;
+        const scrollPosition = currentScrollY + (header.offsetHeight || 64) + 80;
 
         sections.forEach(sec => {
           const top = sec.offsetTop;
@@ -273,15 +374,78 @@ const SmartLearn3D = (function () {
           }
         });
 
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${currentSectionId}`) {
-            link.classList.add('active');
-          }
-        });
-      }, { passive: true });
+        if (currentSectionId) {
+          navItems.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${currentSectionId}`) {
+              if (activeNavElement !== link) {
+                navItems.forEach(i => i.classList.remove('active'));
+                link.classList.add('active');
+                activeNavElement = link;
+                moveGliderPill(link);
+              }
+            }
+          });
+        }
+      }
+    }, { passive: true });
+
+    // Show navbar if mouse moves near top of window
+    window.addEventListener('mousemove', (e) => {
+      if (e.clientY < 40 && header.classList.contains('navbar-hidden')) {
+        header.classList.remove('navbar-hidden');
+        header.classList.add('navbar-visible');
+      }
+    });
+
+    // Resize listener to re-align glider pill
+    window.addEventListener('resize', () => {
+      if (activeNavElement) {
+        moveGliderPill(activeNavElement);
+      }
+    });
+  }
+
+  // --- MOBILE NAV DRAWER CONTROLLER ---
+  function toggleMobileNav() {
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    if (!drawer) return;
+
+    const isOpen = drawer.classList.contains('mobile-drawer-open');
+    if (isOpen) {
+      closeMobileNav();
+    } else {
+      drawer.classList.remove('mobile-drawer-hidden', 'hidden');
+      drawer.classList.add('mobile-drawer-open');
+      if (toggleBtn) toggleBtn.classList.add('open');
     }
   }
+
+  function closeMobileNav() {
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    if (!drawer) return;
+    drawer.classList.remove('mobile-drawer-open');
+    drawer.classList.add('mobile-drawer-hidden');
+    if (toggleBtn) toggleBtn.classList.remove('open');
+  }
+
+  // Close mobile drawer on outside click or ESC
+  document.addEventListener('click', (e) => {
+    const header = document.getElementById('main-landing-navbar');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    if (!header || !drawer || !drawer.classList.contains('mobile-drawer-open')) return;
+    if (!header.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMobileNav();
+    }
+  });
 
   // --- 7. BUTTON RIPPLE EFFECT ---
   function initButtonRipples() {
@@ -400,7 +564,9 @@ const SmartLearn3D = (function () {
     init,
     initTiltSystem,
     openStudentOnboarding,
-    handleOnboardingSubmit
+    handleOnboardingSubmit,
+    toggleMobileNav,
+    closeMobileNav
   };
 })();
 
