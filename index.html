@@ -1639,75 +1639,150 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recommendations-container"></div>
         </div>
 
-        <!-- SUBVIEW 11: PROGRESS TRACKING -->
+        <!-- SUBVIEW 11: PROGRESS TRACKING (Supabase Real Progress & Achievements) -->
         <div id="subview-progress" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
           <div>
-            <h2 class="text-[24px] font-bold text-white">Learning Progress &amp; Study Habit Analytics</h2>
-            <p class="text-[13px] text-slate-400">Review weekly focus hours, retention rates, and semester goals.</p>
+            <h2 class="text-[24px] font-bold text-white">Learning Progress &amp; Cloud Analytics</h2>
+            <p class="text-[13px] text-slate-400">Real-time curriculum mastery, unlocked achievements, and verifiable learning audit trail.</p>
           </div>
           
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
               <span class="text-[12px] text-slate-400 uppercase font-semibold">Weekly Study Time</span>
-              <span class="text-[26px] font-extrabold text-white block mt-1 font-mono">18.5 hrs</span>
+              <span class="text-[26px] font-extrabold text-white block mt-1 font-mono" id="progress-study-time">18.5 hrs</span>
               <span class="text-[11px] text-emerald-400">+2.5 hrs vs last week</span>
             </div>
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
               <span class="text-[12px] text-slate-400 uppercase font-semibold">Learning Streak</span>
-              <span class="text-[26px] font-extrabold text-emerald-400 block mt-1 font-mono" id="progress-streak-count">12 Days</span>
-              <span class="text-[11px] text-slate-400">Next milestone: 14 days</span>
+              <span class="text-[26px] font-extrabold text-emerald-400 block mt-1 font-mono" id="progress-streak-count">14 Days</span>
+              <span class="text-[11px] text-slate-400">Next milestone: 21 days</span>
             </div>
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[12px] text-slate-400 uppercase font-semibold">Degree Requirement Progress</span>
-              <span class="text-[26px] font-extrabold text-primary block mt-1 font-mono">Stage 3 of 4</span>
-              <span class="text-[11px] text-slate-400">Capstone Scheduled for Spring</span>
+              <span class="text-[12px] text-slate-400 uppercase font-semibold">Completed Lessons</span>
+              <span class="text-[26px] font-extrabold text-primary block mt-1 font-mono" id="progress-completed-lessons">12 Lessons</span>
+              <span class="text-[11px] text-slate-400">Saved in Supabase lesson_progress</span>
+            </div>
+          </div>
+
+          <!-- Unlocked Achievements Section -->
+          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-amber-400">emoji_events</span>
+                <h3 class="text-[16px] font-bold text-white">Unlocked Platform Achievements</h3>
+              </div>
+              <span class="text-[11px] text-slate-400 font-mono">Cloud Verified (public.user_achievements)</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="progress-achievements-container">
+              <!-- Rendered dynamically by SmartLearnApp.renderProgressDashboard() -->
+            </div>
+          </div>
+
+          <!-- Verified Learning History Log -->
+          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-secondary">history</span>
+                <h3 class="text-[16px] font-bold text-white">Recent Learning History</h3>
+              </div>
+              <span class="text-[11px] text-slate-400 font-mono">public.learning_history</span>
+            </div>
+            <div class="flex flex-col gap-2" id="progress-history-container">
+              <!-- Rendered dynamically by SmartLearnApp.renderProgressDashboard() -->
             </div>
           </div>
         </div>
 
-        <!-- SUBVIEW 12: PROFILE -->
+        <!-- SUBVIEW 12: PROFILE (Supabase Profiles & Storage) -->
         <div id="subview-profile" class="student-subview hidden flex flex-col gap-6 max-w-4xl mx-auto">
+          <!-- Profile Header Card -->
           <div class="p-8 rounded-3xl bg-surface-container border border-white/5 flex flex-col md:flex-row items-center gap-6">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" class="w-24 h-24 rounded-2xl object-cover ring-4 ring-primary-indigo/30">
+            <div class="relative group">
+              <img id="profile-avatar-display" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" class="w-24 h-24 rounded-2xl object-cover ring-4 ring-primary-indigo/30">
+              <label for="profile-avatar-file-input" class="absolute inset-0 bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-[11px] font-semibold gap-1">
+                <span class="material-symbols-outlined text-[20px]">upload</span>
+                <span>Change Photo</span>
+              </label>
+              <input type="file" id="profile-avatar-file-input" accept="image/*" class="hidden" onchange="SmartLearnApp.handleAvatarUpload(this.files[0])">
+            </div>
             <div class="flex-1 text-center md:text-left">
-              <h2 class="text-[24px] font-bold text-white">Alex Rivera</h2>
-              <p class="text-[13px] text-slate-400">alex.rivera@smartlearn.edu • Institute of Engineering &amp; Technology</p>
+              <h2 class="text-[24px] font-bold text-white" id="profile-name-display">Alex Rivera</h2>
+              <p class="text-[13px] text-slate-400" id="profile-meta-display">alex.rivera@smartlearn.edu • Institute of Engineering &amp; Technology</p>
               <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-3">
-                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200">Role: Student</span>
-                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200">Semester 5 (CS)</span>
-                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold">Mastery: 72%</span>
+                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200" id="profile-role-badge">Role: Student</span>
+                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200" id="profile-dept-badge">Computer Science</span>
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold" id="profile-mastery-badge">Mastery: 78%</span>
               </div>
             </div>
           </div>
+
+          <!-- Edit Profile Form -->
+          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
+            <h3 class="text-[16px] font-bold text-white border-b border-white/5 pb-3">Edit Profile Details (Supabase Synced)</h3>
+            <form id="profile-edit-form" onsubmit="SmartLearnApp.handleProfileSave(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[12px] font-medium text-slate-300 mb-1">Full Name</label>
+                <input type="text" id="profile-input-fullname" class="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-primary-indigo" value="Alex Rivera" required>
+              </div>
+              <div>
+                <label class="block text-[12px] font-medium text-slate-300 mb-1">Academic Department</label>
+                <input type="text" id="profile-input-department" class="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-primary-indigo" value="Computer Science & Engineering">
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-[12px] font-medium text-slate-300 mb-1">Bio / Research Interests</label>
+                <textarea id="profile-input-bio" rows="3" class="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-primary-indigo" placeholder="E.g., Specializing in Distributed Systems and Algorithmic Complexity..."></textarea>
+              </div>
+              <div class="md:col-span-2 flex justify-end">
+                <button type="submit" id="profile-save-btn" class="px-6 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold transition-all shadow-md flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px]">save</span>
+                  <span>Save Profile Changes</span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <!-- SUBVIEW 13: SETTINGS -->
+        <!-- SUBVIEW 13: SETTINGS (Supabase Persistent Settings) -->
         <div id="subview-settings" class="student-subview hidden flex flex-col gap-6 max-w-3xl mx-auto">
-          <h2 class="text-[24px] font-bold text-white">Platform Settings</h2>
+          <h2 class="text-[24px] font-bold text-white">Platform Settings &amp; Preferences</h2>
           <div class="p-6 rounded-2xl bg-surface-container border border-white/5 space-y-4">
             <div class="flex items-center justify-between pb-4 border-b border-white/5">
               <div>
                 <span class="text-[14px] font-semibold text-white block">Theme Appearance</span>
                 <span class="text-[12px] text-slate-400">Toggle between Obsidian Dark Mode and Clean Light Mode</span>
               </div>
-              <button class="px-4 py-2 rounded-xl bg-surface-container-high text-white text-[12px] font-medium" onclick="SmartLearnApp.toggleTheme()">
+              <button class="px-4 py-2 rounded-xl bg-surface-container-high text-white text-[12px] font-medium hover:bg-surface-variant transition-colors" onclick="SmartLearnApp.toggleTheme()">
                 Toggle Mode
               </button>
             </div>
             <div class="flex items-center justify-between pb-4 border-b border-white/5">
               <div>
-                <span class="text-[14px] font-semibold text-white block">Personalized Recommendation Alerts</span>
-                <span class="text-[12px] text-slate-400">Receive instant notifications when quiz scores drop below 70%</span>
+                <span class="text-[14px] font-semibold text-white block">Email Notification Preferences</span>
+                <span class="text-[12px] text-slate-400">Receive course announcements and weekly study digests</span>
               </div>
-              <input type="checkbox" checked class="w-5 h-5 accent-primary-indigo cursor-pointer">
+              <input type="checkbox" id="setting-email-notifs" checked class="w-5 h-5 accent-primary-indigo cursor-pointer" onchange="SmartLearnApp.saveUserSetting('email_notifications', this.checked)">
+            </div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/5">
+              <div>
+                <span class="text-[14px] font-semibold text-white block">Push Notifications</span>
+                <span class="text-[12px] text-slate-400">Alerts when quiz feedback or weak topic drills are ready</span>
+              </div>
+              <input type="checkbox" id="setting-push-notifs" checked class="w-5 h-5 accent-primary-indigo cursor-pointer" onchange="SmartLearnApp.saveUserSetting('push_notifications', this.checked)">
+            </div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/5">
+              <div>
+                <span class="text-[14px] font-semibold text-white block">Autoplay Next Lesson</span>
+                <span class="text-[12px] text-slate-400">Automatically advance to the next curriculum lecture</span>
+              </div>
+              <input type="checkbox" id="setting-autoplay" checked class="w-5 h-5 accent-primary-indigo cursor-pointer" onchange="SmartLearnApp.saveUserSetting('autoplay', this.checked)">
             </div>
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-[14px] font-semibold text-white block">Reset Local Demo Storage</span>
-                <span class="text-[12px] text-slate-400">Restore default curriculum data and reset quizzes</span>
+                <span class="text-[14px] font-semibold text-white block">Supabase Cloud Sync Status</span>
+                <span class="text-[12px] text-emerald-400 font-mono">Connected • Project: yhrjuzddndyrasniycca</span>
               </div>
-              <button class="px-4 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-200 text-[12px] font-semibold border border-rose-500/30" onclick="localStorage.removeItem('smartlearn_state_v1'); location.reload();">
-                Reset Demo
+              <button class="px-4 py-2 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-[12px] font-semibold hover:bg-emerald-600/30" onclick="SmartLearnApp.syncWithCloud()">
+                Force Sync
               </button>
             </div>
           </div>
