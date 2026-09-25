@@ -1,0 +1,892 @@
+/* ==========================================================================
+   SmartLearn — 3D Design System & Interaction Styles
+   Project: SmartLearn | Team: HACKSMITH | Theme: Smart Education (SIH 2026)
+   Inspired by Uiverse UI Components, Modern 3D Web & Obsidian Lumina Design
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ==========================================================================
+   1. 3D DESIGN SYSTEM & COLOR TOKENS
+   ========================================================================== */
+:root {
+  --primary: #818cf8;
+  --primary-indigo: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-dark: #3730a3;
+  --secondary: #38bdf8;
+  --secondary-cyan: #7bd0ff;
+  --accent: #10b981;
+  --tertiary: #10b981;
+  --tertiary-emerald: #4edea3;
+  --background: #0b0f17;
+  --surface: #0f131d;
+  --surface-hover: #171d2b;
+  --surface-container: #151924;
+  --surface-container-high: #1e2330;
+  --surface-container-highest: #282e3f;
+  --surface-container-low: #111520;
+  --surface-container-lowest: #080c14;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(99, 102, 241, 0.5);
+  --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --glow: rgba(99, 102, 241, 0.28);
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --perspective: 1200px;
+}
+
+/* Base Body Calibration */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+h1 {
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #090d14;
+}
+::-webkit-scrollbar-thumb {
+  background: #252b3b;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+/* Selection */
+::selection {
+  background: rgba(99, 102, 241, 0.45);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   2. 3D PERSPECTIVE & DEPTH UTILITIES
+   ========================================================================== */
+.perspective-800 {
+  perspective: 800px;
+}
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-1500 {
+  perspective: 1500px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.translate-z-0  { transform: translateZ(0); }
+.translate-z-10 { transform: translateZ(10px); }
+.translate-z-20 { transform: translateZ(20px); }
+.translate-z-30 { transform: translateZ(30px); }
+.translate-z-40 { transform: translateZ(40px); }
+.translate-z-50 { transform: translateZ(50px); }
+.translate-z-60 { transform: translateZ(60px); }
+.translate-z-80 { transform: translateZ(80px); }
+
+/* Realistic 3D Glass & Panel Surfaces */
+.glass-panel {
+  background: rgba(21, 25, 36, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-modal {
+  background: rgba(14, 18, 27, 0.94);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Layered 3D Card Shadows */
+.shadow-3d-subtle {
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.shadow-3d-prominent {
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.8), 0 8px 16px -4px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.shadow-3d-floating {
+  box-shadow: 0 30px 60px -18px rgba(0, 0, 0, 0.9), 0 0 30px rgba(99, 102, 241, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   3. UIVERSE-INSPIRED COMPONENT SUITE
+   ========================================================================== */
+
+/* Uiverse 3D Primary Button (Tactile Extrusion & Bevel) */
+.uiverse-btn-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.625rem;
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 5px 0 #3730a3,
+    0 10px 20px -3px rgba(99, 102, 241, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+  user-select: none;
+  overflow: hidden;
+}
+
+.uiverse-btn-3d:hover {
+  background: linear-gradient(180deg, #7174ff 0%, #574eff 100%);
+  box-shadow: 
+    0 6px 0 #3730a3,
+    0 14px 28px -4px rgba(99, 102, 241, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+.uiverse-btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 0 #3730a3,
+    0 4px 8px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Subtle Gloss Shimmer Bar across button on hover */
+.uiverse-btn-3d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.uiverse-btn-3d:hover::after {
+  left: 150%;
+}
+
+/* Uiverse 3D Secondary Button (Dark Inset Glass) */
+.uiverse-btn-secondary-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(180deg, #1b202e 0%, #121622 100%);
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 0 #090c13,
+    0 8px 16px -2px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.uiverse-btn-secondary-3d:hover {
+  background: linear-gradient(180deg, #22293b 0%, #171c2b 100%);
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 
+    0 5px 0 #090c13,
+    0 12px 24px -4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.uiverse-btn-secondary-3d:active {
+  transform: translateY(3px);
+  box-shadow: 
+    0 1px 0 #090c13,
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Uiverse Tactile Pill (Student / Teacher Switchers) */
+.uiverse-btn-tactile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(180deg, #1b202e 0%, #141824 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.12s ease;
+  cursor: pointer;
+}
+.uiverse-btn-tactile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.uiverse-btn-tactile:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 transparent, inset 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Uiverse 3D Interactive Card */
+.uiverse-card-3d {
+  position: relative;
+  background: #131926;
+  background: linear-gradient(145deg, #171d2c 0%, #0d121c 100%);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.uiverse-card-3d:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 
+    0 24px 50px -15px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Uiverse Floating Spotlight Layer */
+.card-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.12), transparent 80%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.uiverse-card-3d:hover .card-spotlight {
+  opacity: 1;
+}
+
+/* Uiverse Form Input with 3D Depth */
+.uiverse-input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.uiverse-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(13, 17, 26, 0.85);
+  color: #f8fafc;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.uiverse-input:focus {
+  border-color: #6366f1;
+  background: rgba(16, 21, 32, 0.95);
+  box-shadow: 
+    0 0 0 3px rgba(99, 102, 241, 0.25),
+    inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Uiverse Badge 3D */
+.uiverse-badge-3d {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   4. HERO 3D DASHBOARD VISUALIZATION
+   ========================================================================== */
+.hero-3d-scene {
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  width: 100%;
+}
+
+.hero-3d-card {
+  position: relative;
+  width: 100%;
+  border-radius: 1.75rem;
+  background: linear-gradient(135deg, rgba(23, 29, 43, 0.92) 0%, rgba(13, 17, 26, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 30px 80px -20px rgba(0, 0, 0, 0.9),
+    0 0 50px -10px rgba(99, 102, 241, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+}
+
+/* Internal Layers Floating at Z Depths */
+.hero-layer-base {
+  transform: translateZ(0);
+}
+.hero-layer-glass {
+  transform: translateZ(15px);
+}
+.hero-layer-content {
+  transform: translateZ(30px);
+}
+.hero-layer-progress {
+  transform: translateZ(45px);
+}
+.hero-layer-float-1 {
+  transform: translateZ(65px);
+}
+.hero-layer-float-2 {
+  transform: translateZ(80px);
+}
+
+/* 3D Floating Mini Badges */
+.floating-mini-card {
+  position: absolute;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background: rgba(17, 22, 34, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  animation: floatCardBounce 5s ease-in-out infinite;
+  z-index: 20;
+}
+
+@keyframes floatCardBounce {
+  0%, 100% {
+    transform: translateZ(70px) translateY(0);
+  }
+  50% {
+    transform: translateZ(75px) translateY(-8px);
+  }
+}
+
+/* Layered 3D Typography */
+.text-3d-headline {
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 12px 30px rgba(99, 102, 241, 0.2);
+}
+
+/* ==========================================================================
+   5. INTERACTIVE 3D BACKGROUND & PARTICLES
+   ========================================================================== */
+.smartlearn-3d-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient Radial Light Orbs */
+.ambient-glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  opacity: 0.18;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.orb-primary {
+  width: 650px;
+  height: 650px;
+  background: #6366f1;
+  top: 5%;
+  left: 15%;
+  animation: floatOrb 18s ease-in-out infinite alternate;
+}
+
+.orb-cyan {
+  width: 550px;
+  height: 550px;
+  background: #38bdf8;
+  top: 25%;
+  right: 10%;
+  animation: floatOrb 22s ease-in-out infinite alternate-reverse;
+}
+
+.orb-emerald {
+  width: 450px;
+  height: 450px;
+  background: #10b981;
+  bottom: 10%;
+  left: 30%;
+  animation: floatOrb 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
+  100% {
+    transform: translate(-30px, 40px) scale(0.95);
+  }
+}
+
+/* Subtle Interactive Background Grid */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+}
+
+/* Floating Educational Depth Icons (Slow & Graceful) */
+.floating-edu-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.16;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+  animation: eduIconFloat 12s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.2s ease-out;
+}
+
+@keyframes eduIconFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(6deg);
+  }
+}
+
+/* Ambient Cursor Following Light */
+#ambient-cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(56, 189, 248, 0.04) 40%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+/* ==========================================================================
+   6. NAVBAR 3D & SCROLL TRANSFORMATION
+   ========================================================================= */
+header.sticky {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+header.scrolled {
+  background: rgba(11, 15, 23, 0.95) !important;
+  backdrop-filter: blur(24px) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.1) !important;
+  height: 4.25rem !important;
+}
+
+.nav-link-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.5rem;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-link-3d:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  text-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+}
+
+.nav-link-3d::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-3d:hover::after,
+.nav-link-3d.active::after {
+  width: 80%;
+}
+
+/* ==========================================================================
+   7. HOW IT WORKS 3D CONNECTED NODES
+   ========================================================================== */
+.workflow-step-node {
+  position: relative;
+  background: #131926 !important;
+  background: linear-gradient(160deg, #171e2e 0%, #0d121c 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  z-index: 2;
+  isolation: isolate;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.workflow-step-node:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.workflow-step-node:nth-child(1):hover {
+  border-color: rgba(99, 102, 241, 0.6) !important;
+  box-shadow: 0 22px 45px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(99, 102, 241, 0.3) !important;
+}
+
+.workflow-step-node:nth-child(2):hover {
+  border-color: rgba(244, 63, 94, 0.6) !important;
+  box-shadow: 0 22px 45px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(244, 63, 94, 0.3) !important;
+}
+
+.workflow-step-node:nth-child(3):hover {
+  border-color: rgba(56, 189, 248, 0.6) !important;
+  box-shadow: 0 22px 45px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.3) !important;
+}
+
+.workflow-step-node:nth-child(4):hover {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 22px 45px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.3) !important;
+}
+
+.workflow-step-node:nth-child(5):hover,
+.workflow-step-node.step-mastery:hover {
+  border-color: rgba(16, 185, 129, 0.7) !important;
+  box-shadow: 0 22px 45px -12px rgba(0, 0, 0, 0.85), 0 0 30px rgba(16, 185, 129, 0.35) !important;
+}
+
+.workflow-step-node.step-mastery {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.75), 0 0 24px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.workflow-connector-line {
+  background: linear-gradient(90deg, #6366f1, #f43f5e, #38bdf8, #f59e0b, #10b981, #6366f1);
+  background-size: 300% 100%;
+  animation: flowLine 5s linear infinite;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.45), 0 0 26px rgba(99, 102, 241, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes flowLine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* ==========================================================================
+   8. UIVERSE-STYLE PRELOADER EXPERIENCE
+   ========================================================================== */
+#smartlearn-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #090d14;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
+}
+
+#smartlearn-preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* 3D Gyro Rings */
+.gyro-loader {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  perspective: 600px;
+  transform-style: preserve-3d;
+}
+
+.gyro-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.gyro-ring:nth-child(1) {
+  border-top-color: #6366f1;
+  border-bottom-color: #6366f1;
+  animation: gyroSpin1 1.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.gyro-ring:nth-child(2) {
+  border-left-color: #38bdf8;
+  border-right-color: #38bdf8;
+  animation: gyroSpin2 1.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.gyro-ring:nth-child(3) {
+  border-top-color: #10b981;
+  border-right-color: #10b981;
+  animation: gyroSpin3 1.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.gyro-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  background: radial-gradient(circle, #ffffff, #6366f1);
+  border-radius: 50%;
+  box-shadow: 0 0 20px #6366f1;
+  animation: gyroPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes gyroSpin1 {
+  0% { transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
+  100% { transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); }
+}
+
+@keyframes gyroSpin2 {
+  0% { transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
+  100% { transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); }
+}
+
+@keyframes gyroSpin3 {
+  0% { transform: rotateX(20deg) rotateY(50deg) rotateZ(0deg); }
+  100% { transform: rotateX(20deg) rotateY(50deg) rotateZ(360deg); }
+}
+
+@keyframes gyroPulse {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ==========================================================================
+   9. SCROLL REVEAL & STAGGER SYSTEM
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+/* ==========================================================================
+   10. BUTTON CLICK RIPPLE EFFECT
+   ========================================================================== */
+.btn-ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: rippleAnimation 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes rippleAnimation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   11. PRESERVED FUNCTIONAL STYLES (ACADEMIC / LIGHT MODE / PRINT)
+   ========================================================================== */
+/* Academic Note Reader Callouts & Typography */
+.note-theorem {
+  border-left: 3px solid #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.875rem 1.25rem;
+}
+
+.note-proof {
+  border-left: 3px solid #10b981;
+  background: rgba(16, 185, 129, 0.08);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.875rem 1.25rem;
+}
+
+.note-warning {
+  border-left: 3px solid #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.875rem 1.25rem;
+}
+
+.note-math-display {
+  display: block;
+  padding: 1rem 1.25rem;
+  background: rgba(12, 16, 23, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: auto;
+  color: #38bdf8;
+  font-size: 0.95rem;
+}
+
+/* Card hover lifts & Micro-interactions */
+.smartlearn-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transform-style: preserve-3d;
+}
+
+.smartlearn-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+/* Print styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #dossier-print-target, #dossier-print-target *,
+  #printable-notes-target, #printable-notes-target * {
+    visibility: visible;
+  }
+  #dossier-print-target, #printable-notes-target {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* ==========================================================================
+   12. ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .floating-mini-card, .floating-edu-icon, .ambient-glow-orb {
+    animation: none !important;
+  }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .hero-3d-scene {
+    perspective: none;
+  }
+  .hero-3d-card {
+    transform: none !important;
+  }
+  #ambient-cursor-glow {
+    display: none !important;
+  }
+}
