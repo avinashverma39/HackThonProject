@@ -348,12 +348,12 @@ const SmartLearn3D = (function () {
       }
 
       // 3. Directional Auto-Hide on Fast Scroll Down, Smooth Reveal on Scroll Up
-      if (currentScrollY > 160 && scrollDelta > 8) {
-        // Fast scroll down -> hide navbar smoothly
+      if (currentScrollY > 300 && scrollDelta > 15) {
+        // Fast continuous scroll down -> hide navbar smoothly
         header.classList.add('navbar-hidden');
         header.classList.remove('navbar-visible');
         closeMobileNav();
-      } else if (scrollDelta < -4 || currentScrollY < 60) {
+      } else if (scrollDelta < -3 || currentScrollY < 100) {
         // Scrolling up or near top -> reveal navbar smoothly
         header.classList.remove('navbar-hidden');
         header.classList.add('navbar-visible');
