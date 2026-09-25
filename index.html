@@ -1307,18 +1307,19 @@
         <div id="subview-dashboard" class="student-subview flex flex-col gap-6 max-w-7xl mx-auto">
           
           <!-- Welcome Banner -->
+          <!-- Welcome Banner -->
           <div class="relative overflow-hidden rounded-3xl bg-surface-container p-6 lg:p-8 border border-white/5 shadow-xl">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
               <div class="flex flex-col gap-2 max-w-2xl">
                 <div class="flex items-center gap-2">
                   <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
-                    Active Semester • Week 6
+                    Active Semester • Live Cloud Sync
                   </span>
-                  <span class="text-[12px] text-slate-400">Computer Science &amp; Engineering</span>
+                  <span class="text-[12px] text-slate-400" id="dash-welcome-dept">Computer Science &amp; Engineering</span>
                 </div>
-                <h2 class="text-[26px] md:text-[32px] font-extrabold text-white">Welcome back, Alex!</h2>
-                <p class="text-[14px] text-slate-300">
-                  You've maintained your 12-day study streak. You have 1 prioritized weak topic ready for remediation and 3 pending quizzes.
+                <h2 class="text-[26px] md:text-[32px] font-extrabold text-white" id="dash-welcome-name">Welcome back, Alex!</h2>
+                <p class="text-[14px] text-slate-300" id="dash-welcome-subtitle">
+                  You've maintained your 14-day study streak. Your learning progress is synced with Supabase cloud in real-time.
                 </p>
               </div>
 
@@ -1331,7 +1332,7 @@
             </div>
           </div>
 
-          <!-- Top Analytics Cards (Prompt Specifications: Overall Progress 72%, Quiz Avg 78%, Courses 5, Study Streak 12 days) -->
+          <!-- Top Analytics Cards (Dynamic Real Supabase Metrics) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
@@ -1341,13 +1342,13 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-white font-mono">72%</span>
-                  <span class="block text-[11px] text-emerald-400">+4% this week</span>
+                  <span class="text-[28px] font-extrabold text-white font-mono" id="dash-stat-overall-progress">78%</span>
+                  <span class="block text-[11px] text-emerald-400" id="dash-stat-progress-trend">+6% from cloud sync</span>
                 </div>
                 <div class="w-12 h-12 flex items-center justify-center">
                   <svg class="w-12 h-12 transform -rotate-90">
                     <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" class="text-surface-container-highest" fill="none"/>
-                    <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" class="text-primary-indigo" fill="none" stroke-dasharray="113" stroke-dashoffset="31" stroke-linecap="round"/>
+                    <circle id="dash-progress-circle" cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" class="text-primary-indigo" fill="none" stroke-dasharray="113" stroke-dashoffset="25" stroke-linecap="round"/>
                   </svg>
                 </div>
               </div>
@@ -1360,8 +1361,8 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-secondary font-mono">78%</span>
-                  <span class="block text-[11px] text-slate-400">Across 14 Assessments</span>
+                  <span class="text-[28px] font-extrabold text-secondary font-mono" id="dash-stat-quiz-avg">86%</span>
+                  <span class="block text-[11px] text-slate-400" id="dash-stat-quiz-count">Across Assessments</span>
                 </div>
                 <span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[11px] font-bold">Good Standing</span>
               </div>
@@ -1374,8 +1375,8 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-white font-mono">5</span>
-                  <span class="block text-[11px] text-slate-400">48 Completed Lessons</span>
+                  <span class="text-[28px] font-extrabold text-white font-mono" id="dash-stat-enrolled-count">3</span>
+                  <span class="block text-[11px] text-slate-400" id="dash-stat-completed-lessons">12 Completed Lessons</span>
                 </div>
                 <button class="text-secondary text-[12px] font-semibold hover:underline" onclick="SmartLearnApp.showStudentTab('courses')">View All →</button>
               </div>
@@ -1388,8 +1389,8 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-emerald-400 font-mono">12 Days</span>
-                  <span class="block text-[11px] text-slate-400">18.5 Study Hours</span>
+                  <span class="text-[28px] font-extrabold text-emerald-400 font-mono" id="dash-stat-streak">14 Days</span>
+                  <span class="block text-[11px] text-slate-400" id="dash-stat-study-hours">Active Streak</span>
                 </div>
                 <span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[11px] font-bold">Consistent</span>
               </div>
@@ -1427,10 +1428,10 @@
 
           <!-- Quick Actions Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer" onclick="SmartLearnApp.showStudentTab('courses')">
+            <div id="dash-continue-learning-card" class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer" onclick="SmartLearnApp.continueLastLearning()">
               <span class="material-symbols-outlined text-[24px] text-secondary">play_lesson</span>
-              <h4 class="text-[15px] font-bold text-white mt-2">Continue DSA Course</h4>
-              <p class="text-[12px] text-slate-400 mt-1">Next: Floyd's Cycle-Finding Algorithm</p>
+              <h4 class="text-[15px] font-bold text-white mt-2" id="dash-continue-course-title">Continue DSA Course</h4>
+              <p class="text-[12px] text-slate-400 mt-1" id="dash-continue-lesson-title">Next: Floyd's Cycle-Finding Algorithm</p>
             </div>
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer" onclick="SmartLearnApp.showStudentTab('quizzes')">
               <span class="material-symbols-outlined text-[24px] text-purple-400">pending_actions</span>
