@@ -227,31 +227,41 @@ const SmartLearnAPI = (function () {
     return { success: true };
   }
 
-  // --- ENROLLMENT SERVICES (Supabase Persistent Cloud Storage) ---
+  // --- ENROLLMENT SERVICES (InsForge Cloud Database + Fallbacks) ---
   async function enrollInCourse(courseId, courseTitle = null) {
+    if (window.SmartLearnInsforge) {
+      try {
+        const store = getLocalStore();
+        const userId = store.currentUser?.id || "stu-101";
+        await window.SmartLearnInsforge.enrollInCourse(userId, courseId);
+      } catch (e) {
+        console.warn("[InsForge] enroll error:", e);
+      }
+    }
     if (window.SmartLearnSupabase) {
-      const res = await window.SmartLearnSupabase.enrollInCourse(courseId, courseTitle);
-      const store = getLocalStore();
-      const course = store.courses.find(c => c.id === courseId);
-      if (course) {
-        course.studentsEnrolled = (course.studentsEnrolled || 0) + 1;
-      }
-      if (store.currentUser) {
-        store.currentUser.enrolledCoursesCount = (store.currentUser.enrolledCoursesCount || 0) + 1;
-      }
-      saveLocalStore(store);
-      return res;
+      try {
+        await window.SmartLearnSupabase.enrollInCourse(courseId, courseTitle);
+      } catch (e) {}
     }
     const store = getLocalStore();
     const course = store.courses.find(c => c.id === courseId);
     if (course) {
       course.studentsEnrolled = (course.studentsEnrolled || 0) + 1;
     }
+    if (store.currentUser) {
+      store.currentUser.enrolledCoursesCount = (store.currentUser.enrolledCoursesCount || 0) + 1;
+    }
     saveLocalStore(store);
-    return { success: true, message: "Enrolled in course successfully." };
+    return { success: true, message: "Enrolled in course successfully in InsForge Cloud." };
   }
 
   async function isEnrolled(courseId, userId = null) {
+    if (window.SmartLearnInsforge) {
+      try {
+        const enrolled = await window.SmartLearnInsforge.isEnrolled(userId, courseId);
+        if (enrolled) return true;
+      } catch (e) {}
+    }
     if (window.SmartLearnSupabase) {
       return await window.SmartLearnSupabase.isEnrolled(courseId, userId);
     }
@@ -276,6 +286,16 @@ const SmartLearnAPI = (function () {
   }
 
   async function getCourses() {
+    if (window.SmartLearnInsforge) {
+      try {
+        const cloudCourses = await window.SmartLearnInsforge.getCourses();
+        if (cloudCourses && cloudCourses.length > 0) {
+          return cloudCourses;
+        }
+      } catch (e) {
+        console.warn("[InsForge] getCourses error:", e);
+      }
+    }
     if (window.SmartLearnSupabase) {
       try {
         const cloudCourses = await window.SmartLearnSupabase.getCourses();
@@ -480,6 +500,20 @@ const SmartLearnAPI = (function () {
 
     saveLocalStore(store);
 
+    // Save attempt in InsForge Cloud Database
+    if (window.SmartLearnInsforge) {
+      const actualScore = Math.round((score / 100) * totalQuestions);
+      window.SmartLearnInsforge.saveQuizAttempt(
+        userId,
+        quiz.id,
+        quiz.title,
+        actualScore,
+        totalQuestions,
+        score,
+        store.weakTopics.map(w => w.name)
+      ).catch(() => {});
+    }
+
     // Save attempt in Supabase
     if (window.SmartLearnSupabase) {
       window.SmartLearnSupabase.saveQuizAttempt(attempt).catch(() => {});
@@ -508,6 +542,12 @@ const SmartLearnAPI = (function () {
 
   // --- TEACHER SERVICES ---
   async function getTeacherStudents() {
+    if (window.SmartLearnInsforge) {
+      try {
+        const students = await window.SmartLearnInsforge.getTeacherStudents();
+        if (students && students.length > 0) return students;
+      } catch (e) {}
+    }
     if (window.SmartLearnSupabase) {
       try {
         const students = await window.SmartLearnSupabase.getTeacherStudents();
@@ -519,39 +559,59 @@ const SmartLearnAPI = (function () {
   }
 
   async function createTeacherCourse(coursePayload) {
-    if (window.SmartLearnSupabase) {
+    let newCourse = null;
+    if (window.SmartLearnInsforge) {
       try {
-        const newCourse = await window.SmartLearnSupabase.createTeacherCourse(coursePayload);
-        const store = getLocalStore();
-        store.courses.unshift(newCourse);
-        saveLocalStore(store);
-        return newCourse;
+        newCourse = await window.SmartLearnInsforge.createTeacherCourse(coursePayload);
+      } catch (e) {
+        console.warn("[InsForge] createTeacherCourse error:", e);
+      }
+    }
+    if (window.SmartLearnSupabase && !newCourse) {
+      try {
+        newCourse = await window.SmartLearnSupabase.createTeacherCourse(coursePayload);
       } catch (e) {}
     }
-
+    if (!newCourse) {
+      const store = getLocalStore();
+      newCourse = {
+        id: "course-" + Date.now(),
+        subjectId: coursePayload.subjectId || "subj-dsa",
+        title: coursePayload.title,
+        instructor: store.currentTeacher.name,
+        thumbnail: coursePayload.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+        progress: 0,
+        totalLessons: coursePayload.totalLessons || 12,
+        completedLessons: 0,
+        difficulty: coursePayload.difficulty || "Intermediate",
+        rating: 5.0,
+        studentsEnrolled: 0,
+        modules: [
+          {
+            title: "Module 1: Introduction",
+            lessons: ["Course Overview & Setup", "Core Syntax & Foundations"]
+          }
+        ]
+      };
+    }
     const store = getLocalStore();
-    const newCourse = {
-      id: "course-" + Date.now(),
-      subjectId: coursePayload.subjectId || "subj-dsa",
-      title: coursePayload.title,
-      instructor: store.currentTeacher.name,
-      thumbnail: coursePayload.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-      progress: 0,
-      totalLessons: coursePayload.totalLessons || 12,
-      completedLessons: 0,
-      difficulty: coursePayload.difficulty || "Intermediate",
-      rating: 5.0,
-      studentsEnrolled: 0,
-      modules: [
-        {
-          title: "Module 1: Introduction",
-          lessons: ["Course Overview & Setup", "Core Syntax & Foundations"]
-        }
-      ]
-    };
     store.courses.unshift(newCourse);
     saveLocalStore(store);
     return newCourse;
+  }
+
+  async function updateProfile(userId, profileData) {
+    if (window.SmartLearnInsforge) {
+      try {
+        await window.SmartLearnInsforge.updateProfile(userId, profileData);
+      } catch (e) {}
+    }
+    const store = getLocalStore();
+    if (store.currentUser) {
+      store.currentUser = { ...store.currentUser, ...profileData, name: profileData.fullName || profileData.name };
+      saveLocalStore(store);
+    }
+    return { success: true, profile: store.currentUser };
   }
 
   async function createTeacherQuiz(quizPayload) {
@@ -610,6 +670,7 @@ const SmartLearnAPI = (function () {
     getTeacherStudents,
     createTeacherCourse,
     createTeacherQuiz,
+    updateProfile,
     getNotifications,
     markAllNotificationsRead
   };
