@@ -68,8 +68,19 @@ const SmartLearnApp = (function () {
     setupGlobalEventListeners();
     setupTheme();
 
-    // 1. Restore active Supabase session
-    if (window.SmartLearnSupabase) {
+    // 1. Restore active InsForge Cloud session
+    if (window.SmartLearnInsforge) {
+      try {
+        const user = await window.SmartLearnInsforge.restoreSession();
+        if (user) {
+          state.currentUser = user;
+          state.currentRole = user.role;
+          updateUserUI(user);
+        }
+      } catch (err) {
+        console.warn("Could not restore InsForge session:", err);
+      }
+    } else if (window.SmartLearnSupabase) {
       try {
         const user = await window.SmartLearnSupabase.restoreSession();
         if (user) {
@@ -1717,7 +1728,9 @@ const SmartLearnApp = (function () {
       avatar_url: avatarUrl
     };
 
-    if (window.SmartLearnSupabase && window.SmartLearnSupabase.updateProfile) {
+    if (window.SmartLearnAPI && window.SmartLearnAPI.updateProfile) {
+      await window.SmartLearnAPI.updateProfile(state.currentUser?.id, updatedData);
+    } else if (window.SmartLearnSupabase && window.SmartLearnSupabase.updateProfile) {
       await window.SmartLearnSupabase.updateProfile(updatedData);
     }
 
