@@ -57,10 +57,12 @@
   </script>
 
   <link href="styles.css" rel="stylesheet" />
+  <link href="landing.css" rel="stylesheet" />
 </head>
 
 <body
   class="bg-surface font-sans text-on-surface antialiased overflow-x-hidden selection:bg-primary-indigo selection:text-white">
+
 
   <!-- ======================================================================
        0. UIVERSE-INSPIRED 3D GYRO PRELOADER
@@ -94,6 +96,7 @@
 
   <!-- ======================================================================
        1. PUBLIC LANDING PAGE (DEFAULT FOR PUBLIC & VISITORS)
+
        ====================================================================== -->
   <div id="public-landing-view" class="w-full min-h-screen flex flex-col bg-surface relative">
 
@@ -158,32 +161,31 @@
           <nav
             class="hidden lg:flex items-center relative p-1 rounded-xl bg-surface-container-lowest/70 border border-white/5 backdrop-blur-md nav-dock"
             id="dynamic-nav-dock">
-            <!-- Sliding Indicator Glider Pill -->
             <div id="nav-glider-pill" class="nav-glider-pill"></div>
 
             <a href="#why-smartlearn" class="dynamic-nav-item active" data-section="why-smartlearn">
               <span class="material-symbols-outlined nav-icon">help_outline</span>
-              <span>Why SmartLearn</span>
+              <span>Overview</span>
             </a>
-            <a href="#how-it-works" class="dynamic-nav-item" data-section="how-it-works">
-              <span class="material-symbols-outlined nav-icon">account_tree</span>
-              <span>How It Works</span>
+            <a href="#portals-directory" class="dynamic-nav-item" data-section="portals-directory">
+              <span class="material-symbols-outlined nav-icon">grid_view</span>
+              <span>Sections</span>
             </a>
-            <a href="#features" class="dynamic-nav-item" data-section="features">
-              <span class="material-symbols-outlined nav-icon">auto_awesome</span>
-              <span>Features</span>
+            <a href="student.html" class="dynamic-nav-item">
+              <span class="material-symbols-outlined nav-icon text-secondary">person</span>
+              <span>Student Portal</span>
             </a>
-            <a href="#experiences" class="dynamic-nav-item" data-section="experiences">
-              <span class="material-symbols-outlined nav-icon">view_in_ar</span>
-              <span>Experience</span>
+            <a href="teacher.html" class="dynamic-nav-item">
+              <span class="material-symbols-outlined nav-icon text-emerald-400">school</span>
+              <span>Teacher Hub</span>
             </a>
-            <a href="#impact" class="dynamic-nav-item" data-section="impact">
-              <span class="material-symbols-outlined nav-icon">trending_up</span>
-              <span>Impact</span>
+            <a href="courses.html" class="dynamic-nav-item">
+              <span class="material-symbols-outlined nav-icon">menu_book</span>
+              <span>Courses</span>
             </a>
-            <a href="#technology" class="dynamic-nav-item" data-section="technology">
-              <span class="material-symbols-outlined nav-icon">memory</span>
-              <span>Architecture</span>
+            <a href="quizzes.html" class="dynamic-nav-item">
+              <span class="material-symbols-outlined nav-icon">quiz</span>
+              <span>Quizzes</span>
             </a>
           </nav>
 
@@ -192,18 +194,18 @@
             <!-- Quick 1-Click Prototypes for SIH Jury (Pill Segment) -->
             <div
               class="hidden xl:flex items-center p-0.5 rounded-xl bg-surface-container-lowest/80 border border-white/5">
-              <button
+              <a href="student.html"
                 class="px-2.5 py-1 rounded-lg text-secondary hover:text-white hover:bg-surface-container-high text-[11px] font-semibold transition-all flex items-center gap-1.5"
-                onclick="SmartLearnApp.showMainView('student-dashboard')" title="Enter demo student portal">
+                title="Open Student Portal">
                 <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
                 <span>Student</span>
-              </button>
-              <button
+              </a>
+              <a href="teacher.html"
                 class="px-2.5 py-1 rounded-lg text-emerald-400 hover:text-white hover:bg-surface-container-high text-[11px] font-semibold transition-all flex items-center gap-1.5"
-                onclick="SmartLearnApp.showMainView('teacher-dashboard')" title="Enter demo teacher portal">
+                title="Open Teacher Portal">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 <span>Teacher</span>
-              </button>
+              </a>
             </div>
 
             <!-- Dynamic Auth Container -->
@@ -282,19 +284,27 @@
             <span>Technical Architecture</span>
           </a>
 
-          <div class="flex items-center gap-2 pt-3 mt-1 border-t border-white/10">
-            <button
-              class="flex-1 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-secondary text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all"
-              onclick="SmartLearn3D.closeMobileNav(); SmartLearnApp.showMainView('student-dashboard')">
+          <div class="grid grid-cols-2 gap-2 pt-3 mt-1 border-t border-white/10">
+            <a href="student.html"
+              class="py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-secondary text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all">
               <span class="material-symbols-outlined text-[15px]">person</span>
-              <span>Student View →</span>
-            </button>
-            <button
-              class="flex-1 py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-emerald-400 text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all"
-              onclick="SmartLearn3D.closeMobileNav(); SmartLearnApp.showMainView('teacher-dashboard')">
+              <span>Student Portal</span>
+            </a>
+            <a href="teacher.html"
+              class="py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-emerald-400 text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all">
               <span class="material-symbols-outlined text-[15px]">school</span>
-              <span>Teacher View →</span>
-            </button>
+              <span>Teacher Hub</span>
+            </a>
+            <a href="courses.html"
+              class="py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-slate-200 text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all">
+              <span class="material-symbols-outlined text-[15px]">menu_book</span>
+              <span>Courses</span>
+            </a>
+            <a href="quizzes.html"
+              class="py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-slate-200 text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-all">
+              <span class="material-symbols-outlined text-[15px]">quiz</span>
+              <span>Quizzes</span>
+            </a>
           </div>
         </div>
       </div>
@@ -338,15 +348,23 @@
         </p>
 
         <!-- Hero CTAs (Stagger 5) -->
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-4 reveal-on-scroll stagger-4">
-          <button class="uiverse-btn-3d text-[15px] !py-3.5 !px-8 flex items-center gap-2.5"
-            onclick="SmartLearn3D.openStudentOnboarding()">
-            <span>Start Learning Free</span>
-            <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
-          </button>
-          <a href="#how-it-works" class="uiverse-btn-secondary-3d text-[15px] !py-3.5 !px-7 flex items-center gap-2">
-            <span class="material-symbols-outlined text-[19px] text-secondary">play_circle</span>
-            <span>Explore Architecture</span>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3.5 reveal-on-scroll stagger-4">
+          <a href="student.html" class="uiverse-btn-3d text-[14px] !py-3.5 !px-7 flex items-center gap-2 shadow-lg shadow-indigo-900/40">
+            <span class="material-symbols-outlined text-[18px]">person</span>
+            <span>Enter Student Portal</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+          <a href="teacher.html" class="uiverse-btn-secondary-3d text-[14px] !py-3.5 !px-6 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-emerald-400">school</span>
+            <span>Faculty / Teacher Hub</span>
+          </a>
+          <a href="courses.html" class="px-5 py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-[17px] text-secondary">menu_book</span>
+            <span>Browse Courses</span>
+          </a>
+          <a href="quizzes.html" class="px-5 py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-[17px] text-rose-400">quiz</span>
+            <span>Quiz &amp; Drills</span>
           </a>
         </div>
 
@@ -840,7 +858,130 @@
     <!-- ====================================================================
          SECTION: STUDENT & TEACHER EXPERIENCES (SIDE-BY-SIDE 3D CARDS)
          ==================================================================== -->
-    <section id="experiences" class="py-24 bg-surface relative">
+    
+    <!-- ====================================================================
+         SECTION: DEDICATED SECTIONS & PORTALS DIRECTORY
+         Connects: Student Section, Teacher Section, Courses & Quizzes
+         ==================================================================== -->
+    <section id="portals-directory" class="py-20 bg-surface-container relative border-t border-b border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        <div class="text-center max-w-3xl mx-auto mb-14 reveal-on-scroll">
+          <span class="uiverse-badge-3d text-secondary border-secondary/30">
+            Multi-Section Architecture
+          </span>
+          <h2 class="text-[32px] sm:text-[42px] font-extrabold text-white tracking-tight mt-3">
+            Interconnected Platform Sections
+          </h2>
+          <p class="text-[15px] text-slate-300 mt-2">
+            Every section is organized with its own dedicated HTML layout and CSS styling, connecting seamlessly to each other with real-time data sync.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Section 1: Student Section -->
+          <div class="portal-card p-6 flex flex-col justify-between group" style="--card-accent: #6366f1;">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo shadow-md group-hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-[26px]">person</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-primary-indigo/15 text-primary-indigo text-[10px] font-mono font-bold border border-primary-indigo/30">student.html</span>
+              </div>
+              <h3 class="text-[20px] font-bold text-white group-hover:text-primary transition-colors mt-2">Student Portal</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                14 interactive tabs including Dashboard, My Courses, Weak-Topic Detection, AI Recommendations, Performance radar, and Study Streak.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">14 Subviews</span>
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">student.css</span>
+              </div>
+            </div>
+            <a href="student.html" class="mt-6 w-full py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white font-semibold text-[13px] flex items-center justify-center gap-2 shadow-lg shadow-indigo-900/30 transition-all">
+              <span>Open Student Section</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <!-- Section 2: Teacher Section -->
+          <div class="portal-card p-6 flex flex-col justify-between group" style="--card-accent: #10b981;">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-md group-hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-[26px]">school</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/30">teacher.html</span>
+              </div>
+              <h3 class="text-[20px] font-bold text-white group-hover:text-emerald-400 transition-colors mt-2">Teacher &amp; Faculty Hub</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                Full faculty supervision controls: Course Publisher, Quiz Builder, Student cohort monitoring, grading, and intervention dispatches.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">Curriculum Mgmt</span>
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">teacher.css</span>
+              </div>
+            </div>
+            <a href="teacher.html" class="mt-6 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-[13px] flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 transition-all">
+              <span>Open Teacher Section</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <!-- Section 3: Courses Explorer -->
+          <div class="portal-card p-6 flex flex-col justify-between group" style="--card-accent: #38bdf8;">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-secondary shadow-md group-hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-[26px]">menu_book</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[10px] font-mono font-bold border border-secondary/30">courses.html</span>
+              </div>
+              <h3 class="text-[20px] font-bold text-white group-hover:text-secondary transition-colors mt-2">Courses &amp; Lectures</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                Full engineering syllabus with video chapters, downloadable notes, PDF formula sheets, and 1-click enrollment.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">Video Masterclasses</span>
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">courses.css</span>
+              </div>
+            </div>
+            <a href="courses.html" class="mt-6 w-full py-2.5 rounded-xl bg-secondary/20 hover:bg-secondary text-secondary hover:text-surface-container-lowest font-semibold text-[13px] flex items-center justify-center gap-2 border border-secondary/40 transition-all">
+              <span>Explore Courses</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <!-- Section 4: Quizzes & Practice -->
+          <div class="portal-card p-6 flex flex-col justify-between group" style="--card-accent: #f43f5e;">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shadow-md group-hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-[26px]">quiz</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[10px] font-mono font-bold border border-rose-500/30">quizzes.html</span>
+              </div>
+              <h3 class="text-[20px] font-bold text-white group-hover:text-rose-400 transition-colors mt-2">Quiz &amp; Practice Lab</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                Timed subject exams with KaTeX LaTeX math formulas, live countdown timer, and adaptive drills in Pointers, Arrays, and Functions.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">KaTeX Proofs</span>
+                <span class="px-2 py-0.5 rounded bg-surface-container text-[11px] text-slate-400 border border-white/5">quizzes.css</span>
+              </div>
+            </div>
+            <a href="quizzes.html" class="mt-6 w-full py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white font-semibold text-[13px] flex items-center justify-center gap-2 border border-rose-500/40 transition-all">
+              <span>Launch Quiz Lab</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+<section id="experiences" class="py-24 bg-surface relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         <div class="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
@@ -908,7 +1049,7 @@
             </div>
 
             <button class="mt-8 w-full uiverse-btn-3d text-[14px] !py-3 flex items-center justify-center gap-2"
-              onclick="SmartLearnApp.showMainView('student-dashboard')" style="transform: translateZ(30px);">
+              onclick="window.location.href='student.html'" style="transform: translateZ(30px);">
               <span>Enter Student Workspace</span>
               <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
             </button>
@@ -965,7 +1106,7 @@
 
             <button
               class="mt-8 w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[14px] font-semibold transition-all shadow-md flex items-center justify-center gap-2"
-              onclick="SmartLearnApp.showMainView('teacher-dashboard')" style="transform: translateZ(30px);">
+              onclick="window.location.href='teacher.html'" style="transform: translateZ(30px);">
               <span>Enter Teacher Portal</span>
               <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
             </button>
@@ -1387,1365 +1528,7 @@
   </div>
 
 
-  <!-- ======================================================================
-       2. STUDENT DASHBOARD SHELL (#student-app-layout)
-       Contains all 14 required student destinations
-       ====================================================================== -->
-  <div id="student-app-layout" class="hidden min-h-screen flex bg-surface">
-
-    <!-- STUDENT SIDEBAR (14 Destinations) -->
-    <aside
-      class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between border-r border-white/5 shadow-2xl transition-transform duration-300"
-      id="student-sidebar">
-
-      <div class="flex flex-col flex-1 overflow-y-auto">
-
-        <!-- SmartLearn Brand -->
-        <div
-          class="h-16 px-5 flex items-center justify-between bg-surface-container-lowest/80 border-b border-white/5 flex-shrink-0">
-          <div class="flex items-center gap-2.5 cursor-pointer" onclick="SmartLearnApp.showStudentTab('dashboard')">
-            <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-md">
-              <span class="material-symbols-outlined text-[18px]">school</span>
-            </div>
-            <div>
-              <span class="font-bold text-[15px] text-white tracking-tight">SmartLearn</span>
-              <span class="block text-[10px] text-primary-indigo font-semibold">Student Portal</span>
-            </div>
-          </div>
-          <span
-            class="px-2 py-0.5 rounded bg-surface-container-high text-[10px] font-mono text-slate-400 border border-white/5">SIH
-            2026</span>
-        </div>
-
-        <!-- Section Label -->
-        <div
-          class="px-5 pt-3 pb-1 flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-          <span>Main Navigation</span>
-          <span class="text-emerald-400 font-mono text-[10px]">14 Tabs</span>
-        </div>
-
-        <!-- 14 Navigation Links -->
-        <nav class="flex flex-col gap-0.5 px-3 py-1 text-[13px]" id="student-sidebar-nav">
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="dashboard" onclick="SmartLearnApp.showStudentTab('dashboard')">
-            <span class="material-symbols-outlined text-[18px]">dashboard</span>
-            <span>Dashboard</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="courses" onclick="SmartLearnApp.showStudentTab('courses')">
-            <span class="material-symbols-outlined text-[18px]">menu_book</span>
-            <span>My Courses</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="subjects" onclick="SmartLearnApp.showStudentTab('subjects')">
-            <span class="material-symbols-outlined text-[18px]">category</span>
-            <span>Subjects</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="materials" onclick="SmartLearnApp.showStudentTab('materials')">
-            <span class="material-symbols-outlined text-[18px]">folder_open</span>
-            <span>Study Materials</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="videos" onclick="SmartLearnApp.showStudentTab('videos')">
-            <span class="material-symbols-outlined text-[18px]">smart_display</span>
-            <span>Videos</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="quizzes" onclick="SmartLearnApp.showStudentTab('quizzes')">
-            <span class="material-symbols-outlined text-[18px]">quiz</span>
-            <span>Quizzes</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="practice" onclick="SmartLearnApp.showStudentTab('practice')">
-            <span class="material-symbols-outlined text-[18px]">fitness_center</span>
-            <span>Practice</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="performance" onclick="SmartLearnApp.showStudentTab('performance')">
-            <span class="material-symbols-outlined text-[18px]">monitoring</span>
-            <span>Performance</span>
-          </button>
-          <!-- HIGHLIGHTED CORE SMART EDUCATION TABS -->
-          <button
-            class="student-nav-item flex items-center justify-between px-3 py-2 rounded-xl text-rose-300 hover:text-white hover:bg-rose-500/10 transition-all border border-rose-500/20 my-1"
-            data-tab="weak-topics" onclick="SmartLearnApp.showStudentTab('weak-topics')">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-rose-400">crisis_alert</span>
-              <span class="font-semibold text-rose-200">Weak Topics</span>
-            </div>
-            <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span>
-          </button>
-          <button
-            class="student-nav-item flex items-center justify-between px-3 py-2 rounded-xl text-secondary hover:text-white hover:bg-secondary/10 transition-all border border-secondary/20 my-0.5"
-            data-tab="recommendations" onclick="SmartLearnApp.showStudentTab('recommendations')">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-secondary">psychology</span>
-              <span class="font-semibold">Recommendations</span>
-            </div>
-            <span class="px-1.5 py-0.2 rounded bg-secondary/20 text-[10px] font-mono text-secondary">AI</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="progress" onclick="SmartLearnApp.showStudentTab('progress')">
-            <span class="material-symbols-outlined text-[18px]">trending_up</span>
-            <span>Progress</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="profile" onclick="SmartLearnApp.showStudentTab('profile')">
-            <span class="material-symbols-outlined text-[18px]">person</span>
-            <span>Profile</span>
-          </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="settings" onclick="SmartLearnApp.showStudentTab('settings')">
-            <span class="material-symbols-outlined text-[18px]">settings</span>
-            <span>Settings</span>
-          </button>
-        </nav>
-      </div>
-
-      <!-- Student Footer Panel -->
-      <div class="p-3 bg-surface-container-lowest/60 border-t border-white/5 flex flex-col gap-2">
-        <div class="flex items-center justify-between px-2 text-[12px]">
-          <span class="text-slate-400">Role: <strong class="text-white">Student</strong></span>
-          <button class="text-emerald-400 font-semibold hover:underline text-[11px]"
-            onclick="SmartLearnApp.showMainView('teacher-dashboard')">
-            Teacher Mode →
-          </button>
-        </div>
-        <button
-          class="w-full py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-slate-300 hover:text-white text-[12px] font-medium flex items-center justify-center gap-2 transition-colors border border-white/5"
-          onclick="SmartLearnApp.showMainView('landing')">
-          <span class="material-symbols-outlined text-[16px]">logout</span>
-          <span>Exit to Landing Page</span>
-        </button>
-      </div>
-
-    </aside>
-
-    <!-- STUDENT MAIN CONTENT AREA -->
-    <div class="pl-72 flex-1 flex flex-col min-h-screen">
-
-      <!-- Student Header Bar -->
-      <header
-        class="sticky top-0 z-40 h-16 bg-surface/85 backdrop-blur-xl border-b border-white/5 px-6 flex items-center justify-between">
-
-        <div class="flex items-center gap-4">
-          <!-- Active Breadcrumb -->
-          <div class="flex items-center gap-2 text-[13px] text-slate-400">
-            <span class="cursor-pointer hover:text-white"
-              onclick="SmartLearnApp.showStudentTab('dashboard')">SmartLearn</span>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span class="text-white font-medium" id="student-header-crumb">Dashboard Overview</span>
-          </div>
-
-          <!-- Global Search Container -->
-          <div class="relative w-64 lg:w-96" id="global-search-container">
-            <span
-              class="material-symbols-outlined absolute left-3 top-2.5 text-[18px] text-slate-400 pointer-events-none">search</span>
-            <input type="text"
-              class="w-full pl-9 pr-10 py-1.5 rounded-xl bg-surface-container-lowest border border-white/10 text-slate-200 text-[13px] focus:outline-none focus:ring-1 focus:ring-primary-indigo"
-              placeholder="Search courses, subjects, notes, quizzes..."
-              oninput="SmartLearnApp.handleGlobalSearch(this.value)">
-            <!-- Autocomplete Results Dropdown -->
-            <div id="global-search-results-dropdown"
-              class="hidden absolute left-0 right-0 mt-2 rounded-xl bg-surface-container-low border border-white/10 shadow-2xl p-2 z-50 max-h-72 overflow-y-auto">
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <!-- AI Study Assistant Copilot -->
-          <button
-            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-medium transition-all shadow-sm"
-            id="btn-student-copilot"
-            onclick="document.getElementById('copilot-drawer').classList.toggle('translate-x-full')">
-            <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
-            <span>Study Assistant</span>
-          </button>
-
-          <!-- Study Streak Indicator -->
-          <div
-            class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-[12px] font-medium text-emerald-400 border border-white/5 cursor-pointer"
-            onclick="SmartLearnApp.showStudentTab('progress')">
-            <span>🔥</span>
-            <span id="student-header-streak">12-day streak</span>
-          </div>
-
-          <!-- Notifications Bell -->
-          <div class="relative">
-            <button
-              class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-colors relative"
-              onclick="document.getElementById('notifications-menu').classList.toggle('hidden')">
-              <span class="material-symbols-outlined text-[20px]">notifications</span>
-              <span
-                class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface animate-pulse"></span>
-            </button>
-            <!-- Dropdown -->
-            <div id="notifications-menu"
-              class="hidden absolute right-0 mt-2 w-80 rounded-2xl bg-surface-container-low border border-white/10 shadow-2xl p-4 z-50 flex flex-col gap-2">
-              <div class="flex items-center justify-between pb-2 border-b border-white/5">
-                <span class="text-[13px] font-bold text-white">Notifications</span>
-                <button class="text-[11px] text-primary-indigo hover:underline"
-                  onclick="SmartLearnAPI.markAllNotificationsRead(); SmartLearnApp.renderNotifications();">Mark
-                  read</button>
-              </div>
-              <div class="flex flex-col gap-2 max-h-72 overflow-y-auto" id="notifications-list"></div>
-            </div>
-          </div>
-
-          <!-- Theme Toggle -->
-          <button class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-colors"
-            onclick="SmartLearnApp.toggleTheme()" title="Toggle Dark/Light Mode">
-            <span class="material-symbols-outlined text-[19px]">dark_mode</span>
-          </button>
-
-          <!-- Student Profile Avatar & Sign Out -->
-          <div class="flex items-center gap-2 pl-2">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="SmartLearnApp.showStudentTab('profile')">
-              <div class="flex flex-col text-right hidden sm:flex">
-                <span id="student-header-name" class="text-[13px] font-semibold text-white leading-tight">Avinash Verma</span>
-                <span id="student-header-role" class="text-[10px] text-slate-400">Student • Computer Science</span>
-              </div>
-              <img id="student-header-avatar"
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80"
-                class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-indigo/40" alt="Student Avatar">
-            </div>
-            <button
-              class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-1"
-              onclick="SmartLearnApp.signOut()" title="Sign Out">
-              <span class="material-symbols-outlined text-[18px]">logout</span>
-            </button>
-          </div>
-        </div>
-
-      </header>
-
-      <!-- STUDENT SUBVIEWS ROUTER -->
-      <main class="p-6 lg:p-8 flex-1">
-
-        <!-- SUBVIEW 1: DASHBOARD OVERVIEW -->
-        <div id="subview-dashboard" class="student-subview flex flex-col gap-6 max-w-7xl mx-auto">
-
-          <!-- Welcome Banner -->
-          <div
-            class="relative overflow-hidden rounded-3xl bg-surface-container p-6 lg:p-8 border border-white/5 shadow-xl">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-              <div class="flex flex-col gap-2 max-w-2xl">
-                <div class="flex items-center gap-2">
-                  <span id="dashboard-semester-badge"
-                    class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
-                    Active Semester 5 • Week 6
-                  </span>
-                  <span id="dashboard-student-dept" class="text-[12px] text-slate-400">Computer Science &amp; Engineering • Roll: 24CSE089</span>
-                </div>
-                <h2 id="dashboard-student-greeting" class="text-[26px] md:text-[32px] font-extrabold text-white">Welcome back, Avinash!</h2>
-                <p id="dashboard-student-subtitle" class="text-[14px] text-slate-300">
-                  You've maintained your 12-day study streak. You have 1 prioritized weak topic ready for remediation
-                  and 3 pending quizzes.
-                </p>
-              </div>
-
-              <div class="flex items-center gap-3">
-                <button
-                  class="px-5 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold shadow-md transition-all flex items-center gap-2"
-                  onclick="SmartLearnApp.showStudentTab('weak-topics')">
-                  <span class="material-symbols-outlined text-[18px]">crisis_alert</span>
-                  <span>Fix Weak Topics</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Analytics Cards (Prompt Specifications: Overall Progress 72%, Quiz Avg 78%, Courses 5, Study Streak 12 days) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div class="flex items-center justify-between text-slate-400">
-                <span class="text-[12px] font-semibold uppercase tracking-wider">Overall Progress</span>
-                <span class="material-symbols-outlined text-primary text-[20px]">donut_large</span>
-              </div>
-              <div class="flex items-end justify-between mt-3">
-                <div>
-                  <span id="dashboard-overall-progress" class="text-[28px] font-extrabold text-white font-mono">72%</span>
-                  <span class="block text-[11px] text-emerald-400">+4% this week</span>
-                </div>
-                <div class="w-12 h-12 flex items-center justify-center">
-                  <svg class="w-12 h-12 transform -rotate-90">
-                    <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4"
-                      class="text-surface-container-highest" fill="none" />
-                    <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" class="text-primary-indigo"
-                      fill="none" stroke-dasharray="113" stroke-dashoffset="31" stroke-linecap="round" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div class="flex items-center justify-between text-slate-400">
-                <span class="text-[12px] font-semibold uppercase tracking-wider">Quiz Average</span>
-                <span class="material-symbols-outlined text-secondary text-[20px]">grade</span>
-              </div>
-              <div class="flex items-end justify-between mt-3">
-                <div>
-                  <span id="dashboard-quiz-average" class="text-[28px] font-extrabold text-secondary font-mono">78%</span>
-                  <span class="block text-[11px] text-slate-400">Across 14 Assessments</span>
-                </div>
-                <span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[11px] font-bold">Good
-                  Standing</span>
-              </div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div class="flex items-center justify-between text-slate-400">
-                <span class="text-[12px] font-semibold uppercase tracking-wider">Enrolled Courses</span>
-                <span class="material-symbols-outlined text-amber-400 text-[20px]">school</span>
-              </div>
-              <div class="flex items-end justify-between mt-3">
-                <div>
-                  <span id="dashboard-enrolled-courses" class="text-[28px] font-extrabold text-white font-mono">5</span>
-                  <span class="block text-[11px] text-slate-400">48 Completed Lessons</span>
-                </div>
-                <button class="text-secondary text-[12px] font-semibold hover:underline"
-                  onclick="SmartLearnApp.showStudentTab('courses')">View All →</button>
-              </div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div class="flex items-center justify-between text-slate-400">
-                <span class="text-[12px] font-semibold uppercase tracking-wider">Study Streak</span>
-                <span class="material-symbols-outlined text-emerald-400 text-[20px]">local_fire_department</span>
-              </div>
-              <div class="flex items-end justify-between mt-3">
-                <div>
-                  <span id="dashboard-study-streak" class="text-[28px] font-extrabold text-emerald-400 font-mono">12 Days</span>
-                  <span class="block text-[11px] text-slate-400">18.5 Study Hours</span>
-                </div>
-                <span
-                  class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[11px] font-bold">Consistent</span>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Priority Weak Topic Remediation Banner -->
-          <div
-            class="p-6 rounded-2xl bg-surface-container border border-rose-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="flex items-start gap-4">
-              <div
-                class="w-12 h-12 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center flex-shrink-0">
-                <span class="material-symbols-outlined text-[26px]">crisis_alert</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <span
-                    class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 text-[10px] font-bold uppercase">Automated
-                    Weak-Topic Alert</span>
-                  <span class="text-[12px] text-slate-400">C Programming &amp; DSA</span>
-                </div>
-                <h3 class="text-[18px] font-bold text-white mt-1">Pointers &amp; Memory Allocation (Score: 48%)</h3>
-                <p class="text-[13px] text-slate-300 mt-1">
-                  Your last assessment identified high error rates on pointer dereferencing and dynamic malloc cleanup.
-                  We've synthesized a targeted 15-minute remediation drill for you.
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2 flex-shrink-0">
-              <button
-                class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold transition-all"
-                onclick="SmartLearnApp.previewMaterial('mat-2')">
-                Review Notes
-              </button>
-              <button
-                class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[13px] font-semibold transition-all"
-                onclick="SmartLearnApp.startPracticeSession('Pointers')">
-                Start Drill →
-              </button>
-            </div>
-          </div>
-
-          <!-- Quick Actions Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div
-              class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer"
-              onclick="SmartLearnApp.showStudentTab('courses')">
-              <span class="material-symbols-outlined text-[24px] text-secondary">play_lesson</span>
-              <h4 class="text-[15px] font-bold text-white mt-2">Continue DSA Course</h4>
-              <p class="text-[12px] text-slate-400 mt-1">Next: Floyd's Cycle-Finding Algorithm</p>
-            </div>
-            <div
-              class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer"
-              onclick="SmartLearnApp.showStudentTab('quizzes')">
-              <span class="material-symbols-outlined text-[24px] text-purple-400">pending_actions</span>
-              <h4 class="text-[15px] font-bold text-white mt-2">Take Pending Quiz</h4>
-              <p class="text-[12px] text-slate-400 mt-1">Relational Normalization &amp; 3NF (10 mins)</p>
-            </div>
-            <div
-              class="p-5 rounded-2xl bg-surface-container border border-white/5 hover:border-white/20 transition-all cursor-pointer"
-              onclick="SmartLearnApp.showStudentTab('recommendations')">
-              <span class="material-symbols-outlined text-[24px] text-emerald-400">auto_fix_high</span>
-              <h4 class="text-[15px] font-bold text-white mt-2">AI Recommended Path</h4>
-              <p class="text-[12px] text-slate-400 mt-1">4 personalized resources based on your exams</p>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- SUBVIEW 2: MY COURSES -->
-        <div id="subview-courses" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">My Enrolled Courses</h2>
-              <p class="text-[13px] text-slate-400">Track syllabus progress and continue video lessons &amp; labs.</p>
-            </div>
-          </div>
-          <!-- Courses Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid"></div>
-        </div>
-
-        <!-- SUBVIEW 3: SUBJECTS -->
-        <div id="subview-subjects" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Subjects Catalog</h2>
-              <p class="text-[13px] text-slate-400">C, C++, Data Structures, Java, DBMS, and Web Development.</p>
-            </div>
-          </div>
-          <!-- Subjects Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid"></div>
-        </div>
-
-        <!-- SUBVIEW 4: STUDY MATERIALS -->
-        <div id="subview-materials" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Study Materials &amp; Notes</h2>
-              <p class="text-[13px] text-slate-400">Download verified lecture notes, formula cheatsheets, and question
-                banks.</p>
-            </div>
-            <!-- Filter Tabs -->
-            <div class="flex items-center gap-2">
-              <button class="px-3 py-1.5 rounded-xl bg-primary-indigo text-white text-[12px] font-medium"
-                onclick="SmartLearnApp.resetMaterialFilters()">All Types</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container text-slate-300 hover:text-white text-[12px] font-medium"
-                onclick="SmartLearnApp.filterMaterialsBySubject('subj-dsa')">DSA</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container text-slate-300 hover:text-white text-[12px] font-medium"
-                onclick="SmartLearnApp.filterMaterialsBySubject('subj-c')">C / C++</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container text-slate-300 hover:text-white text-[12px] font-medium"
-                onclick="SmartLearnApp.filterMaterialsBySubject('subj-dbms')">DBMS</button>
-            </div>
-          </div>
-          <!-- Materials Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materials-grid"></div>
-        </div>
-
-        <!-- SUBVIEW 5: VIDEO LEARNING -->
-        <div id="subview-videos" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Video Learning Library</h2>
-              <p class="text-[13px] text-slate-400">Timestamped lectures with synchronized transcripts and concept
-                reviews.</p>
-            </div>
-          </div>
-          <!-- Videos Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videos-grid"></div>
-        </div>
-
-        <!-- SUBVIEW 6: QUIZZES -->
-        <div id="subview-quizzes" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Interactive Quizzes</h2>
-              <p class="text-[13px] text-slate-400">Assess your concept retention. Weak topics are automatically
-                diagnosed upon submission.</p>
-            </div>
-          </div>
-          <!-- Quizzes List -->
-          <div class="flex flex-col gap-4" id="quizzes-list-container"></div>
-        </div>
-
-        <!-- SUBVIEW 7: PRACTICE DRILLS -->
-        <div id="subview-practice" class="student-subview hidden flex flex-col gap-6 max-w-5xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white" id="practice-active-topic-title">Adaptive Practice Drills
-              </h2>
-              <p class="text-[13px] text-slate-400">Step-by-step problem solving with instant feedback and deep
-                explanations.</p>
-            </div>
-            <!-- Topic Selector -->
-            <div class="flex items-center gap-2">
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[12px] font-medium text-slate-200"
-                onclick="SmartLearnApp.startPracticeSession('Pointers')">Pointers</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[12px] font-medium text-slate-200"
-                onclick="SmartLearnApp.startPracticeSession('Arrays')">Arrays</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[12px] font-medium text-slate-200"
-                onclick="SmartLearnApp.startPracticeSession('Functions')">Functions</button>
-              <button
-                class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[12px] font-medium text-slate-200"
-                onclick="SmartLearnApp.startPracticeSession('Loops')">Loops</button>
-            </div>
-          </div>
-          <!-- Interactive Practice Runner Container -->
-          <div id="practice-questions-target"></div>
-        </div>
-
-        <!-- SUBVIEW 8: PERFORMANCE & MASTERY CURVES -->
-        <div id="subview-performance" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Performance Analysis &amp; Radar</h2>
-              <p class="text-[13px] text-slate-400">Topic-wise score decomposition and benchmark cohort comparisons.</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Topic Accuracy Bars -->
-            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
-              <h3 class="text-[16px] font-bold text-white">Topic Mastery Breakdown</h3>
-              <div class="space-y-4">
-                <div>
-                  <div class="flex justify-between text-[13px] mb-1">
-                    <span class="text-white font-medium">Loops &amp; Iteration</span>
-                    <span class="font-mono text-emerald-400 font-bold">92%</span>
-                  </div>
-                  <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-                    <div class="h-full bg-emerald-500 rounded-full" style="width: 92%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[13px] mb-1">
-                    <span class="text-white font-medium">Arrays &amp; Searching</span>
-                    <span class="font-mono text-emerald-400 font-bold">85%</span>
-                  </div>
-                  <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-                    <div class="h-full bg-emerald-500 rounded-full" style="width: 85%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[13px] mb-1">
-                    <span class="text-white font-medium">Recursive Functions</span>
-                    <span class="font-mono text-amber-400 font-bold">61% (Moderate Attention)</span>
-                  </div>
-                  <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-                    <div class="h-full bg-amber-500 rounded-full" style="width: 61%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[13px] mb-1">
-                    <span class="text-white font-medium">Pointers &amp; Memory Allocation</span>
-                    <span class="font-mono text-rose-400 font-bold">48% (Weak Topic)</span>
-                  </div>
-                  <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-                    <div class="h-full bg-rose-500 rounded-full" style="width: 48%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Cohort Comparison -->
-            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <h3 id="student-cohort-heading" class="text-[16px] font-bold text-white mb-2">Avinash's Score vs Cohort Average</h3>
-              <div class="flex items-center justify-around py-6">
-                <div class="text-center">
-                  <span class="text-[32px] font-extrabold text-primary-indigo font-mono">78%</span>
-                  <span class="block text-[12px] text-slate-400 mt-1">Your Quiz Average</span>
-                </div>
-                <div class="h-16 w-px bg-white/10"></div>
-                <div class="text-center">
-                  <span class="text-[32px] font-extrabold text-slate-300 font-mono">69%</span>
-                  <span class="block text-[12px] text-slate-400 mt-1">Cohort Benchmark</span>
-                </div>
-              </div>
-              <p class="text-[12px] text-slate-400 border-t border-white/5 pt-3">
-                You are currently in the <strong>top 22%</strong> of your cohort. Closing the Pointers concept gap will
-                elevate you to the top 10%.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBVIEW 9: WEAK TOPICS SYSTEM (CORE SMART EDUCATION FEATURE) -->
-        <div id="subview-weak-topics" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-[24px] font-bold text-white">Weak Topics Detection &amp; Remediation</h2>
-                <span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-[11px] font-bold">Priority
-                  Remediation</span>
-              </div>
-              <p class="text-[13px] text-slate-400">
-                Topics scoring below 70% are automatically diagnosed with specific error patterns and one-click
-                remediation pathways.
-              </p>
-            </div>
-          </div>
-          <!-- Weak Topics Container -->
-          <div class="flex flex-col gap-4" id="weak-topics-container"></div>
-        </div>
-
-        <!-- SUBVIEW 10: PERSONALIZED RECOMMENDATIONS (CORE FEATURE) -->
-        <div id="subview-recommendations" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div>
-            <div class="flex items-center gap-2">
-              <h2 class="text-[24px] font-bold text-white">Personalized Recommendations Engine</h2>
-              <span class="px-2.5 py-0.5 rounded-full bg-secondary/20 text-secondary text-[11px] font-bold">Transparent
-                AI</span>
-            </div>
-            <p class="text-[13px] text-slate-400">
-              Each recommendation transparently explains <em>why</em> it is recommended based on your recent quiz and
-              practice scores.
-            </p>
-          </div>
-          <!-- Recommendations Cards Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recommendations-container"></div>
-        </div>
-
-        <!-- SUBVIEW 11: PROGRESS TRACKING -->
-        <div id="subview-progress" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div>
-            <h2 class="text-[24px] font-bold text-white">Learning Progress &amp; Study Habit Analytics</h2>
-            <p class="text-[13px] text-slate-400">Review weekly focus hours, retention rates, and semester goals.</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[12px] text-slate-400 uppercase font-semibold">Weekly Study Time</span>
-              <span class="text-[26px] font-extrabold text-white block mt-1 font-mono">18.5 hrs</span>
-              <span class="text-[11px] text-emerald-400">+2.5 hrs vs last week</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[12px] text-slate-400 uppercase font-semibold">Learning Streak</span>
-              <span class="text-[26px] font-extrabold text-emerald-400 block mt-1 font-mono"
-                id="progress-streak-count">12 Days</span>
-              <span class="text-[11px] text-slate-400">Next milestone: 14 days</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[12px] text-slate-400 uppercase font-semibold">Degree Requirement Progress</span>
-              <span class="text-[26px] font-extrabold text-primary block mt-1 font-mono">Stage 3 of 4</span>
-              <span class="text-[11px] text-slate-400">Capstone Scheduled for Spring</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBVIEW 12: PROFILE (Real-Life Student Academic Portal) -->
-        <div id="subview-profile" class="student-subview hidden flex flex-col gap-6 max-w-5xl mx-auto">
-          <!-- Profile Header & Quick Actions -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
-                  Verified Academic Session 2024–2025
-                </span>
-                <span class="text-[12px] text-slate-400">SIH 2026 Active Scholar</span>
-              </div>
-              <h2 class="text-[26px] font-extrabold text-white mt-1">Student Academic Profile</h2>
-              <p class="text-[13px] text-slate-400">Official institutional record, biometric attendance, semester performance, and credentials.</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <button
-                class="px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
-                onclick="SmartLearnApp.downloadAcademicTranscript()">
-                <span class="material-symbols-outlined text-[17px]">download</span>
-                <span>Download Transcript</span>
-              </button>
-              <button
-                class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-md"
-                onclick="SmartLearnApp.openEditProfileModal()">
-                <span class="material-symbols-outlined text-[17px]">edit</span>
-                <span>Edit Profile</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Real-Life Digital College Student ID Card -->
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-lowest p-6 sm:p-8 border border-white/10 shadow-2xl">
-            <!-- Background Security Watermark & Holographic Shimmer -->
-            <div class="absolute -right-12 -bottom-12 w-72 h-72 rounded-full bg-primary-indigo/10 blur-3xl pointer-events-none"></div>
-            <div class="absolute top-0 right-0 p-6 opacity-10 font-black text-6xl tracking-widest select-none pointer-events-none text-white">
-              SMARTLEARN
-            </div>
-
-            <!-- Card Top Header -->
-            <div class="flex items-center justify-between pb-6 border-b border-white/10 relative z-10">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
-                  <span class="material-symbols-outlined text-[24px]">school</span>
-                </div>
-                <div>
-                  <h4 class="text-[14px] font-bold text-white tracking-wide uppercase" id="profile-student-college">Institute of Engineering &amp; Technology</h4>
-                  <span class="text-[11px] text-slate-400">Affiliated to National Technical University • Smart Education Hub</span>
-                </div>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Active Student ID
-                </span>
-              </div>
-            </div>
-
-            <!-- Card Body: Student Photo + Identity Details -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 relative z-10">
-              <!-- Avatar Column with Quick Edit -->
-              <div class="md:col-span-4 flex flex-col items-center text-center border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:pr-6">
-                <div class="relative group">
-                  <img id="profile-student-avatar"
-                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80"
-                    class="w-32 h-32 rounded-2xl object-cover ring-4 ring-primary-indigo/40 shadow-xl" alt="Student Photo">
-                  <button
-                    class="absolute inset-0 bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[11px] font-semibold gap-1"
-                    onclick="SmartLearnApp.openEditProfileModal()">
-                    <span class="material-symbols-outlined text-[20px]">photo_camera</span>
-                    <span>Change</span>
-                  </button>
-                </div>
-                <h3 id="profile-student-name" class="text-[20px] font-extrabold text-white mt-3 leading-tight">Avinash Verma</h3>
-                <span id="profile-student-email" class="text-[12px] text-slate-400 font-mono mt-0.5">avinash.verma@smartlearn.edu</span>
-
-                <div class="mt-4 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
-                  <span class="text-slate-400">Roll Number:</span>
-                  <span id="profile-student-roll" class="font-mono font-bold text-white">24CSE089</span>
-                </div>
-                <div class="mt-2 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
-                  <span class="text-slate-400">Univ Reg No:</span>
-                  <span class="font-mono font-bold text-primary-indigo">AKTU-2022-0914</span>
-                </div>
-              </div>
-
-              <!-- Academic Details Grid -->
-              <div class="md:col-span-8 flex flex-col justify-between space-y-4">
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Department</span>
-                    <span id="profile-student-dept" class="text-[12px] font-bold text-white block mt-0.5">Computer Science &amp; Engg</span>
-                  </div>
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Semester / Class</span>
-                    <span id="profile-student-semester" class="text-[12px] font-bold text-white block mt-0.5">Semester 5 (3rd Year)</span>
-                  </div>
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Academic CGPA</span>
-                    <span class="text-[12px] font-mono font-extrabold text-emerald-400 block mt-0.5">8.84 / 10.0 (A+)</span>
-                  </div>
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Attendance</span>
-                    <span class="text-[12px] font-mono font-bold text-emerald-400 block mt-0.5">92.4% (Eligible)</span>
-                  </div>
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Faculty Mentor</span>
-                    <span class="text-[12px] font-bold text-slate-200 block mt-0.5">Prof. Sarah Jenkins</span>
-                  </div>
-                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Hackathon Role</span>
-                    <span class="text-[12px] font-bold text-secondary block mt-0.5">SIH Lead Developer</span>
-                  </div>
-                </div>
-
-                <!-- Bio / Personal Statement -->
-                <div class="p-3.5 rounded-xl bg-surface-container-highest/30 border border-white/5">
-                  <span class="text-[10px] uppercase font-semibold text-slate-400 block mb-1">Learning Statement &amp; Career Objective</span>
-                  <p id="profile-student-bio" class="text-[12px] text-slate-300 leading-relaxed">
-                    Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms. Currently targeting 95%+ concept mastery and SIH 2026 Grand Finale.
-                  </p>
-                </div>
-
-                <!-- Digital ID Security Barcode Strip -->
-                <div class="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-slate-400">
-                  <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[16px] text-emerald-400">verified</span>
-                    <span>NCTE &amp; AICTE Digitally Verified Credential</span>
-                  </div>
-                  <div class="font-mono tracking-widest text-[9px] text-slate-500 uppercase">
-                    |||||||| | ||||| |||||| | ||||||||||
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Academic Performance Overview & Enrolled Subjects -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Real Attendance & Exam Eligibility Card -->
-            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between text-slate-400 mb-2">
-                  <span class="text-[12px] font-semibold uppercase tracking-wider">Attendance Biometrics</span>
-                  <span class="material-symbols-outlined text-emerald-400 text-[18px]">fingerprint</span>
-                </div>
-                <div class="flex items-baseline gap-2">
-                  <span class="text-[32px] font-extrabold text-white font-mono">92.4%</span>
-                  <span class="text-[12px] text-emerald-400 font-semibold">Exam Eligible</span>
-                </div>
-                <p class="text-[12px] text-slate-400 mt-1">112 of 121 lecture sessions attended across 5 registered theory and practical labs.</p>
-              </div>
-              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
-                <div class="bg-emerald-500 h-full rounded-full" style="width: 92.4%"></div>
-              </div>
-            </div>
-
-            <!-- Overall Course Mastery -->
-            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between text-slate-400 mb-2">
-                  <span class="text-[12px] font-semibold uppercase tracking-wider">Curriculum Mastery</span>
-                  <span class="material-symbols-outlined text-primary text-[18px]">military_tech</span>
-                </div>
-                <div class="flex items-baseline gap-2">
-                  <span id="profile-student-mastery" class="text-[32px] font-extrabold text-primary-indigo font-mono">72%</span>
-                  <span class="text-[12px] text-slate-300 font-semibold">Good Standing</span>
-                </div>
-                <p class="text-[12px] text-slate-400 mt-1">1 weak topic flagged for remediation (Pointers in C - 48%). All other modules above 75%.</p>
-              </div>
-              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
-                <div class="bg-primary-indigo h-full rounded-full" style="width: 72%"></div>
-              </div>
-            </div>
-
-            <!-- Active Learning Streak -->
-            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between text-slate-400 mb-2">
-                  <span class="text-[12px] font-semibold uppercase tracking-wider">Active Study Streak</span>
-                  <span class="material-symbols-outlined text-amber-400 text-[18px]">local_fire_department</span>
-                </div>
-                <div class="flex items-baseline gap-2">
-                  <span id="profile-student-streak" class="text-[32px] font-extrabold text-amber-400 font-mono">12 Days</span>
-                  <span class="text-[12px] text-amber-300/80 font-semibold">Consistent</span>
-                </div>
-                <p class="text-[12px] text-slate-400 mt-1">18.5 study hours logged this week. Target: 14 days for Silver Streak Badge.</p>
-              </div>
-              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
-                <div class="bg-amber-400 h-full rounded-full" style="width: 85%"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Enrolled Semester Courses & Official Grades Table -->
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-[16px] font-bold text-white">Current Semester Registered Subjects (B.Tech CSE - Sem 5)</h3>
-                <p class="text-[12px] text-slate-400">Continuous internal evaluation, attendance, and faculty feedback.</p>
-              </div>
-              <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] font-mono text-slate-300">22 Credits Registered</span>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-[13px]">
-                <thead>
-                  <tr class="border-b border-white/10 text-slate-400 text-[11px] uppercase">
-                    <th class="py-2.5 px-4">Subject Code &amp; Title</th>
-                    <th class="py-2.5 px-4">Faculty Instructor</th>
-                    <th class="py-2.5 px-4">Attendance</th>
-                    <th class="py-2.5 px-4">Assessment Grade</th>
-                    <th class="py-2.5 px-4 text-right">Status</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-white/5">
-                  <tr>
-                    <td class="py-3 px-4 text-white font-medium">CS301 • Data Structures &amp; Algorithmic Patterns</td>
-                    <td class="py-3 px-4 text-slate-300">Prof. Sarah Jenkins</td>
-                    <td class="py-3 px-4 font-mono text-emerald-400">95%</td>
-                    <td class="py-3 px-4 font-mono font-bold text-primary-indigo">86% (Grade A)</td>
-                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white font-medium">CS302 • C Systems Programming &amp; Memory Architecture</td>
-                    <td class="py-3 px-4 text-slate-300">Prof. Rajesh Mehta</td>
-                    <td class="py-3 px-4 font-mono text-emerald-400">91%</td>
-                    <td class="py-3 px-4 font-mono font-bold text-rose-400">48% (Weak: Pointers)</td>
-                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px] font-bold">Drill Assigned</span></td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white font-medium">CS303 • Database Management Systems &amp; SQL</td>
-                    <td class="py-3 px-4 text-slate-300">Dr. Anita Rao</td>
-                    <td class="py-3 px-4 font-mono text-emerald-400">94%</td>
-                    <td class="py-3 px-4 font-mono font-bold text-emerald-400">92% (Grade A+)</td>
-                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">Excelling</span></td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white font-medium">CS304 • Modern Web Architecture &amp; Interactive 3D</td>
-                    <td class="py-3 px-4 text-slate-300">Prof. Vikram Singh</td>
-                    <td class="py-3 px-4 font-mono text-emerald-400">96%</td>
-                    <td class="py-3 px-4 font-mono font-bold text-emerald-400">94% (Grade A+)</td>
-                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">Excelling</span></td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white font-medium">CS305 • Computer Networks &amp; Socket Programming</td>
-                    <td class="py-3 px-4 text-slate-300">Prof. Sunita Das</td>
-                    <td class="py-3 px-4 font-mono text-emerald-400">89%</td>
-                    <td class="py-3 px-4 font-mono font-bold text-primary-indigo">84% (Grade A)</td>
-                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">On Track</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBVIEW 13: SETTINGS -->
-        <div id="subview-settings" class="student-subview hidden flex flex-col gap-6 max-w-3xl mx-auto">
-          <h2 class="text-[24px] font-bold text-white">Platform Settings</h2>
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 space-y-4">
-            <div class="flex items-center justify-between pb-4 border-b border-white/5">
-              <div>
-                <span class="text-[14px] font-semibold text-white block">Theme Appearance</span>
-                <span class="text-[12px] text-slate-400">Toggle between Obsidian Dark Mode and Clean Light Mode</span>
-              </div>
-              <button class="px-4 py-2 rounded-xl bg-surface-container-high text-white text-[12px] font-medium"
-                onclick="SmartLearnApp.toggleTheme()">
-                Toggle Mode
-              </button>
-            </div>
-            <div class="flex items-center justify-between pb-4 border-b border-white/5">
-              <div>
-                <span class="text-[14px] font-semibold text-white block">Personalized Recommendation Alerts</span>
-                <span class="text-[12px] text-slate-400">Receive instant notifications when quiz scores drop below
-                  70%</span>
-              </div>
-              <input type="checkbox" checked class="w-5 h-5 accent-primary-indigo cursor-pointer">
-            </div>
-            <div class="flex items-center justify-between">
-              <div>
-                <span class="text-[14px] font-semibold text-white block">Reset Local Demo Storage</span>
-                <span class="text-[12px] text-slate-400">Restore default curriculum data and reset quizzes</span>
-              </div>
-              <button
-                class="px-4 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-200 text-[12px] font-semibold border border-rose-500/30"
-                onclick="localStorage.removeItem('smartlearn_state_v1'); location.reload();">
-                Reset Demo
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </main>
-
-    </div>
-
-  </div>
-
-
-  <!-- ======================================================================
-       3. TEACHER DASHBOARD SHELL (#teacher-app-layout)
-       Contains Course Management, Quiz Builder & Student Monitoring
-       ====================================================================== -->
-  <div id="teacher-app-layout" class="hidden min-h-screen flex bg-surface">
-
-    <!-- Teacher Sidebar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between border-r border-white/5 shadow-2xl">
-      <div class="flex flex-col flex-1 overflow-y-auto">
-
-        <div class="h-16 px-5 flex items-center justify-between bg-surface-container-lowest/80 border-b border-white/5">
-          <div class="flex items-center gap-2.5 cursor-pointer"
-            onclick="SmartLearnApp.showTeacherTab('teacher-dashboard')">
-            <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-md">
-              <span class="material-symbols-outlined text-[18px]">psychology_alt</span>
-            </div>
-            <div>
-              <span class="font-bold text-[15px] text-white">SmartLearn</span>
-              <span class="block text-[10px] text-emerald-400 font-semibold">Teacher Portal</span>
-            </div>
-          </div>
-          <span
-            class="px-2 py-0.5 rounded bg-surface-container-high text-[10px] font-mono text-slate-400">Faculty</span>
-        </div>
-
-        <div class="px-5 pt-3 pb-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-          Instructor Controls
-        </div>
-
-        <nav class="flex flex-col gap-0.5 px-3 py-1 text-[13px]">
-          <button
-            class="teacher-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="teacher-dashboard" onclick="SmartLearnApp.showTeacherTab('teacher-dashboard')">
-            <span class="material-symbols-outlined text-[18px]">dashboard</span>
-            <span>Faculty Overview</span>
-          </button>
-          <button
-            class="teacher-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="teacher-courses" onclick="SmartLearnApp.showTeacherTab('teacher-courses')">
-            <span class="material-symbols-outlined text-[18px]">folder_managed</span>
-            <span>Course Management</span>
-          </button>
-          <button
-            class="teacher-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="teacher-quizzes" onclick="SmartLearnApp.showTeacherTab('teacher-quizzes')">
-            <span class="material-symbols-outlined text-[18px]">ballot</span>
-            <span>Quiz Management</span>
-          </button>
-          <button
-            class="teacher-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="teacher-students" onclick="SmartLearnApp.showTeacherTab('teacher-students')">
-            <span class="material-symbols-outlined text-[18px]">groups</span>
-            <span>Student Performance</span>
-          </button>
-        </nav>
-
-      </div>
-
-      <div class="p-3 bg-surface-container-lowest/60 border-t border-white/5 flex flex-col gap-2">
-        <button class="w-full py-2 rounded-xl bg-primary-indigo text-white text-[12px] font-semibold"
-          onclick="SmartLearnApp.showMainView('student-dashboard')">
-          ← Switch to Student View
-        </button>
-        <button class="w-full py-2 rounded-xl bg-surface-container-high text-slate-300 text-[12px] font-medium"
-          onclick="SmartLearnApp.showMainView('landing')">
-          Exit to Landing Page
-        </button>
-      </div>
-    </aside>
-
-    <!-- Teacher Main Content -->
-    <div class="pl-72 flex-1 flex flex-col min-h-screen">
-
-      <!-- Teacher Header -->
-      <header
-        class="sticky top-0 z-40 h-16 bg-surface/85 backdrop-blur-xl border-b border-white/5 px-6 flex items-center justify-between">
-        <div class="flex items-center gap-2 text-[13px] text-slate-400">
-          <span>Faculty Portal</span>
-          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          <span class="text-white font-medium">Department of Computer Science &amp; Engineering</span>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2 pl-2">
-            <div class="flex flex-col text-right">
-              <span id="teacher-header-name" class="text-[13px] font-semibold text-white leading-tight">Prof. Sarah
-                Jenkins</span>
-              <span id="teacher-header-role" class="text-[10px] text-emerald-400">Lead Faculty • CSE</span>
-            </div>
-            <img id="teacher-header-avatar"
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-              class="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/40" alt="Faculty Avatar">
-            <button
-              class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-1"
-              onclick="SmartLearnApp.signOut()" title="Sign Out">
-              <span class="material-symbols-outlined text-[18px]">logout</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main class="p-6 lg:p-8 flex-1">
-
-        <!-- TEACHER SUBVIEW 1: OVERVIEW -->
-        <div id="teacher-subview-teacher-dashboard" class="teacher-subview flex flex-col gap-6 max-w-7xl mx-auto">
-
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[26px] font-extrabold text-white">Faculty Instructional Overview</h2>
-              <p class="text-[13px] text-slate-400">Supervise active student cohorts, monitor weak spots, and manage
-                courses.</p>
-            </div>
-          </div>
-
-          <!-- Teacher Metrics (Total Students 248, Active Courses 6, Quizzes 18, Avg Performance 74.6%, Students Needing Support 14) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[11px] text-slate-400 font-semibold uppercase">Total Students</span>
-              <span class="text-[26px] font-extrabold text-white block mt-1 font-mono">248</span>
-              <span class="text-[10px] text-emerald-400">Active this semester</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[11px] text-slate-400 font-semibold uppercase">Active Courses</span>
-              <span class="text-[26px] font-extrabold text-primary-indigo block mt-1 font-mono">6</span>
-              <span class="text-[10px] text-slate-400">Curricula published</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[11px] text-slate-400 font-semibold uppercase">Total Quizzes</span>
-              <span class="text-[26px] font-extrabold text-secondary block mt-1 font-mono">18</span>
-              <span class="text-[10px] text-slate-400">Online assessments</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[11px] text-slate-400 font-semibold uppercase">Average Performance</span>
-              <span class="text-[26px] font-extrabold text-white block mt-1 font-mono">74.6%</span>
-              <span class="text-[10px] text-emerald-400">+3.1% benchmark</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-surface-container border border-rose-500/20">
-              <span class="text-[11px] text-rose-400 font-semibold uppercase">Needing Support</span>
-              <span class="text-[26px] font-extrabold text-rose-400 block mt-1 font-mono">14</span>
-              <span class="text-[10px] text-rose-300">Scoring &lt; 60%</span>
-            </div>
-          </div>
-
-          <!-- Students Needing Support Quick Alert Roster -->
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[16px] font-bold text-white">Students Requiring Concept Intervention</h3>
-              <button class="text-emerald-400 text-[12px] font-semibold hover:underline"
-                onclick="SmartLearnApp.showTeacherTab('teacher-students')">View Complete Roster →</button>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-[13px]">
-                <thead>
-                  <tr class="border-b border-white/10 text-slate-400 text-[11px] uppercase">
-                    <th class="py-2.5 px-4">Student</th>
-                    <th class="py-2.5 px-4">Course</th>
-                    <th class="py-2.5 px-4">Identified Weak Topics</th>
-                    <th class="py-2.5 px-4">Score</th>
-                    <th class="py-2.5 px-4 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b border-white/5">
-                    <td class="py-3 px-4 text-white font-medium">Avinash Verma</td>
-                    <td class="py-3 px-4 text-slate-300">C Systems &amp; DSA</td>
-                    <td class="py-3 px-4 text-rose-400">Pointers (48%)</td>
-                    <td class="py-3 px-4 font-mono font-bold text-amber-400">78% Avg</td>
-                    <td class="py-3 px-4 text-right">
-                      <button class="px-2.5 py-1 rounded bg-primary-indigo text-white text-[11px] font-semibold"
-                        onclick="SmartLearnApp.sendRecommendationToStudent('stu-101')">Dispatch Drill</button>
-                    </td>
-                  </tr>
-                  <tr class="border-b border-white/5">
-                    <td class="py-3 px-4 text-white font-medium">Marcus Vance</td>
-                    <td class="py-3 px-4 text-slate-300">Database Management</td>
-                    <td class="py-3 px-4 text-rose-400">Normalization (42%)</td>
-                    <td class="py-3 px-4 font-mono font-bold text-rose-400">54% Avg</td>
-                    <td class="py-3 px-4 text-right">
-                      <button class="px-2.5 py-1 rounded bg-primary-indigo text-white text-[11px] font-semibold"
-                        onclick="SmartLearnApp.sendRecommendationToStudent('stu-103')">Dispatch Drill</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- TEACHER SUBVIEW 2: COURSES -->
-        <div id="teacher-subview-teacher-courses" class="teacher-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Course Management</h2>
-              <p class="text-[13px] text-slate-400">Create, edit, and organize curriculum modules and study notes.</p>
-            </div>
-            <button
-              class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[13px] font-semibold flex items-center gap-1.5 shadow-sm"
-              onclick="SmartLearnApp.openCreateCourseModal()">
-              <span class="material-symbols-outlined text-[16px]">add</span>
-              <span>Create Course</span>
-            </button>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left">
-                <thead>
-                  <tr class="border-b border-white/10 text-[11px] font-semibold uppercase text-slate-400">
-                    <th class="py-3 px-4">Course Title</th>
-                    <th class="py-3 px-4">Students</th>
-                    <th class="py-3 px-4">Avg Completion</th>
-                    <th class="py-3 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="teacher-courses-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- TEACHER SUBVIEW 3: QUIZZES -->
-        <div id="teacher-subview-teacher-quizzes" class="teacher-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-[24px] font-bold text-white">Quiz Management &amp; Builder</h2>
-              <p class="text-[13px] text-slate-400">Author multiple-choice questions, timers, and passing standards.</p>
-            </div>
-            <button
-              class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[13px] font-semibold flex items-center gap-1.5 shadow-sm"
-              onclick="SmartLearnApp.notify('Quiz Builder', 'Quiz Builder modal ready for submission.', 'info')">
-              <span class="material-symbols-outlined text-[16px]">add</span>
-              <span>Author New Quiz</span>
-            </button>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
-            <h3 class="text-[16px] font-bold text-white">Active Online Quizzes</h3>
-            <div class="space-y-3">
-              <div
-                class="p-4 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-between">
-                <div>
-                  <span class="text-[14px] font-bold text-white block">Core Data Structures &amp; Patterns Quiz</span>
-                  <span class="text-[12px] text-slate-400">5 Questions • 10 mins • 70% passing threshold</span>
-                </div>
-                <span
-                  class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold">Published</span>
-              </div>
-              <div
-                class="p-4 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-between">
-                <div>
-                  <span class="text-[14px] font-bold text-white block">Pointers &amp; Memory Allocation
-                    Assessment</span>
-                  <span class="text-[12px] text-slate-400">5 Questions • 12 mins • 70% passing threshold</span>
-                </div>
-                <span
-                  class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold">Published</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TEACHER SUBVIEW 4: STUDENTS -->
-        <div id="teacher-subview-teacher-students" class="teacher-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div>
-            <h2 class="text-[24px] font-bold text-white">Student Performance Roster</h2>
-            <p class="text-[13px] text-slate-400">Monitor individual learning trajectories and weak-point diagnoses.</p>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-surface-container border border-white/5">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left">
-                <thead>
-                  <tr class="border-b border-white/10 text-[11px] font-semibold uppercase text-slate-400">
-                    <th class="py-3 px-4">Student</th>
-                    <th class="py-3 px-4">Course</th>
-                    <th class="py-3 px-4">Progress</th>
-                    <th class="py-3 px-4">Quiz Avg</th>
-                    <th class="py-3 px-4">Identified Weak Topics</th>
-                    <th class="py-3 px-4">Status</th>
-                    <th class="py-3 px-4 text-right">Intervention</th>
-                  </tr>
-                </thead>
-                <tbody id="teacher-students-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-      </main>
-
-    </div>
-
-  </div>
-
-
-  <!-- ======================================================================
-       4. AUTHENTICATION & INTERACTIVE MODALS
-       ====================================================================== -->
-
-  <!-- ======================================================================
-       EDIT STUDENT PROFILE MODAL (#modal-edit-profile)
-       Real-life profile management for authenticated students
-       ====================================================================== -->
-  <div id="modal-edit-profile" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md"
-      onclick="SmartLearnApp.closeModal('modal-edit-profile')"></div>
-    <div class="relative w-full max-w-lg rounded-3xl glass-modal p-7 shadow-2xl z-10 flex flex-col gap-5 border border-white/15 max-h-[90vh] overflow-y-auto">
-
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
-            <span class="material-symbols-outlined text-[20px]">badge</span>
-          </div>
-          <div>
-            <h3 class="text-[18px] font-bold text-white leading-tight">Edit Academic Profile</h3>
-            <span class="text-[11px] text-slate-400">Update your verified student identity details</span>
-          </div>
-        </div>
-        <button class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-surface-container"
-          onclick="SmartLearnApp.closeModal('modal-edit-profile')">
-          <span class="material-symbols-outlined text-[20px]">close</span>
-        </button>
-      </div>
-
-      <!-- Edit Form -->
-      <form onsubmit="SmartLearnApp.handleProfileUpdateSubmit(event)" class="flex flex-col gap-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Full Name</label>
-            <input type="text" id="edit-student-name" required class="uiverse-input" placeholder="e.g. Avinash Verma">
-          </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">University Roll Number</label>
-            <input type="text" id="edit-student-roll" required class="uiverse-input" placeholder="e.g. 24CSE089">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Department / Branch</label>
-            <input type="text" id="edit-student-dept" required class="uiverse-input" placeholder="e.g. Computer Science & Engineering">
-          </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Current Semester &amp; Year</label>
-            <input type="text" id="edit-student-semester" required class="uiverse-input" placeholder="e.g. Semester 5 (3rd Year B.Tech)">
-          </div>
-        </div>
-
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">College / Institute Name</label>
-          <input type="text" id="edit-student-college" required class="uiverse-input" placeholder="e.g. Institute of Engineering & Technology">
-        </div>
-
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Learning Bio &amp; Career Objective</label>
-          <textarea id="edit-student-bio" rows="2" class="uiverse-input !h-auto py-2" placeholder="Tell mentors about your learning objectives, SIH goals, or target companies..."></textarea>
-        </div>
-
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Avatar Photo Preset / URL</label>
-          <input type="url" id="edit-student-avatar-url" class="uiverse-input" placeholder="Enter image URL or pick below">
-          <div class="flex items-center gap-2 mt-2">
-            <span class="text-[11px] text-slate-400">Quick Avatars:</span>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
-          <button type="button" class="px-4 py-2 rounded-xl text-slate-300 hover:text-white text-[13px]"
-            onclick="SmartLearnApp.closeModal('modal-edit-profile')">Cancel</button>
-          <button type="submit" class="uiverse-btn-3d !py-2 !px-5 text-[13px] flex items-center gap-2">
-            <span>Save Profile</span>
-            <span class="material-symbols-outlined text-[16px]">check</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ======================================================================
-       STUDENT ONBOARDING / LEARNING SETUP MODAL (#modal-student-onboarding)
-       Prompt Requirement 19: "Start Learning" should NOT be a dead button!
-       ====================================================================== -->
+  <!-- AUTHENTICATION & CORE MODALS -->
   <div id="modal-student-onboarding" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md"
       onclick="document.getElementById('modal-student-onboarding').classList.add('hidden')"></div>
@@ -2854,7 +1637,6 @@
   </div>
 
   <!-- LOGIN MODAL -->
-  <!-- LOGIN MODAL (SUPABASE AUTH) -->
   <div id="modal-auth-login" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-auth-login')">
     </div>
@@ -2936,7 +1718,6 @@
     </div>
   </div>
 
-  <!-- REGISTER MODAL (SUPABASE AUTH & PROFILES) -->
   <div id="modal-auth-register" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-auth-register')">
     </div>
@@ -2996,7 +1777,6 @@
     </div>
   </div>
 
-  <!-- FORGOT PASSWORD MODAL -->
   <div id="modal-auth-forgot" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-auth-forgot')">
     </div>
@@ -3015,179 +1795,6 @@
     </div>
   </div>
 
-  <!-- INTERACTIVE QUIZ RUNNER MODAL -->
-  <div id="modal-quiz-runner" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
-    <div
-      class="relative w-full max-w-2xl rounded-3xl bg-surface-container-lowest border border-white/10 p-6 shadow-2xl z-10 flex flex-col gap-4">
-
-      <!-- Quiz Header -->
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div>
-          <span class="text-[11px] font-semibold text-secondary uppercase tracking-wider"
-            id="quiz-runner-topic-badge">Topic</span>
-          <h3 class="text-[17px] font-bold text-white" id="quiz-runner-title">Interactive Quiz</h3>
-        </div>
-        <div class="flex items-center gap-3">
-          <div
-            class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-surface-container font-mono text-[13px] text-emerald-400 font-bold border border-white/5">
-            <span class="material-symbols-outlined text-[16px]">timer</span>
-            <span id="quiz-runner-timer">10:00</span>
-          </div>
-          <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-quiz-runner')">
-            <span class="material-symbols-outlined text-[18px]">close</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Question Counter & Progress Bar -->
-      <div class="flex flex-col gap-1.5">
-        <div class="flex justify-between text-[11px] text-slate-400 font-mono">
-          <span id="quiz-runner-question-count">Question 1 of 5</span>
-          <span>Timed Concept Assessment</span>
-        </div>
-        <div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
-          <div id="quiz-runner-progress-fill"
-            class="h-full bg-gradient-to-r from-primary-indigo to-secondary rounded-full" style="width: 20%"></div>
-        </div>
-      </div>
-
-      <!-- Question Statement -->
-      <div class="py-2">
-        <p class="text-[15px] font-semibold text-white leading-relaxed" id="quiz-runner-question-text">Loading
-          question...</p>
-      </div>
-
-      <!-- Multiple-Choice Options Target -->
-      <div class="flex flex-col gap-2.5" id="quiz-runner-options-container"></div>
-
-      <!-- Runner Controls -->
-      <div class="flex items-center justify-between pt-3 border-t border-white/10">
-        <button id="quiz-runner-prev-btn"
-          class="px-4 py-2 rounded-xl bg-surface-container text-slate-300 hover:text-white text-[13px] font-medium disabled:opacity-30"
-          onclick="SmartLearnApp.prevQuizQuestion()">
-          ← Previous
-        </button>
-        <div class="flex items-center gap-2">
-          <button id="quiz-runner-next-btn"
-            class="px-5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-white text-[13px] font-medium"
-            onclick="SmartLearnApp.nextQuizQuestion()">
-            Next Question →
-          </button>
-          <button id="quiz-runner-submit-btn"
-            class="hidden px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[13px] font-semibold"
-            onclick="SmartLearnApp.submitActiveQuiz()">
-            Submit Assessment ✓
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- QUIZ RESULTS & PERFORMANCE ANALYSIS MODAL -->
-  <div id="modal-quiz-result" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-quiz-result')">
-    </div>
-    <div
-      class="relative w-full max-w-xl rounded-3xl bg-surface-container-lowest border border-white/10 p-7 shadow-2xl z-10 flex flex-col gap-5">
-
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <h3 class="text-[18px] font-bold text-white">Quiz Result &amp; Performance Analysis</h3>
-        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-quiz-result')">
-          <span class="material-symbols-outlined text-[18px]">close</span>
-        </button>
-      </div>
-
-      <div class="flex items-center justify-between p-5 rounded-2xl bg-surface-container border border-white/5">
-        <div>
-          <span class="text-[12px] text-slate-400" id="quiz-result-title">Quiz Title</span>
-          <div class="flex items-baseline gap-2 mt-1">
-            <span class="text-[32px] font-extrabold text-white font-mono" id="quiz-result-score">4/5</span>
-            <span class="text-[18px] font-bold text-emerald-400 font-mono" id="quiz-result-pct">(80%)</span>
-          </div>
-        </div>
-        <span id="quiz-result-status-badge" class="px-3 py-1 rounded-full text-[12px] font-bold">Assessment
-          Passed</span>
-      </div>
-
-      <div>
-        <h4 class="text-[13px] font-bold text-slate-300 uppercase tracking-wider mb-2">Automated Topic Analysis</h4>
-        <div class="flex flex-col gap-2" id="quiz-result-topic-breakdown"></div>
-      </div>
-
-      <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
-        <button class="px-4 py-2 rounded-xl bg-surface-container text-slate-300 text-[13px]"
-          onclick="SmartLearnApp.closeModal('modal-quiz-result')">
-          Close
-        </button>
-        <button class="px-5 py-2 rounded-xl bg-primary-indigo text-white text-[13px] font-semibold"
-          onclick="SmartLearnApp.closeModal('modal-quiz-result'); SmartLearnApp.showStudentTab('weak-topics');">
-          View Weak Topics Action Plan →
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- STUDY MATERIAL READER MODAL -->
-  <div id="modal-material-reader" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-material-reader')">
-    </div>
-    <div
-      class="relative w-full max-w-4xl h-[85vh] rounded-3xl bg-surface-container-lowest border border-white/10 shadow-2xl z-10 flex flex-col overflow-hidden">
-      <div
-        class="h-16 px-6 bg-surface-container border-b border-white/10 flex items-center justify-between flex-shrink-0">
-        <div>
-          <span class="px-2 py-0.5 rounded bg-primary-indigo/20 text-primary text-[10px] font-bold"
-            id="reader-material-badge">Notes</span>
-          <h3 class="text-[16px] font-bold text-white truncate max-w-md" id="reader-material-title">Lecture Notes</h3>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-[11px] text-slate-400 hidden sm:inline" id="reader-material-author">Author</span>
-          <button class="text-slate-400 hover:text-white ml-2"
-            onclick="SmartLearnApp.closeModal('modal-material-reader')">
-            <span class="material-symbols-outlined text-[20px]">close</span>
-          </button>
-        </div>
-      </div>
-      <div class="flex-1 overflow-y-auto p-6 text-slate-200 text-[14px] leading-relaxed" id="reader-material-content">
-      </div>
-    </div>
-  </div>
-
-  <!-- VIDEO PLAYER MODAL -->
-  <div id="modal-video-player" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-video-player')">
-    </div>
-    <div
-      class="relative w-full max-w-4xl rounded-3xl bg-surface-container-lowest border border-white/10 shadow-2xl z-10 flex flex-col overflow-hidden">
-      <div
-        class="h-14 px-6 bg-surface-container border-b border-white/10 flex items-center justify-between flex-shrink-0">
-        <div>
-          <h3 class="text-[15px] font-bold text-white" id="video-modal-title">Lecture Title</h3>
-          <span class="text-[11px] text-slate-400" id="video-modal-instructor">Instructor</span>
-        </div>
-        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-video-player')">
-          <span class="material-symbols-outlined text-[20px]">close</span>
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3">
-        <div class="lg:col-span-2 bg-black flex items-center justify-center">
-          <video id="video-modal-html5-player" class="w-full aspect-video" controls playsinline>
-            <source id="video-modal-player-source" src="" type="video/mp4">
-          </video>
-        </div>
-        <div class="p-4 bg-surface-container-low flex flex-col gap-2 max-h-80 lg:max-h-full overflow-y-auto">
-          <span class="text-[11px] font-bold uppercase text-slate-400 tracking-wider">Chapters</span>
-          <div class="flex flex-col gap-1.5" id="video-modal-chapters"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COURSE DETAIL MODAL -->
   <div id="modal-course-detail" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-course-detail')">
     </div>
@@ -3223,80 +1830,8 @@
     </div>
   </div>
 
-  <!-- CREATE COURSE MODAL (FOR TEACHERS / FACULTY) -->
-  <div id="modal-create-course" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-create-course')">
-    </div>
-    <div
-      class="relative w-full max-w-lg rounded-3xl bg-surface-container-lowest border border-white/10 p-7 shadow-2xl z-10 flex flex-col gap-4">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-sm">
-            <span class="material-symbols-outlined text-[18px]">school</span>
-          </div>
-          <div>
-            <h3 class="text-[18px] font-bold text-white">Create New Curriculum Course</h3>
-            <span class="text-[10px] text-emerald-400 font-mono">Publishes to Supabase Cloud Database</span>
-          </div>
-        </div>
-        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-create-course')">
-          <span class="material-symbols-outlined text-[18px]">close</span>
-        </button>
-      </div>
 
-      <form onsubmit="SmartLearnApp.handleCreateCourseSubmit(event)" class="flex flex-col gap-3.5">
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Course Title</label>
-          <input type="text" id="create-course-title" required class="uiverse-input"
-            placeholder="e.g. Advanced Distributed Systems & Cloud Architecture">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Subject Category</label>
-            <select id="create-course-subject" class="uiverse-input">
-              <option value="subj-dsa">Data Structures &amp; Algorithms</option>
-              <option value="subj-c">C Systems Programming</option>
-              <option value="subj-dbms">Database Systems</option>
-              <option value="subj-os">Operating Systems</option>
-              <option value="subj-springboot">Spring Boot &amp; Java</option>
-              <option value="subj-web">Modern Web Dev</option>
-            </select>
-          </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Difficulty Level</label>
-            <select id="create-course-difficulty" class="uiverse-input">
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate" selected>Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Total Lessons</label>
-            <input type="number" id="create-course-lessons" class="uiverse-input" value="16" min="1" max="100">
-          </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Cover Thumbnail URL</label>
-            <input type="url" id="create-course-thumbnail" class="uiverse-input"
-              value="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80">
-          </div>
-        </div>
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Module 1 Syllabus / Topic</label>
-          <input type="text" id="create-course-module1" class="uiverse-input"
-            value="Foundations, Architecture & Core Theory">
-        </div>
-        <button id="create-course-btn" type="submit"
-          class="mt-2 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-[14px] flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 transition-all">
-          <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
-          <span>Publish Course to Supabase Cloud</span>
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- AI STUDY ASSISTANT COPILOT DRAWER (PRESERVED & ENHANCED) -->
+  <!-- AI STUDY ASSISTANT COPILOT DRAWER -->
   <aside
     class="fixed right-0 top-0 h-full w-80 sm:w-96 bg-surface-container-lowest border-l border-white/10 shadow-2xl z-50 flex flex-col transition-transform duration-300 translate-x-full"
     id="copilot-drawer">
@@ -3371,6 +1906,7 @@
     </div>
   </aside>
 
+  <!-- FLOATING AI CHATBOT BUTTON -->
   <!-- FLOATING AI CHATBOT BUTTON (VISIBLE ACROSS ENTIRE PLATFORM) -->
   <button id="floating-ai-chatbot-btn"
     class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[13px] shadow-[0_0_24px_rgba(99,102,241,0.45)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
@@ -3386,7 +1922,6 @@
   <!-- SCRIPT INTEGRATION (IN ORDER) -->
   <script src="course_lectures_data.js"></script>
   <script src="smartlearn_data.js"></script>
-  <!-- Supabase Cloud Auth & Database Engine -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase_client.js"></script>
   <script src="api_service.js"></script>
@@ -3395,5 +1930,4 @@
   <script src="smartlearn.js"></script>
   <script src="smartlearn_3d.js"></script>
 </body>
-
 </html>
