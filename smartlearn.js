@@ -1939,10 +1939,43 @@ const SmartLearnApp = (function () {
     openAIChatbot(promptText);
   };
 
+  function setCourseSubjectFilter(category, btnElement) {
+    if (btnElement) {
+      document.querySelectorAll(".course-filter-chip").forEach(el => el.classList.remove("active"));
+      btnElement.classList.add("active");
+    }
+    const container = document.getElementById("courses-grid");
+    if (!container) return;
+    const cards = container.children;
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      if (category === "all") {
+        card.style.display = "";
+      } else {
+        const text = (card.textContent || "").toLowerCase();
+        card.style.display = text.includes(category.toLowerCase()) ? "" : "none";
+      }
+    }
+  }
+
+  function filterCoursesByKeyword(keyword) {
+    const container = document.getElementById("courses-grid");
+    if (!container) return;
+    const q = (keyword || "").toLowerCase();
+    const cards = container.children;
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const text = (card.textContent || "").toLowerCase();
+      card.style.display = text.includes(q) ? "" : "none";
+    }
+  }
+
   return {
     init,
     showMainView,
     showStudentTab,
+    setCourseSubjectFilter,
+    filterCoursesByKeyword,
     showTeacherTab,
     openAIChatbot,
     previewMaterial,
