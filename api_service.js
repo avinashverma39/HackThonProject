@@ -32,7 +32,15 @@ const SmartLearnAPI = (function () {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        if (parsed.currentUser && (parsed.currentUser.name === "Alex Rivera" || parsed.currentUser.full_name === "Alex Rivera")) {
+          parsed.currentUser.name = "Avinash Verma";
+          parsed.currentUser.full_name = "Avinash Verma";
+          parsed.currentUser.email = "avinash.verma@smartlearn.edu";
+          parsed.currentUser.rollNo = "24CSE089";
+          saveLocalStore(parsed);
+        }
+        return parsed;
       }
     } catch (e) {
       console.warn("Could not read localStorage, using default SmartLearnData", e);
@@ -96,7 +104,20 @@ const SmartLearnAPI = (function () {
     if (role === "teacher" || email.includes("jenkins") || email.includes("prof")) {
       store.currentUser = { ...store.currentTeacher, role: "teacher" };
     } else {
-      store.currentUser = { ...store.currentUser, email: email, role: "student" };
+      let displayName = store.currentUser?.name || "Avinash Verma";
+      if (email.toLowerCase().includes("avinash")) {
+        displayName = "Avinash Verma";
+      } else if (email.includes("@")) {
+        const prefix = email.split("@")[0].replace(/[._-]/g, ' ');
+        displayName = prefix.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+      store.currentUser = {
+        ...store.currentUser,
+        full_name: displayName,
+        name: displayName,
+        email: email,
+        role: "student"
+      };
     }
     saveLocalStore(store);
     return {

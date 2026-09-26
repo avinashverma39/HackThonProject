@@ -1,0 +1,130 @@
+/* ==========================================================================
+   SmartLearn — Student Portal Stylesheet (student.css)
+   Dedicated styling for the Student Learning Portal:
+   Sidebar navigation, 14 subviews, adaptive analytics, performance radar,
+   practice runner, video player, and study streak widgets.
+   ========================================================================== */
+
+/* Subview Transitions */
+.student-subview {
+  animation: subviewFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes subviewFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Student Sidebar Item Styling */
+.student-nav-item {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.student-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 20px;
+  background: var(--primary-indigo, #6366f1);
+  border-radius: 0 4px 4px 0;
+  transition: transform 0.2s ease;
+}
+
+.student-nav-item.active-nav::before,
+.student-nav-item.bg-primary-indigo::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+.student-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* Student Hero & Greeting Card */
+.student-welcome-banner {
+  background: linear-gradient(135deg, rgba(30, 35, 48, 0.9) 0%, rgba(21, 25, 36, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.student-welcome-banner::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Practice Drill Topic Selector */
+.practice-topic-btn {
+  transition: all 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.practice-topic-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.15);
+  color: #ffffff;
+}
+
+/* Mastery & Progress Cards */
+.mastery-card {
+  background: rgba(21, 25, 36, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  transition: all 0.25s ease;
+}
+
+.mastery-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Weak Topic Alert Card */
+.weak-topic-pill {
+  border-left: 3px solid #f43f5e;
+  background: rgba(244, 63, 94, 0.06);
+}
+
+/* Recommendation AI Glow */
+.recommendation-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(26, 31, 46, 0.8) 0%, rgba(15, 19, 29, 0.9) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 12px 25px -8px rgba(56, 189, 248, 0.2);
+}
+
+/* Mobile Sidebar Drawer */
+@media (max-width: 1023px) {
+  #student-sidebar {
+    transform: translateX(-100%);
+  }
+  #student-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .student-main-content {
+    padding-left: 0 !important;
+  }
+}

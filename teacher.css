@@ -1,0 +1,136 @@
+/* ==========================================================================
+   SmartLearn — Teacher & Faculty Portal Stylesheet (teacher.css)
+   Dedicated styling for the Faculty / Teacher Hub:
+   Curriculum management, student performance tables, quiz builder,
+   faculty stats overview, and quick switcher.
+   ========================================================================== */
+
+/* Subview Transitions */
+.teacher-subview {
+  animation: teacherFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes teacherFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Teacher Sidebar Navigation */
+.teacher-nav-item {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.teacher-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 20px;
+  background: var(--tertiary, #10b981);
+  border-radius: 0 4px 4px 0;
+  transition: transform 0.2s ease;
+}
+
+.teacher-nav-item.active-nav::before,
+.teacher-nav-item.bg-emerald-600::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+.teacher-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* Faculty Metric Widget Cards */
+.teacher-stat-card {
+  background: linear-gradient(135deg, rgba(26, 31, 44, 0.85) 0%, rgba(16, 20, 30, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.teacher-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.15);
+}
+
+.teacher-stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Course Management Table */
+.teacher-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.teacher-table th {
+  background: rgba(17, 21, 32, 0.85);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.teacher-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 13px;
+  color: #e2e8f0;
+  transition: background 0.15s ease;
+}
+
+.teacher-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Student Cohort Card */
+.student-cohort-card {
+  background: rgba(21, 25, 36, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  transition: all 0.25s ease;
+}
+
+.student-cohort-card:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Mobile Sidebar Drawer */
+@media (max-width: 1023px) {
+  #teacher-sidebar {
+    transform: translateX(-100%);
+  }
+  #teacher-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .teacher-main-content {
+    padding-left: 0 !important;
+  }
+}

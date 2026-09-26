@@ -106,12 +106,19 @@ const SmartLearnApp = (function () {
       return;
     }
 
-    const userName = user.full_name || user.name || "Learner";
+    const userName = user.full_name || user.name || "Avinash Verma";
     const userRole = user.role || "student";
     const isTeacher = userRole === "teacher";
     const avatar = user.avatar_url || user.avatar || (isTeacher
       ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-      : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80");
+      : "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80");
+
+    const firstName = userName.trim().split(" ")[0] || "Student";
+    const streakDays = user.streak_days || user.streakDays || 12;
+    const rollNo = user.roll_no || user.rollNo || "24CSE089";
+    const dept = user.department || "Computer Science & Engineering";
+    const semester = user.semester || "Semester 5 (3rd Year B.Tech)";
+    const college = user.college || "Institute of Engineering & Technology";
 
     // 1. Update Navigation Bar Pill
     if (navContainer) {
@@ -119,7 +126,7 @@ const SmartLearnApp = (function () {
         <div class="flex items-center gap-2">
           <button class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-[12px] text-white transition-all shadow-sm" onclick="SmartLearnApp.showMainView('${isTeacher ? 'teacher-dashboard' : 'student-dashboard'}')">
             <img src="${avatar}" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20">
-            <span class="font-medium">${userName.split(" ")[0]}</span>
+            <span class="font-medium">${firstName}</span>
             <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${isTeacher ? 'bg-emerald-500/20 text-emerald-400' : 'bg-primary-indigo/20 text-primary-indigo'} uppercase">${userRole}</span>
           </button>
           <button class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" onclick="SmartLearnApp.signOut()" title="Sign Out">
@@ -129,20 +136,81 @@ const SmartLearnApp = (function () {
       `;
     }
 
-    // 2. Update Student Header Profile
+    // 2. Update Student Header Profile & Streak
     const stuName = document.getElementById("student-header-name");
     const stuRole = document.getElementById("student-header-role");
     const stuAvatar = document.getElementById("student-header-avatar");
+    const stuStreak = document.getElementById("student-header-streak");
     if (stuName) stuName.textContent = userName;
-    if (stuRole) stuRole.textContent = `Student • ${user.department || "Computer Science"}`;
+    if (stuRole) stuRole.textContent = `Student • ${dept.includes('Computer') ? 'CS' : dept}`;
     if (stuAvatar) stuAvatar.src = avatar;
+    if (stuStreak) stuStreak.textContent = `${streakDays}-day streak`;
 
-    // 3. Update Teacher Header Profile
+    // 3. Update Student Dashboard Welcome Banner (Real student name & details)
+    const heroGreeting = document.getElementById("dashboard-student-greeting");
+    const heroSubtitle = document.getElementById("dashboard-student-subtitle");
+    const heroDept = document.getElementById("dashboard-student-dept");
+    const heroSemester = document.getElementById("dashboard-semester-badge");
+
+    if (heroGreeting) heroGreeting.textContent = `Welcome back, ${firstName}!`;
+    if (heroSubtitle) {
+      heroSubtitle.textContent = `You've maintained your ${streakDays}-day study streak. You have 1 prioritized weak topic ready for remediation and 3 pending quizzes.`;
+    }
+    if (heroDept) heroDept.textContent = `${dept} • Roll: ${rollNo}`;
+    if (heroSemester) heroSemester.textContent = `Active ${semester.split(' ')[0] + ' ' + (semester.split(' ')[1] || '')} • Week 6`;
+
+    // 4. Update Top Analytics Metric Cards
+    const overallProg = document.getElementById("dashboard-overall-progress");
+    const quizAvg = document.getElementById("dashboard-quiz-average");
+    const enrolledCourses = document.getElementById("dashboard-enrolled-courses");
+    const studyStreak = document.getElementById("dashboard-study-streak");
+    const progressStreak = document.getElementById("progress-streak-count");
+
+    if (overallProg) overallProg.textContent = `${user.overall_progress || user.overallProgress || 72}%`;
+    if (quizAvg) quizAvg.textContent = `${user.quiz_average || user.quizAverage || 78}%`;
+    if (enrolledCourses) enrolledCourses.textContent = `${user.enrolled_courses_count || user.enrolledCoursesCount || 5}`;
+    if (studyStreak) studyStreak.textContent = `${streakDays} Days`;
+    if (progressStreak) progressStreak.textContent = `${streakDays} Days`;
+
+    // 5. Update Cohort Comparison in Analytics Tab
+    const cohortHeading = document.getElementById("student-cohort-heading");
+    if (cohortHeading) cohortHeading.textContent = `${firstName}'s Score vs Cohort Average`;
+
+    // 6. Update Profile Subview Elements
+    const profName = document.getElementById("profile-student-name");
+    const profEmail = document.getElementById("profile-student-email");
+    const profAvatar = document.getElementById("profile-student-avatar");
+    const profRoll = document.getElementById("profile-student-roll");
+    const profDept = document.getElementById("profile-student-dept");
+    const profSemester = document.getElementById("profile-student-semester");
+    const profCollege = document.getElementById("profile-student-college");
+    const profBio = document.getElementById("profile-student-bio");
+    const profMastery = document.getElementById("profile-student-mastery");
+    const profStreak = document.getElementById("profile-student-streak");
+
+    if (profName) profName.textContent = userName;
+    if (profEmail) profEmail.textContent = user.email || `${userName.toLowerCase().replace(/\s+/g, '.')}@smartlearn.edu`;
+    if (profAvatar) profAvatar.src = avatar;
+    if (profRoll) profRoll.textContent = rollNo;
+    if (profDept) profDept.textContent = dept;
+    if (profSemester) profSemester.textContent = semester;
+    if (profCollege) profCollege.textContent = college;
+    if (profBio && user.bio) profBio.textContent = user.bio;
+    if (profMastery) profMastery.textContent = `${user.overall_progress || user.overallProgress || 72}%`;
+    if (profStreak) profStreak.textContent = `${streakDays} Days`;
+
+    // 7. Update Copilot Initial Welcome Message
+    const copilotMsg = document.getElementById("copilot-welcome-message");
+    if (copilotMsg) {
+      copilotMsg.innerHTML = `Hi ${firstName}! I'm your <strong>SmartLearn AI Tutor</strong> (powered by GPT-4o &amp; Gemini 1.5 reasoning). Ask me anything about Data Structures, Pointers in C, SQL Normalization, Spring Boot, or exam preparation!`;
+    }
+
+    // 8. Update Teacher Header Profile
     const teachName = document.getElementById("teacher-header-name");
     const teachRole = document.getElementById("teacher-header-role");
     const teachAvatar = document.getElementById("teacher-header-avatar");
     if (teachName) teachName.textContent = userName;
-    if (teachRole) teachRole.textContent = `Faculty • ${user.department || "Dept. of Computer Science & Engineering"}`;
+    if (teachRole) teachRole.textContent = `Faculty • ${dept}`;
     if (teachAvatar) teachAvatar.src = avatar;
   }
 
@@ -1373,7 +1441,7 @@ const SmartLearnApp = (function () {
       document.getElementById("auth-login-password").value = "Teacher@2026";
       document.getElementById("auth-role-select").value = "teacher";
     } else {
-      document.getElementById("auth-login-email").value = "alex.rivera@smartlearn.edu";
+      document.getElementById("auth-login-email").value = "avinash.verma@smartlearn.edu";
       document.getElementById("auth-login-password").value = "Student@2026";
       document.getElementById("auth-role-select").value = "student";
     }
@@ -1565,6 +1633,165 @@ const SmartLearnApp = (function () {
     notify("Recovery Link Sent", "Check your email for password reset instructions.", "success");
   }
 
+  // --- REAL-LIFE STUDENT PROFILE MANAGEMENT & TRANSCRIPT DOWNLOAD ---
+  function openEditProfileModal() {
+    const user = state.currentUser || (window.SmartLearnSupabase ? window.SmartLearnSupabase.getActiveUser() : null) || {};
+    const modal = document.getElementById("modal-edit-profile");
+    if (!modal) return;
+
+    const nameInput = document.getElementById("edit-student-name");
+    const rollInput = document.getElementById("edit-student-roll");
+    const deptInput = document.getElementById("edit-student-dept");
+    const semInput = document.getElementById("edit-student-semester");
+    const collegeInput = document.getElementById("edit-student-college");
+    const bioInput = document.getElementById("edit-student-bio");
+    const avatarInput = document.getElementById("edit-student-avatar-url");
+
+    if (nameInput) nameInput.value = user.full_name || user.name || "Avinash Verma";
+    if (rollInput) rollInput.value = user.roll_no || user.rollNo || "24CSE089";
+    if (deptInput) deptInput.value = user.department || "Computer Science & Engineering";
+    if (semInput) semInput.value = user.semester || "Semester 5 (3rd Year B.Tech)";
+    if (collegeInput) collegeInput.value = user.college || "Institute of Engineering & Technology";
+    if (bioInput) bioInput.value = user.bio || "Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms.";
+    if (avatarInput) avatarInput.value = user.avatar_url || user.avatar || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80";
+
+    modal.classList.remove("hidden");
+  }
+
+  async function handleProfileUpdateSubmit(event) {
+    if (event) event.preventDefault();
+    const name = document.getElementById("edit-student-name")?.value.trim() || "Avinash Verma";
+    const roll = document.getElementById("edit-student-roll")?.value.trim() || "24CSE089";
+    const dept = document.getElementById("edit-student-dept")?.value.trim() || "Computer Science & Engineering";
+    const semester = document.getElementById("edit-student-semester")?.value.trim() || "Semester 5 (3rd Year B.Tech)";
+    const college = document.getElementById("edit-student-college")?.value.trim() || "Institute of Engineering & Technology";
+    const bio = document.getElementById("edit-student-bio")?.value.trim() || "";
+    const avatarUrl = document.getElementById("edit-student-avatar-url")?.value.trim() || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80";
+
+    const updatedData = {
+      full_name: name,
+      roll_no: roll,
+      department: dept,
+      semester: semester,
+      college: college,
+      bio: bio,
+      avatar_url: avatarUrl
+    };
+
+    if (window.SmartLearnSupabase && window.SmartLearnSupabase.updateProfile) {
+      await window.SmartLearnSupabase.updateProfile(updatedData);
+    }
+
+    if (state.currentUser) {
+      state.currentUser = { ...state.currentUser, ...updatedData };
+    } else {
+      state.currentUser = updatedData;
+    }
+
+    updateUserUI(state.currentUser);
+    closeModal("modal-edit-profile");
+    notify("Profile Updated", `Your academic credentials for ${name} have been updated across the dashboard.`, "success");
+  }
+
+  function downloadAcademicTranscript() {
+    const user = state.currentUser || (window.SmartLearnSupabase ? window.SmartLearnSupabase.getActiveUser() : null) || {};
+    const name = user.full_name || user.name || "Avinash Verma";
+    const roll = user.roll_no || user.rollNo || "24CSE089";
+    const college = user.college || "Institute of Engineering & Technology";
+    const dept = user.department || "Computer Science & Engineering";
+    const sem = user.semester || "Semester 5";
+
+    const printWindow = window.open('', '_blank', 'width=840,height=920');
+    if (!printWindow) {
+      notify("Print Notice", "Please allow popups to download your official academic transcript.", "info");
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Academic Transcript — ${name} (${roll})</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #0f172a; line-height: 1.5; background: #fff; }
+          .header { border-bottom: 2px solid #0f172a; padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+          .badge { background: #10b981; color: white; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; }
+          .field { font-size: 13px; }
+          .field-label { color: #64748b; font-size: 10px; text-transform: uppercase; font-weight: bold; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #cbd5e1; padding: 10px 12px; text-align: left; font-size: 12px; }
+          th { background: #f1f5f9; font-weight: bold; }
+          .footer { margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+          .signature { border-top: 1px solid #334155; width: 180px; text-align: center; font-size: 11px; padding-top: 6px; }
+          @media print {
+            body { padding: 15px; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="no-print" style="margin-bottom: 20px; display: flex; gap: 10px;">
+          <button onclick="window.print()" style="padding: 9px 18px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Print / Save as PDF</button>
+          <button onclick="window.close()" style="padding: 9px 18px; background: #e2e8f0; color: #334155; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Close Window</button>
+        </div>
+        <div class="header">
+          <div>
+            <h2 style="margin: 0; font-size: 20px; color: #0f172a;">${college.toUpperCase()}</h2>
+            <div style="font-size: 12px; color: #64748b; margin-top: 3px;">SMARTLEARN ADAPTIVE EDUCATION PORTAL • OFFICIAL ACADEMIC AUDIT</div>
+          </div>
+          <div class="badge">Verified Scholar</div>
+        </div>
+
+        <div class="grid">
+          <div class="field"><div class="field-label">Student Name</div><strong>${name}</strong></div>
+          <div class="field"><div class="field-label">University Roll No</div><strong>${roll}</strong></div>
+          <div class="field"><div class="field-label">Department / Branch</div><strong>${dept}</strong></div>
+          <div class="field"><div class="field-label">Current Academic Level</div><strong>${sem}</strong></div>
+          <div class="field"><div class="field-label">Cumulative GPA (CGPA)</div><strong style="color: #059669;">8.84 / 10.0 (First Class with Distinction)</strong></div>
+          <div class="field"><div class="field-label">Biometric Attendance</div><strong style="color: #059669;">92.4% (Eligible for Examinations)</strong></div>
+        </div>
+
+        <h3 style="font-size: 14px; margin-top: 25px; margin-bottom: 8px;">Registered Course Curriculum & Continuous Assessment Marks</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Credits</th>
+              <th>Attendance</th>
+              <th>Evaluation Grade</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>CS301 • Data Structures & Algorithmic Patterns</td><td>4</td><td>95%</td><td>A (86%)</td><td>Cleared</td></tr>
+            <tr><td>CS302 • C Systems Programming & Memory Architecture</td><td>4</td><td>91%</td><td>B+ (78%)</td><td>Target Drill Active</td></tr>
+            <tr><td>CS303 • Database Management Systems & SQL</td><td>4</td><td>94%</td><td>A+ (92%)</td><td>Cleared</td></tr>
+            <tr><td>CS304 • Modern Web Architecture & Interactive 3D</td><td>4</td><td>96%</td><td>A+ (94%)</td><td>Cleared</td></tr>
+            <tr><td>CS305 • Computer Networks & Socket Programming</td><td>4</td><td>89%</td><td>A (84%)</td><td>Cleared</td></tr>
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div style="font-size: 11px; color: #64748b;">
+            SmartLearn Platform ID: SL-2026-AKTU-884<br>
+            Smart India Hackathon 2026 Academic Pilot • Team HACKSMITH<br>
+            Issued: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </div>
+          <div>
+            <div class="signature">Controller of Examinations / Dean</div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+  }
+
+  function getCurrentUserName() {
+    return state.currentUser?.full_name || state.currentUser?.name || "Avinash";
+  }
+
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.classList.add("hidden");
@@ -1710,6 +1937,10 @@ const SmartLearnApp = (function () {
     openLoginModal,
     openRegisterModal,
     openForgotPasswordModal,
+    openEditProfileModal,
+    handleProfileUpdateSubmit,
+    downloadAcademicTranscript,
+    getCurrentUserName,
     handleLoginSubmit,
     handleRegisterSubmit,
     handleForgotPasswordSubmit,

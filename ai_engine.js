@@ -123,11 +123,12 @@ const SmartEduAI = (function() {
       {
         triggers: ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'sup', 'yo', 'greetings', 'namaste'],
         generate: () => {
+          const studentName = (window.SmartLearnApp && window.SmartLearnApp.getCurrentUserName) ? window.SmartLearnApp.getCurrentUserName() : "there";
           const intros = [
             "Hello! I'm your **SmartLearn AI Tutor** (powered by GPT & Gemini reasoning). What subject or concept would you like to explore today? You can ask me about **Data Structures, Pointers in C, SQL Normalization, Spring Boot, Operating Systems, or Machine Learning**!",
             "Hey there! Ready to study? I'm your personalized AI study partner. Whether you need an algorithm roadmap, runnable code in Python/C++/Java, or a concept breakdown, just ask!",
             "Hi! Good to see you. What topic are we tackling today? Let me know if you need explanations on algorithms, calculus, database design, or exam preparation.",
-            "Hello Alex! I'm here to help you master your coursework, diagnose weak spots, debug code, or prepare for the Smart India Hackathon. What can I explain for you?"
+            `Hello ${studentName}! I'm here to help you master your coursework, diagnose weak spots, debug code, or prepare for the Smart India Hackathon. What can I explain for you?`
           ];
           return intros[Math.floor(Math.random() * intros.length)];
         }

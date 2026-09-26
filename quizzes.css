@@ -1,0 +1,96 @@
+/* ==========================================================================
+   SmartLearn — Quizzes & Practice Hub Stylesheet (quizzes.css)
+   Dedicated styling for Assessments, Timed Quiz Runner,
+   Step-by-step Practice Drills, KaTeX Proof Container, and Score Analytics.
+   ========================================================================== */
+
+/* Quiz Card Component */
+.quiz-card {
+  background: linear-gradient(145deg, rgba(26, 31, 46, 0.85) 0%, rgba(16, 20, 30, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(99, 102, 241, 0.2);
+}
+
+/* Timed Quiz Runner Interface */
+.quiz-runner-container {
+  background: #0f131d;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+}
+
+.quiz-option-button {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(26, 31, 46, 0.7);
+  color: #cbd5e1;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.quiz-option-button:hover {
+  background: rgba(40, 46, 63, 0.9);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.quiz-option-button.selected {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* KaTeX Proof Container in Quizzes */
+.quiz-math-callout {
+  padding: 1rem 1.25rem;
+  background: rgba(15, 23, 42, 0.6);
+  border-left: 3px solid #38bdf8;
+  border-radius: 0.75rem;
+  font-family: var(--font-mono);
+  overflow-x: auto;
+}
+
+/* Practice Problem Runner Step */
+.practice-step-card {
+  background: rgba(21, 25, 36, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Countdown Timer Dial */
+.timer-pulse {
+  animation: timerBeat 1.5s infinite ease-in-out;
+}
+
+@keyframes timerBeat {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.8;
+  }
+}

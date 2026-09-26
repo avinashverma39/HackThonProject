@@ -508,7 +508,7 @@ const SmartLearn3D = (function () {
 
   function handleOnboardingSubmit(e) {
     if (e) e.preventDefault();
-    const name = document.getElementById('onboard-student-name')?.value || 'Alex Rivera';
+    const name = document.getElementById('onboard-student-name')?.value || 'Avinash Verma';
     const year = document.getElementById('onboard-student-year')?.value || '2nd Year B.Tech (CSE)';
     const skill = document.getElementById('onboard-student-skill')?.value || 'Intermediate';
 

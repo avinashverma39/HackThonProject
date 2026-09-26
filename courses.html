@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <title>SmartLearn — Comprehensive Course Catalog &amp; Video Lectures | SIH 2026</title>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- KaTeX for academic math formulas & proofs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="if (window.renderMathInElement) renderMathInElement(document.body);"></script>
+
+  <!-- Tailwind CSS CDN & Token Configuration -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#0c1017",
+            "on-surface": "#e2e8f0",
+            "secondary-container": "#00a6e0",
+            "secondary": "#38bdf8",
+            "surface-container-high": "#1e2330",
+            "primary": "#818cf8",
+            "primary-indigo": "#6366f1",
+            "surface-container-highest": "#282e3f",
+            "surface-container-low": "#111520",
+            "background": "#0b0f17",
+            "error": "#f87171",
+            "on-surface-variant": "#94a3b8",
+            "surface-variant": "#262b3a",
+            "surface-container": "#151924",
+            "surface-container-lowest": "#080c14",
+            "tertiary": "#10b981",
+            "surface": "#0b0f17"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <link href="styles.css" rel="stylesheet" />
+  <link href="courses.css" rel="stylesheet" />
+</head>
+<body class="bg-surface font-sans text-on-surface antialiased overflow-x-hidden selection:bg-primary-indigo selection:text-white">
+
+  <div id="smartlearn-preloader">
+    <div class="gyro-loader">
+      <div class="gyro-ring"></div>
+      <div class="gyro-ring"></div>
+      <div class="gyro-ring"></div>
+      <div class="gyro-core"></div>
+    </div>
+    <div class="flex flex-col items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="text-[22px] font-extrabold text-white tracking-tight">SmartLearn</span>
+        <span
+          class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">SIH
+          2026</span>
+      </div>
+      <span class="text-[12px] text-slate-400">Preparing your personalized 3D learning experience...</span>
+      <div class="w-52 h-1.5 rounded-full bg-surface-container-highest overflow-hidden mt-1">
+        <div id="preloader-progress-bar"
+          class="h-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 rounded-full transition-all duration-150"
+          style="width: 0%"></div>
+      </div>
+      <span id="preloader-percent" class="text-[11px] font-mono text-emerald-400">0%</span>
+    </div>
+  </div>
+
+  <!-- Ambient Cursor Following Light -->
+  <div id="ambient-cursor-glow"></div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/80 backdrop-blur-xl border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-md">
+            <span class="material-symbols-outlined text-[20px]">school</span>
+          </div>
+          <span class="text-[18px] font-extrabold text-white tracking-tight">SmartLearn</span>
+        </a>
+        <span class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">Courses Catalog</span>
+      </div>
+
+      <!-- Center Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 p-1 rounded-xl bg-surface-container border border-white/5 text-[13px]">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Home</a>
+        <a href="student.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Student Portal</a>
+        <a href="teacher.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Teacher Hub</a>
+        <a href="courses.html" class="px-3 py-1.5 rounded-lg bg-primary-indigo text-white font-medium">Courses</a>
+        <a href="quizzes.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-colors">Quizzes</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="student.html" class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white font-medium text-[13px] flex items-center gap-1.5 shadow-md shadow-indigo-900/30 transition-all">
+          <span class="material-symbols-outlined text-[16px]">play_circle</span>
+          <span>My Learning Hub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Courses Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col gap-10">
+
+    <!-- Courses Hero Banner -->
+    <div class="courses-hero-banner flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col gap-3 max-w-2xl">
+        <span class="px-3 py-1 rounded-full bg-secondary/20 text-secondary text-[11px] font-semibold border border-secondary/30 w-fit flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+          AI-Curated Syllabus &amp; Video Lectures
+        </span>
+        <h1 class="text-[32px] sm:text-[40px] font-extrabold text-white leading-tight">
+          Explore Comprehensive Curriculum &amp; Core Engineering Tracks
+        </h1>
+        <p class="text-[14px] text-slate-300">
+          Master Data Structures, C Systems, Operating Systems, DBMS, and Modern Web Architecture with personalized learning paths, interactive modules, and hands-on coding practice.
+        </p>
+      </div>
+      <div class="flex flex-col gap-3 w-full md:w-80">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3.5 top-3 text-[18px] text-slate-400">search</span>
+          <input type="text" id="courses-search-bar"
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-container-lowest border border-white/10 text-white text-[13px] focus:outline-none focus:ring-1 focus:ring-primary-indigo"
+            placeholder="Search subjects, topics, or faculty..."
+            oninput="SmartLearnApp.filterCoursesByKeyword ? SmartLearnApp.filterCoursesByKeyword(this.value) : null">
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-slate-400 px-1 font-mono">
+          <span>6 Active Tracks</span>
+          <span class="text-emerald-400">Supabase Cloud Sync</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/5">
+      <button class="course-filter-chip active" onclick="SmartLearnApp.setCourseSubjectFilter('all', this)">
+        <span class="material-symbols-outlined text-[16px]">apps</span>
+        <span>All Tracks</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('Data Structures', this)">
+        <span class="material-symbols-outlined text-[16px]">account_tree</span>
+        <span>Data Structures</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('C Programming', this)">
+        <span class="material-symbols-outlined text-[16px]">terminal</span>
+        <span>C Systems</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('Database', this)">
+        <span class="material-symbols-outlined text-[16px]">database</span>
+        <span>DBMS</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('Operating Systems', this)">
+        <span class="material-symbols-outlined text-[16px]">memory</span>
+        <span>OS</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('Spring Boot', this)">
+        <span class="material-symbols-outlined text-[16px]">bolt</span>
+        <span>Spring Boot</span>
+      </button>
+      <button class="course-filter-chip" onclick="SmartLearnApp.setCourseSubjectFilter('Web Development', this)">
+        <span class="material-symbols-outlined text-[16px]">code</span>
+        <span>Modern Web</span>
+      </button>
+    </div>
+
+    <!-- Courses Grid Section -->
+    <section class="flex flex-col gap-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[22px] font-bold text-white">Full Curriculum Courses</h2>
+          <p class="text-[13px] text-slate-400">Click any course to preview lessons, syllabus, and video lectures.</p>
+        </div>
+        <a href="student.html#courses" class="text-primary-indigo hover:underline text-[12px] font-semibold flex items-center gap-1">
+          <span>Manage Enrolled Courses in Student Portal</span>
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid">
+        <!-- Rendered by SmartLearnApp.renderCourses() -->
+      </div>
+    </section>
+
+    <!-- Subjects Grid Section -->
+    <section class="flex flex-col gap-5 pt-8 border-t border-white/5">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[22px] font-bold text-white">Subject Domains</h2>
+          <p class="text-[13px] text-slate-400">Categorized by university syllabus topics and semester requirements.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="subjects-grid">
+        <!-- Rendered by SmartLearnApp.renderSubjects() -->
+      </div>
+    </section>
+
+    <!-- Study Materials & PDF Cheatsheets Section -->
+    <section class="flex flex-col gap-5 pt-8 border-t border-white/5">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[22px] font-bold text-white">Study Materials &amp; Lecture Handouts</h2>
+          <p class="text-[13px] text-slate-400">Download high-yield revision summaries, algorithm proofs, and formula sheets.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="materials-grid">
+        <!-- Rendered by SmartLearnApp.renderMaterials() -->
+      </div>
+    </section>
+
+    <!-- Video Lectures Section -->
+    <section class="flex flex-col gap-5 pt-8 border-t border-white/5">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[22px] font-bold text-white">Curated Video Masterclasses</h2>
+          <p class="text-[13px] text-slate-400">Stream animated chapter breakdowns with synchronized syllabus navigation.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="videos-grid">
+        <!-- Rendered by SmartLearnApp.renderVideos() -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modals for Courses Page -->
+    <div id="modal-material-reader" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-material-reader')">
+    </div>
+    <div
+      class="relative w-full max-w-4xl h-[85vh] rounded-3xl bg-surface-container-lowest border border-white/10 shadow-2xl z-10 flex flex-col overflow-hidden">
+      <div
+        class="h-16 px-6 bg-surface-container border-b border-white/10 flex items-center justify-between flex-shrink-0">
+        <div>
+          <span class="px-2 py-0.5 rounded bg-primary-indigo/20 text-primary text-[10px] font-bold"
+            id="reader-material-badge">Notes</span>
+          <h3 class="text-[16px] font-bold text-white truncate max-w-md" id="reader-material-title">Lecture Notes</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] text-slate-400 hidden sm:inline" id="reader-material-author">Author</span>
+          <button class="text-slate-400 hover:text-white ml-2"
+            onclick="SmartLearnApp.closeModal('modal-material-reader')">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-6 text-slate-200 text-[14px] leading-relaxed" id="reader-material-content">
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-video-player" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-video-player')">
+    </div>
+    <div
+      class="relative w-full max-w-4xl rounded-3xl bg-surface-container-lowest border border-white/10 shadow-2xl z-10 flex flex-col overflow-hidden">
+      <div
+        class="h-14 px-6 bg-surface-container border-b border-white/10 flex items-center justify-between flex-shrink-0">
+        <div>
+          <h3 class="text-[15px] font-bold text-white" id="video-modal-title">Lecture Title</h3>
+          <span class="text-[11px] text-slate-400" id="video-modal-instructor">Instructor</span>
+        </div>
+        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-video-player')">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3">
+        <div class="lg:col-span-2 bg-black flex items-center justify-center">
+          <video id="video-modal-html5-player" class="w-full aspect-video" controls playsinline>
+            <source id="video-modal-player-source" src="" type="video/mp4">
+          </video>
+        </div>
+        <div class="p-4 bg-surface-container-low flex flex-col gap-2 max-h-80 lg:max-h-full overflow-y-auto">
+          <span class="text-[11px] font-bold uppercase text-slate-400 tracking-wider">Chapters</span>
+          <div class="flex flex-col gap-1.5" id="video-modal-chapters"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-course-detail" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" onclick="SmartLearnApp.closeModal('modal-course-detail')">
+    </div>
+    <div
+      class="relative w-full max-w-2xl rounded-3xl bg-surface-container-lowest border border-white/10 p-6 shadow-2xl z-10 flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-[18px] font-bold text-white" id="course-detail-title">Course Title</h3>
+          <span class="text-[12px] text-slate-400" id="course-detail-instructor">Instructor</span>
+        </div>
+        <button class="text-slate-400 hover:text-white" onclick="SmartLearnApp.closeModal('modal-course-detail')">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container text-[12px]">
+        <span>Difficulty: <strong class="text-white" id="course-detail-difficulty">Intermediate</strong></span>
+        <span>Completion: <strong class="text-primary font-mono" id="course-detail-progress">68%</strong></span>
+      </div>
+
+      <div>
+        <h4 class="text-[13px] font-bold text-slate-300 uppercase tracking-wider mb-2">Curriculum Modules</h4>
+        <div class="flex flex-col gap-3 max-h-72 overflow-y-auto" id="course-detail-modules"></div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10" id="course-detail-actions">
+        <button
+          class="px-5 py-2.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-semibold"
+          onclick="SmartLearnApp.launchLessonVideo()">
+          Continue Learning →
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- AI STUDY ASSISTANT COPILOT DRAWER -->
+  <aside
+    class="fixed right-0 top-0 h-full w-80 sm:w-96 bg-surface-container-lowest border-l border-white/10 shadow-2xl z-50 flex flex-col transition-transform duration-300 translate-x-full"
+    id="copilot-drawer">
+    <div class="p-4 border-b border-white/10 flex items-center justify-between bg-surface-container">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary text-[20px]">auto_awesome</span>
+        <div>
+          <h4 class="text-[14px] font-bold text-white">SmartLearn AI Tutor</h4>
+          <span class="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> GPT-4o &amp; Gemini 1.5
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <!-- Model Selector Dropdown -->
+        <select id="copilot-model-selector"
+          class="bg-surface-container-high text-[11px] text-slate-200 rounded-lg px-2 py-1 border border-white/10 focus:outline-none"
+          onchange="if (window.SmartEduAI) window.SmartEduAI.setStoredModel(this.value)">
+          <option value="openai/gpt-4o-mini">✨ GPT-4o Mini</option>
+          <option value="google/gemini-flash-1.5">⚡ Gemini 1.5 Flash</option>
+          <option value="google/gemini-pro-1.5">🌟 Gemini 1.5 Pro</option>
+          <option value="deepseek/deepseek-chat">🧠 DeepSeek-V3</option>
+        </select>
+        <button class="p-1 rounded text-slate-400 hover:text-white" onclick="clearCopilotChat()" title="Clear Chat">
+          <span class="material-symbols-outlined text-[16px]">refresh</span>
+        </button>
+        <button id="copilot-close-btn" class="p-1 rounded text-slate-400 hover:text-white"
+          onclick="document.getElementById('copilot-drawer').classList.add('translate-x-full')">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Prompt Pills -->
+    <div
+      class="px-3 py-2 border-b border-white/5 bg-surface-container-low flex items-center gap-1.5 overflow-x-auto text-[11px]">
+      <button
+        class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white transition-colors whitespace-nowrap border border-white/5"
+        onclick="openCopilotWithPrompt('How to learn DSA step-by-step?')">DSA Roadmap</button>
+      <button
+        class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white transition-colors whitespace-nowrap border border-white/5"
+        onclick="openCopilotWithPrompt('Explain Pointers and Memory Allocation in C')">Pointers in C</button>
+      <button
+        class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white transition-colors whitespace-nowrap border border-white/5"
+        onclick="openCopilotWithPrompt('What is the difference between 3NF and BCNF?')">3NF vs BCNF</button>
+      <button
+        class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white transition-colors whitespace-nowrap border border-white/5"
+        onclick="openCopilotWithPrompt('Explain Spring Boot Architecture and REST APIs')">Spring Boot</button>
+      <button
+        class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white transition-colors whitespace-nowrap border border-white/5"
+        onclick="openCopilotWithPrompt('Write Binary Search code in Python with explanation')">Binary Search</button>
+    </div>
+
+    <!-- Copilot Messages -->
+    <div class="flex-1 p-4 overflow-y-auto space-y-3" id="copilot-messages">
+      <div id="copilot-welcome-message" class="p-3.5 rounded-2xl bg-surface-container border border-white/5 text-[13px] text-slate-200">
+        Hi Avinash! I'm your **SmartLearn AI Tutor** (powered by GPT-4o &amp; Gemini 1.5 reasoning). Ask me anything about
+        Data Structures, Pointers in C, SQL Normalization, Spring Boot, or exam preparation!
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="p-3 border-t border-white/10 bg-surface-container flex items-center gap-2">
+      <input type="text" id="copilot-input"
+        class="flex-1 bg-surface-container-lowest rounded-xl px-3 py-2 text-[13px] text-white border border-white/10 focus:outline-none focus:ring-1 focus:ring-primary-indigo"
+        placeholder="Ask any question (like GPT / Gemini)..."
+        onkeydown="if (event.key === 'Enter') (window.sendCopilotMessage ? window.sendCopilotMessage() : null)">
+      <button id="copilot-send-btn" class="p-2 rounded-xl bg-primary-indigo text-white hover:bg-indigo-500 shadow-sm"
+        onclick="window.sendCopilotMessage ? window.sendCopilotMessage() : null">
+        <span class="material-symbols-outlined text-[16px]">send</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- FLOATING AI CHATBOT BUTTON -->
+  <!-- FLOATING AI CHATBOT BUTTON (VISIBLE ACROSS ENTIRE PLATFORM) -->
+  <button id="floating-ai-chatbot-btn"
+    class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[13px] shadow-[0_0_24px_rgba(99,102,241,0.45)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
+    onclick="document.getElementById('copilot-drawer').classList.remove('translate-x-full'); document.getElementById('copilot-input').focus();">
+    <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
+    <span>Ask AI (GPT / Gemini)</span>
+    <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+  </button>
+
+  <!-- TOAST CONTAINER -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+
+  <!-- SCRIPT INTEGRATION (IN ORDER) -->
+  <script src="course_lectures_data.js"></script>
+  <script src="smartlearn_data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_client.js"></script>
+  <script src="api_service.js"></script>
+  <script src="ai_engine.js"></script>
+  <script src="app.js"></script>
+  <script src="smartlearn.js"></script>
+  <script src="smartlearn_3d.js"></script>
+
+</body>
+</html>

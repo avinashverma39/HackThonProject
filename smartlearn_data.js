@@ -8,16 +8,17 @@ const SmartLearnData = (function () {
   // Current logged in user state
   const currentUser = {
     id: "stu-101",
-    name: "Alex Rivera",
-    email: "alex.rivera@smartlearn.edu",
+    name: "Avinash Verma",
+    email: "avinash.verma@smartlearn.edu",
     role: "student", // 'student' | 'teacher'
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
     college: "Institute of Engineering & Technology",
     semester: "Semester 5 (Computer Science)",
+    rollNo: "24CSE089",
     streakDays: 12,
     overallProgress: 72,
     quizAverage: 78,
-    enrolledCoursesCount: 6,
+    enrolledCoursesCount: 5,
     completedLessons: 48,
     pendingQuizzes: 3,
     studyHoursThisWeek: 18.5
@@ -906,8 +907,8 @@ wordCounts.merge("algorithm", 1, Integer::sum);
   const teacherStudents = [
     {
       id: "stu-101",
-      name: "Alex Rivera",
-      email: "alex.rivera@smartlearn.edu",
+      name: "Avinash Verma",
+      email: "avinash.verma@smartlearn.edu",
       course: "Data Structures & C Systems",
       progress: 72,
       quizAverage: 78,

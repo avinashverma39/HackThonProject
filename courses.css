@@ -1,0 +1,113 @@
+/* ==========================================================================
+   SmartLearn — Courses & Curriculum Explorer Stylesheet (courses.css)
+   Dedicated styling for the Course Catalog, Lecture Video Player,
+   Subject categorization filters, syllabus drawer, and enrollment badges.
+   ========================================================================== */
+
+/* Category Filter Chips */
+.course-filter-chip {
+  padding: 0.5rem 1.1rem;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(21, 25, 36, 0.8);
+  color: #94a3b8;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.course-filter-chip:hover {
+  background: rgba(30, 35, 48, 0.95);
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateY(-2px);
+}
+
+.course-filter-chip.active {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: #ffffff;
+  border-color: #6366f1;
+  box-shadow: 0 4px 14px -2px rgba(99, 102, 241, 0.45);
+}
+
+/* Course Card 3D Depth */
+.course-item-card {
+  background: linear-gradient(145deg, rgba(26, 31, 46, 0.9) 0%, rgba(16, 20, 30, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-col: column;
+  position: relative;
+}
+
+.course-item-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(99, 102, 241, 0.25);
+}
+
+.course-thumbnail-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  background: #0f131d;
+}
+
+.course-thumbnail-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.course-item-card:hover .course-thumbnail-wrapper img {
+  transform: scale(1.06);
+}
+
+/* Level Indicator Badges */
+.badge-beginner {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-intermediate {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.badge-advanced {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+/* Subject Catalog Header */
+.courses-hero-banner {
+  background: linear-gradient(135deg, rgba(26, 31, 46, 0.8) 0%, rgba(15, 19, 29, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.courses-hero-banner::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}

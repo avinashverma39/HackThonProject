@@ -147,17 +147,29 @@ const SmartLearnSupabase = (function () {
     const cleanEmail = (email || "").trim().toLowerCase();
 
     // 1. Check for quick demo login shortcuts
-    if (cleanEmail === "alex.rivera@smartlearn.edu" || cleanEmail === "alex" || (requestedRole === "student" && password === "Student@2026")) {
+    if (
+      cleanEmail === "avinash.verma@smartlearn.edu" ||
+      cleanEmail === "avinash" ||
+      cleanEmail === "alex.rivera@smartlearn.edu" ||
+      cleanEmail === "alex" ||
+      (requestedRole === "student" && password === "Student@2026")
+    ) {
       const demoStudent = {
-        id: "demo-student-alex",
-        email: "alex.rivera@smartlearn.edu",
-        full_name: "Alex Rivera",
+        id: "demo-student-avinash",
+        email: cleanEmail.includes("@") ? cleanEmail : "avinash.verma@smartlearn.edu",
+        full_name: (cleanEmail === "alex.rivera@smartlearn.edu" || cleanEmail === "alex") ? "Alex Rivera" : "Avinash Verma",
         role: "student",
         department: "Computer Science & Engineering",
-        avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-        streak_days: 14,
-        overall_progress: 78,
-        quiz_average: 86
+        college: "Institute of Engineering & Technology",
+        semester: "Semester 5 (3rd Year B.Tech)",
+        roll_no: "24CSE089",
+        avatar_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
+        streak_days: 12,
+        overall_progress: 72,
+        quiz_average: 78,
+        cgpa: "8.84",
+        attendance: "92.4%",
+        enrolled_courses_count: 5
       };
       activeProfile = demoStudent;
       localStorage.setItem("smartlearn_active_profile", JSON.stringify(demoStudent));
@@ -165,7 +177,7 @@ const SmartLearnSupabase = (function () {
       if (sb) {
         sb.from("profiles").upsert(demoStudent).then(() => {}).catch(() => {});
       }
-      return { success: true, user: demoStudent, message: "Welcome back, Alex Rivera!" };
+      return { success: true, user: demoStudent, message: `Welcome back, ${demoStudent.full_name}!` };
     }
 
     if (cleanEmail === "s.jenkins@smartlearn.edu" || cleanEmail === "jenkins" || (requestedRole === "teacher" && password === "Teacher@2026")) {
@@ -319,19 +331,33 @@ const SmartLearnSupabase = (function () {
       }
     }
 
-    // Default to demo student Alex if no session exists yet
+    // Default to real student Avinash Verma if no session exists yet
     if (!activeProfile) {
       activeProfile = {
-        id: "demo-student-alex",
-        email: "alex.rivera@smartlearn.edu",
-        full_name: "Alex Rivera",
+        id: "demo-student-avinash",
+        email: "avinash.verma@smartlearn.edu",
+        full_name: "Avinash Verma",
         role: "student",
         department: "Computer Science & Engineering",
-        avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-        streak_days: 14,
-        overall_progress: 78,
-        quiz_average: 86
+        college: "Institute of Engineering & Technology",
+        semester: "Semester 5 (3rd Year B.Tech)",
+        roll_no: "24CSE089",
+        avatar_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
+        streak_days: 12,
+        overall_progress: 72,
+        quiz_average: 78,
+        cgpa: "8.84",
+        attendance: "92.4%",
+        enrolled_courses_count: 5
       };
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
+    }
+
+    if (activeProfile && (activeProfile.full_name === "Alex Rivera" || activeProfile.id === "demo-student-alex")) {
+      activeProfile.full_name = "Avinash Verma";
+      activeProfile.email = "avinash.verma@smartlearn.edu";
+      activeProfile.roll_no = "24CSE089";
+      activeProfile.id = "demo-student-avinash";
       localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
     }
 
@@ -342,8 +368,38 @@ const SmartLearnSupabase = (function () {
     if (!activeProfile) {
       try {
         const cached = localStorage.getItem("smartlearn_active_profile");
-        if (cached) activeProfile = JSON.parse(cached);
+        if (cached) {
+          activeProfile = JSON.parse(cached);
+          if (activeProfile && (activeProfile.full_name === "Alex Rivera" || activeProfile.id === "demo-student-alex")) {
+            activeProfile.full_name = "Avinash Verma";
+            activeProfile.email = "avinash.verma@smartlearn.edu";
+            activeProfile.roll_no = "24CSE089";
+            activeProfile.id = "demo-student-avinash";
+            localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
+          }
+        }
       } catch (e) {}
+    }
+    return activeProfile;
+  }
+
+  /**
+   * Update active user profile and synchronize with storage & cloud
+   */
+  async function updateProfile(updatedData) {
+    if (!activeProfile) {
+      activeProfile = getActiveUser() || {};
+    }
+    activeProfile = { ...activeProfile, ...updatedData };
+    localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
+
+    const sb = getClient();
+    if (sb && activeProfile.id) {
+      try {
+        await sb.from("profiles").upsert(activeProfile);
+      } catch (e) {
+        console.warn("Could not sync profile update with Supabase:", e);
+      }
     }
     return activeProfile;
   }
@@ -571,7 +627,7 @@ const SmartLearnSupabase = (function () {
    */
   async function isEnrolled(courseId, userId = null) {
     const user = getActiveUser();
-    const uid = userId || user?.id || (user?.email ? "usr-" + user.email : "demo-student-alex");
+    const uid = userId || user?.id || (user?.email ? "usr-" + user.email : "demo-student-avinash");
     const sb = getClient();
 
     if (sb) {
@@ -594,8 +650,8 @@ const SmartLearnSupabase = (function () {
       if (saved.some(e => e.course_id === courseId)) return true;
     } catch (e) {}
 
-    // Default sample courses for Alex Rivera
-    if (uid === "demo-student-alex" && (courseId === "course-dsa" || courseId === "course-c" || courseId === "course-web")) {
+    // Default sample courses for student
+    if ((uid === "demo-student-alex" || uid === "demo-student-avinash" || !userId) && (courseId === "course-dsa" || courseId === "course-c" || courseId === "course-web")) {
       return true;
     }
 
@@ -607,7 +663,7 @@ const SmartLearnSupabase = (function () {
    */
   async function getUserEnrollments(userId = null) {
     const user = getActiveUser();
-    const uid = userId || user?.id || "demo-student-alex";
+    const uid = userId || user?.id || "demo-student-avinash";
     const sb = getClient();
 
     if (sb) {
@@ -684,9 +740,9 @@ const SmartLearnSupabase = (function () {
     const user = getActiveUser();
 
     const record = {
-      user_id: user?.id || "demo-student-alex",
-      student_name: user?.full_name || "Alex Rivera",
-      student_email: user?.email || "alex.rivera@smartlearn.edu",
+      user_id: user?.id || "demo-student-avinash",
+      student_name: user?.full_name || "Avinash Verma",
+      student_email: user?.email || "avinash.verma@smartlearn.edu",
       quiz_id: attemptData.quizId,
       quiz_title: attemptData.quizTitle,
       score: attemptData.score,
@@ -774,7 +830,8 @@ const SmartLearnSupabase = (function () {
     getUserEnrollments,
     getTeacherStudents,
     saveQuizAttempt,
-    saveStudyMaterial
+    saveStudyMaterial,
+    updateProfile
   };
 })();
 

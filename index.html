@@ -412,7 +412,7 @@
                 <div>
                   <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-primary-indigo"></span>
-                    <span class="text-[12px] font-semibold uppercase tracking-wider text-slate-400">Alex Rivera •
+                    <span class="text-[12px] font-semibold uppercase tracking-wider text-slate-400">Avinash Verma •
                       Student ID: #SL-2026-89</span>
                   </div>
                   <h3 class="text-[20px] font-bold text-white mt-0.5">Adaptive Knowledge Mastery Dashboard</h3>
@@ -1580,7 +1580,7 @@
             class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-[12px] font-medium text-emerald-400 border border-white/5 cursor-pointer"
             onclick="SmartLearnApp.showStudentTab('progress')">
             <span>🔥</span>
-            <span>12-day streak</span>
+            <span id="student-header-streak">12-day streak</span>
           </div>
 
           <!-- Notifications Bell -->
@@ -1615,9 +1615,8 @@
           <div class="flex items-center gap-2 pl-2">
             <div class="flex items-center gap-2 cursor-pointer" onclick="SmartLearnApp.showStudentTab('profile')">
               <div class="flex flex-col text-right hidden sm:flex">
-                <span id="student-header-name" class="text-[13px] font-semibold text-white leading-tight">Alex
-                  Rivera</span>
-                <span id="student-header-role" class="text-[10px] text-slate-400">Student • Sem 5</span>
+                <span id="student-header-name" class="text-[13px] font-semibold text-white leading-tight">Avinash Verma</span>
+                <span id="student-header-role" class="text-[10px] text-slate-400">Student • Computer Science</span>
               </div>
               <img id="student-header-avatar"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80"
@@ -1645,14 +1644,14 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
               <div class="flex flex-col gap-2 max-w-2xl">
                 <div class="flex items-center gap-2">
-                  <span
+                  <span id="dashboard-semester-badge"
                     class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
-                    Active Semester • Week 6
+                    Active Semester 5 • Week 6
                   </span>
-                  <span class="text-[12px] text-slate-400">Computer Science &amp; Engineering</span>
+                  <span id="dashboard-student-dept" class="text-[12px] text-slate-400">Computer Science &amp; Engineering • Roll: 24CSE089</span>
                 </div>
-                <h2 class="text-[26px] md:text-[32px] font-extrabold text-white">Welcome back, Alex!</h2>
-                <p class="text-[14px] text-slate-300">
+                <h2 id="dashboard-student-greeting" class="text-[26px] md:text-[32px] font-extrabold text-white">Welcome back, Avinash!</h2>
+                <p id="dashboard-student-subtitle" class="text-[14px] text-slate-300">
                   You've maintained your 12-day study streak. You have 1 prioritized weak topic ready for remediation
                   and 3 pending quizzes.
                 </p>
@@ -1679,7 +1678,7 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-white font-mono">72%</span>
+                  <span id="dashboard-overall-progress" class="text-[28px] font-extrabold text-white font-mono">72%</span>
                   <span class="block text-[11px] text-emerald-400">+4% this week</span>
                 </div>
                 <div class="w-12 h-12 flex items-center justify-center">
@@ -1700,7 +1699,7 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-secondary font-mono">78%</span>
+                  <span id="dashboard-quiz-average" class="text-[28px] font-extrabold text-secondary font-mono">78%</span>
                   <span class="block text-[11px] text-slate-400">Across 14 Assessments</span>
                 </div>
                 <span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[11px] font-bold">Good
@@ -1715,7 +1714,7 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-white font-mono">5</span>
+                  <span id="dashboard-enrolled-courses" class="text-[28px] font-extrabold text-white font-mono">5</span>
                   <span class="block text-[11px] text-slate-400">48 Completed Lessons</span>
                 </div>
                 <button class="text-secondary text-[12px] font-semibold hover:underline"
@@ -1730,7 +1729,7 @@
               </div>
               <div class="flex items-end justify-between mt-3">
                 <div>
-                  <span class="text-[28px] font-extrabold text-emerald-400 font-mono">12 Days</span>
+                  <span id="dashboard-study-streak" class="text-[28px] font-extrabold text-emerald-400 font-mono">12 Days</span>
                   <span class="block text-[11px] text-slate-400">18.5 Study Hours</span>
                 </div>
                 <span
@@ -1965,7 +1964,7 @@
 
             <!-- Cohort Comparison -->
             <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
-              <h3 class="text-[16px] font-bold text-white mb-2">Alex's Score vs Cohort Average</h3>
+              <h3 id="student-cohort-heading" class="text-[16px] font-bold text-white mb-2">Avinash's Score vs Cohort Average</h3>
               <div class="flex items-center justify-around py-6">
                 <div class="text-center">
                   <span class="text-[32px] font-extrabold text-primary-indigo font-mono">78%</span>
@@ -2048,25 +2047,257 @@
           </div>
         </div>
 
-        <!-- SUBVIEW 12: PROFILE -->
-        <div id="subview-profile" class="student-subview hidden flex flex-col gap-6 max-w-4xl mx-auto">
-          <div
-            class="p-8 rounded-3xl bg-surface-container border border-white/5 flex flex-col md:flex-row items-center gap-6">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80"
-              class="w-24 h-24 rounded-2xl object-cover ring-4 ring-primary-indigo/30">
-            <div class="flex-1 text-center md:text-left">
-              <h2 class="text-[24px] font-bold text-white">Alex Rivera</h2>
-              <p class="text-[13px] text-slate-400">alex.rivera@smartlearn.edu • Institute of Engineering &amp;
-                Technology</p>
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-3">
-                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200">Role:
-                  Student</span>
-                <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] text-slate-200">Semester 5
-                  (CS)</span>
-                <span
-                  class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold">Mastery:
-                  72%</span>
+        <!-- SUBVIEW 12: PROFILE (Real-Life Student Academic Portal) -->
+        <div id="subview-profile" class="student-subview hidden flex flex-col gap-6 max-w-5xl mx-auto">
+          <!-- Profile Header & Quick Actions -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
+                  Verified Academic Session 2024–2025
+                </span>
+                <span class="text-[12px] text-slate-400">SIH 2026 Active Scholar</span>
               </div>
+              <h2 class="text-[26px] font-extrabold text-white mt-1">Student Academic Profile</h2>
+              <p class="text-[13px] text-slate-400">Official institutional record, biometric attendance, semester performance, and credentials.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button
+                class="px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
+                onclick="SmartLearnApp.downloadAcademicTranscript()">
+                <span class="material-symbols-outlined text-[17px]">download</span>
+                <span>Download Transcript</span>
+              </button>
+              <button
+                class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-md"
+                onclick="SmartLearnApp.openEditProfileModal()">
+                <span class="material-symbols-outlined text-[17px]">edit</span>
+                <span>Edit Profile</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Real-Life Digital College Student ID Card -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-lowest p-6 sm:p-8 border border-white/10 shadow-2xl">
+            <!-- Background Security Watermark & Holographic Shimmer -->
+            <div class="absolute -right-12 -bottom-12 w-72 h-72 rounded-full bg-primary-indigo/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute top-0 right-0 p-6 opacity-10 font-black text-6xl tracking-widest select-none pointer-events-none text-white">
+              SMARTLEARN
+            </div>
+
+            <!-- Card Top Header -->
+            <div class="flex items-center justify-between pb-6 border-b border-white/10 relative z-10">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
+                  <span class="material-symbols-outlined text-[24px]">school</span>
+                </div>
+                <div>
+                  <h4 class="text-[14px] font-bold text-white tracking-wide uppercase" id="profile-student-college">Institute of Engineering &amp; Technology</h4>
+                  <span class="text-[11px] text-slate-400">Affiliated to National Technical University • Smart Education Hub</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Active Student ID
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body: Student Photo + Identity Details -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 relative z-10">
+              <!-- Avatar Column with Quick Edit -->
+              <div class="md:col-span-4 flex flex-col items-center text-center border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:pr-6">
+                <div class="relative group">
+                  <img id="profile-student-avatar"
+                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80"
+                    class="w-32 h-32 rounded-2xl object-cover ring-4 ring-primary-indigo/40 shadow-xl" alt="Student Photo">
+                  <button
+                    class="absolute inset-0 bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[11px] font-semibold gap-1"
+                    onclick="SmartLearnApp.openEditProfileModal()">
+                    <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                    <span>Change</span>
+                  </button>
+                </div>
+                <h3 id="profile-student-name" class="text-[20px] font-extrabold text-white mt-3 leading-tight">Avinash Verma</h3>
+                <span id="profile-student-email" class="text-[12px] text-slate-400 font-mono mt-0.5">avinash.verma@smartlearn.edu</span>
+
+                <div class="mt-4 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
+                  <span class="text-slate-400">Roll Number:</span>
+                  <span id="profile-student-roll" class="font-mono font-bold text-white">24CSE089</span>
+                </div>
+                <div class="mt-2 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
+                  <span class="text-slate-400">Univ Reg No:</span>
+                  <span class="font-mono font-bold text-primary-indigo">AKTU-2022-0914</span>
+                </div>
+              </div>
+
+              <!-- Academic Details Grid -->
+              <div class="md:col-span-8 flex flex-col justify-between space-y-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Department</span>
+                    <span id="profile-student-dept" class="text-[12px] font-bold text-white block mt-0.5">Computer Science &amp; Engg</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Semester / Class</span>
+                    <span id="profile-student-semester" class="text-[12px] font-bold text-white block mt-0.5">Semester 5 (3rd Year)</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Academic CGPA</span>
+                    <span class="text-[12px] font-mono font-extrabold text-emerald-400 block mt-0.5">8.84 / 10.0 (A+)</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Attendance</span>
+                    <span class="text-[12px] font-mono font-bold text-emerald-400 block mt-0.5">92.4% (Eligible)</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Faculty Mentor</span>
+                    <span class="text-[12px] font-bold text-slate-200 block mt-0.5">Prof. Sarah Jenkins</span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Hackathon Role</span>
+                    <span class="text-[12px] font-bold text-secondary block mt-0.5">SIH Lead Developer</span>
+                  </div>
+                </div>
+
+                <!-- Bio / Personal Statement -->
+                <div class="p-3.5 rounded-xl bg-surface-container-highest/30 border border-white/5">
+                  <span class="text-[10px] uppercase font-semibold text-slate-400 block mb-1">Learning Statement &amp; Career Objective</span>
+                  <p id="profile-student-bio" class="text-[12px] text-slate-300 leading-relaxed">
+                    Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms. Currently targeting 95%+ concept mastery and SIH 2026 Grand Finale.
+                  </p>
+                </div>
+
+                <!-- Digital ID Security Barcode Strip -->
+                <div class="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-400">verified</span>
+                    <span>NCTE &amp; AICTE Digitally Verified Credential</span>
+                  </div>
+                  <div class="font-mono tracking-widest text-[9px] text-slate-500 uppercase">
+                    |||||||| | ||||| |||||| | ||||||||||
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Performance Overview & Enrolled Subjects -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Real Attendance & Exam Eligibility Card -->
+            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                  <span class="text-[12px] font-semibold uppercase tracking-wider">Attendance Biometrics</span>
+                  <span class="material-symbols-outlined text-emerald-400 text-[18px]">fingerprint</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-[32px] font-extrabold text-white font-mono">92.4%</span>
+                  <span class="text-[12px] text-emerald-400 font-semibold">Exam Eligible</span>
+                </div>
+                <p class="text-[12px] text-slate-400 mt-1">112 of 121 lecture sessions attended across 5 registered theory and practical labs.</p>
+              </div>
+              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
+                <div class="bg-emerald-500 h-full rounded-full" style="width: 92.4%"></div>
+              </div>
+            </div>
+
+            <!-- Overall Course Mastery -->
+            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                  <span class="text-[12px] font-semibold uppercase tracking-wider">Curriculum Mastery</span>
+                  <span class="material-symbols-outlined text-primary text-[18px]">military_tech</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span id="profile-student-mastery" class="text-[32px] font-extrabold text-primary-indigo font-mono">72%</span>
+                  <span class="text-[12px] text-slate-300 font-semibold">Good Standing</span>
+                </div>
+                <p class="text-[12px] text-slate-400 mt-1">1 weak topic flagged for remediation (Pointers in C - 48%). All other modules above 75%.</p>
+              </div>
+              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
+                <div class="bg-primary-indigo h-full rounded-full" style="width: 72%"></div>
+              </div>
+            </div>
+
+            <!-- Active Learning Streak -->
+            <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                  <span class="text-[12px] font-semibold uppercase tracking-wider">Active Study Streak</span>
+                  <span class="material-symbols-outlined text-amber-400 text-[18px]">local_fire_department</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span id="profile-student-streak" class="text-[32px] font-extrabold text-amber-400 font-mono">12 Days</span>
+                  <span class="text-[12px] text-amber-300/80 font-semibold">Consistent</span>
+                </div>
+                <p class="text-[12px] text-slate-400 mt-1">18.5 study hours logged this week. Target: 14 days for Silver Streak Badge.</p>
+              </div>
+              <div class="w-full bg-surface-container-highest h-2 rounded-full mt-4 overflow-hidden">
+                <div class="bg-amber-400 h-full rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enrolled Semester Courses & Official Grades Table -->
+          <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-[16px] font-bold text-white">Current Semester Registered Subjects (B.Tech CSE - Sem 5)</h3>
+                <p class="text-[12px] text-slate-400">Continuous internal evaluation, attendance, and faculty feedback.</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[11px] font-mono text-slate-300">22 Credits Registered</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-[13px]">
+                <thead>
+                  <tr class="border-b border-white/10 text-slate-400 text-[11px] uppercase">
+                    <th class="py-2.5 px-4">Subject Code &amp; Title</th>
+                    <th class="py-2.5 px-4">Faculty Instructor</th>
+                    <th class="py-2.5 px-4">Attendance</th>
+                    <th class="py-2.5 px-4">Assessment Grade</th>
+                    <th class="py-2.5 px-4 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                  <tr>
+                    <td class="py-3 px-4 text-white font-medium">CS301 • Data Structures &amp; Algorithmic Patterns</td>
+                    <td class="py-3 px-4 text-slate-300">Prof. Sarah Jenkins</td>
+                    <td class="py-3 px-4 font-mono text-emerald-400">95%</td>
+                    <td class="py-3 px-4 font-mono font-bold text-primary-indigo">86% (Grade A)</td>
+                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4 text-white font-medium">CS302 • C Systems Programming &amp; Memory Architecture</td>
+                    <td class="py-3 px-4 text-slate-300">Prof. Rajesh Mehta</td>
+                    <td class="py-3 px-4 font-mono text-emerald-400">91%</td>
+                    <td class="py-3 px-4 font-mono font-bold text-rose-400">48% (Weak: Pointers)</td>
+                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px] font-bold">Drill Assigned</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4 text-white font-medium">CS303 • Database Management Systems &amp; SQL</td>
+                    <td class="py-3 px-4 text-slate-300">Dr. Anita Rao</td>
+                    <td class="py-3 px-4 font-mono text-emerald-400">94%</td>
+                    <td class="py-3 px-4 font-mono font-bold text-emerald-400">92% (Grade A+)</td>
+                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">Excelling</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4 text-white font-medium">CS304 • Modern Web Architecture &amp; Interactive 3D</td>
+                    <td class="py-3 px-4 text-slate-300">Prof. Vikram Singh</td>
+                    <td class="py-3 px-4 font-mono text-emerald-400">96%</td>
+                    <td class="py-3 px-4 font-mono font-bold text-emerald-400">94% (Grade A+)</td>
+                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">Excelling</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4 text-white font-medium">CS305 • Computer Networks &amp; Socket Programming</td>
+                    <td class="py-3 px-4 text-slate-300">Prof. Sunita Das</td>
+                    <td class="py-3 px-4 font-mono text-emerald-400">89%</td>
+                    <td class="py-3 px-4 font-mono font-bold text-primary-indigo">84% (Grade A)</td>
+                    <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">On Track</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -2278,7 +2509,7 @@
                 </thead>
                 <tbody>
                   <tr class="border-b border-white/5">
-                    <td class="py-3 px-4 text-white font-medium">Alex Rivera</td>
+                    <td class="py-3 px-4 text-white font-medium">Avinash Verma</td>
                     <td class="py-3 px-4 text-slate-300">C Systems &amp; DSA</td>
                     <td class="py-3 px-4 text-rose-400">Pointers (48%)</td>
                     <td class="py-3 px-4 font-mono font-bold text-amber-400">78% Avg</td>
@@ -2416,6 +2647,102 @@
        ====================================================================== -->
 
   <!-- ======================================================================
+       EDIT STUDENT PROFILE MODAL (#modal-edit-profile)
+       Real-life profile management for authenticated students
+       ====================================================================== -->
+  <div id="modal-edit-profile" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md"
+      onclick="SmartLearnApp.closeModal('modal-edit-profile')"></div>
+    <div class="relative w-full max-w-lg rounded-3xl glass-modal p-7 shadow-2xl z-10 flex flex-col gap-5 border border-white/15 max-h-[90vh] overflow-y-auto">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+          </div>
+          <div>
+            <h3 class="text-[18px] font-bold text-white leading-tight">Edit Academic Profile</h3>
+            <span class="text-[11px] text-slate-400">Update your verified student identity details</span>
+          </div>
+        </div>
+        <button class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-surface-container"
+          onclick="SmartLearnApp.closeModal('modal-edit-profile')">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Edit Form -->
+      <form onsubmit="SmartLearnApp.handleProfileUpdateSubmit(event)" class="flex flex-col gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Full Name</label>
+            <input type="text" id="edit-student-name" required class="uiverse-input" placeholder="e.g. Avinash Verma">
+          </div>
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">University Roll Number</label>
+            <input type="text" id="edit-student-roll" required class="uiverse-input" placeholder="e.g. 24CSE089">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Department / Branch</label>
+            <input type="text" id="edit-student-dept" required class="uiverse-input" placeholder="e.g. Computer Science & Engineering">
+          </div>
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Current Semester &amp; Year</label>
+            <input type="text" id="edit-student-semester" required class="uiverse-input" placeholder="e.g. Semester 5 (3rd Year B.Tech)">
+          </div>
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">College / Institute Name</label>
+          <input type="text" id="edit-student-college" required class="uiverse-input" placeholder="e.g. Institute of Engineering & Technology">
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Learning Bio &amp; Career Objective</label>
+          <textarea id="edit-student-bio" rows="2" class="uiverse-input !h-auto py-2" placeholder="Tell mentors about your learning objectives, SIH goals, or target companies..."></textarea>
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300">Avatar Photo Preset / URL</label>
+          <input type="url" id="edit-student-avatar-url" class="uiverse-input" placeholder="Enter image URL or pick below">
+          <div class="flex items-center gap-2 mt-2">
+            <span class="text-[11px] text-slate-400">Quick Avatars:</span>
+            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
+              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+          <button type="button" class="px-4 py-2 rounded-xl text-slate-300 hover:text-white text-[13px]"
+            onclick="SmartLearnApp.closeModal('modal-edit-profile')">Cancel</button>
+          <button type="submit" class="uiverse-btn-3d !py-2 !px-5 text-[13px] flex items-center gap-2">
+            <span>Save Profile</span>
+            <span class="material-symbols-outlined text-[16px]">check</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
        STUDENT ONBOARDING / LEARNING SETUP MODAL (#modal-student-onboarding)
        Prompt Requirement 19: "Start Learning" should NOT be a dead button!
        ====================================================================== -->
@@ -2450,8 +2777,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="uiverse-input-group">
             <label class="text-[12px] font-medium text-slate-300">Your Full Name</label>
-            <input type="text" id="onboard-student-name" required class="uiverse-input" value="Alex Rivera"
-              placeholder="e.g. Alex Rivera">
+            <input type="text" id="onboard-student-name" required class="uiverse-input" value="Avinash Verma"
+              placeholder="e.g. Avinash Verma">
           </div>
           <div class="uiverse-input-group">
             <label class="text-[12px] font-medium text-slate-300">Class / Academic Year</label>
@@ -2556,8 +2883,8 @@
         <span class="text-slate-300 font-medium">Quick Demo:</span>
         <div class="flex items-center gap-2">
           <button type="button" class="uiverse-btn-tactile text-primary hover:text-white text-[11px]"
-            onclick="document.getElementById('auth-login-email').value='alex.rivera@smartlearn.edu'; document.getElementById('auth-login-password').value='Student@2026'; document.getElementById('auth-role-select').value='student';">
-            Student (Alex)
+            onclick="document.getElementById('auth-login-email').value='avinash.verma@smartlearn.edu'; document.getElementById('auth-login-password').value='Student@2026'; document.getElementById('auth-role-select').value='student';">
+            Student (Avinash Verma)
           </button>
           <button type="button" class="uiverse-btn-tactile text-emerald-400 hover:text-white text-[11px]"
             onclick="document.getElementById('auth-login-email').value='s.jenkins@smartlearn.edu'; document.getElementById('auth-login-password').value='Teacher@2026'; document.getElementById('auth-role-select').value='teacher';">
@@ -2574,7 +2901,7 @@
         <div class="uiverse-input-group">
           <label class="text-[12px] font-medium text-slate-300">Email Address</label>
           <input type="email" id="auth-login-email" required class="uiverse-input"
-            placeholder="e.g. alex@smartlearn.edu" value="alex.rivera@smartlearn.edu">
+            placeholder="e.g. avinash.verma@smartlearn.edu" value="avinash.verma@smartlearn.edu">
         </div>
         <div class="uiverse-input-group">
           <label class="text-[12px] font-medium text-slate-300">Password</label>
@@ -3025,8 +3352,8 @@
 
     <!-- Copilot Messages -->
     <div class="flex-1 p-4 overflow-y-auto space-y-3" id="copilot-messages">
-      <div class="p-3.5 rounded-2xl bg-surface-container border border-white/5 text-[13px] text-slate-200">
-        Hi Alex! I'm your **SmartLearn AI Tutor** (powered by GPT-4o &amp; Gemini 1.5 reasoning). Ask me anything about
+      <div id="copilot-welcome-message" class="p-3.5 rounded-2xl bg-surface-container border border-white/5 text-[13px] text-slate-200">
+        Hi Avinash! I'm your **SmartLearn AI Tutor** (powered by GPT-4o &amp; Gemini 1.5 reasoning). Ask me anything about
         Data Structures, Pointers in C, SQL Normalization, Spring Boot, or exam preparation!
       </div>
     </div>
