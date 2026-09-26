@@ -73,9 +73,24 @@ const SmartLearnAPI = (function () {
     }
   }
 
-  // --- AUTH SERVICES (Supabase + Spring Boot fallback) ---
+  // --- AUTH SERVICES (InsForge Cloud + Supabase + Spring Boot fallback) ---
   async function login(email, password, role = "student") {
-    // 1. Supabase Cloud Authentication
+    // 1. InsForge Cloud Real Authentication & PostgreSQL
+    if (window.SmartLearnInsforge) {
+      try {
+        const res = await window.SmartLearnInsforge.signIn(email, password, role);
+        if (res.success && res.user) {
+          const store = getLocalStore();
+          store.currentUser = res.user;
+          saveLocalStore(store);
+          return res;
+        }
+      } catch (err) {
+        console.warn("[InsForge] signIn failed, checking fallbacks:", err);
+      }
+    }
+
+    // 2. Supabase Cloud Authentication (secondary)
     if (window.SmartLearnSupabase) {
       try {
         const res = await window.SmartLearnSupabase.signIn(email, password, role);
@@ -129,7 +144,26 @@ const SmartLearnAPI = (function () {
   }
 
   async function register(userData) {
-    // 1. Supabase Cloud User Registration
+    // 1. InsForge Cloud Real Registration & Profile Creation
+    if (window.SmartLearnInsforge) {
+      try {
+        const res = await window.SmartLearnInsforge.signUp(
+          userData.email,
+          userData.password,
+          { fullName: userData.fullName, role: userData.role }
+        );
+        if (res.success && res.user) {
+          const store = getLocalStore();
+          store.currentUser = res.user;
+          saveLocalStore(store);
+          return res;
+        }
+      } catch (err) {
+        console.warn("[InsForge] signUp error, trying fallback:", err);
+      }
+    }
+
+    // 2. Supabase Cloud User Registration (secondary)
     if (window.SmartLearnSupabase) {
       try {
         const res = await window.SmartLearnSupabase.signUp(
@@ -177,6 +211,11 @@ const SmartLearnAPI = (function () {
   }
 
   async function signOut() {
+    if (window.SmartLearnInsforge) {
+      try {
+        await window.SmartLearnInsforge.signOut();
+      } catch (e) {}
+    }
     if (window.SmartLearnSupabase) {
       try {
         await window.SmartLearnSupabase.signOut();
