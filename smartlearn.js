@@ -83,8 +83,27 @@ const SmartLearnApp = (function () {
     }
 
     await renderAllViews();
-    // Default to Landing view if not logged in
-    showMainView("landing");
+
+    // Automatically detect which page or section is active
+    const path = (window.location.pathname || "").toLowerCase();
+    const isStudentPage = path.includes("student.html") || (document.getElementById("student-app-layout") && !document.getElementById("public-landing-view"));
+    const isTeacherPage = path.includes("teacher.html") || (document.getElementById("teacher-app-layout") && !document.getElementById("public-landing-view"));
+
+    if (isStudentPage) {
+      showMainView("student-dashboard");
+      const hash = window.location.hash.replace("#", "");
+      if (hash && document.getElementById(`subview-${hash}`)) {
+        showStudentTab(hash);
+      }
+    } else if (isTeacherPage) {
+      showMainView("teacher-dashboard");
+      const hash = window.location.hash.replace("#", "");
+      if (hash && document.getElementById(`teacher-subview-${hash}`)) {
+        showTeacherTab(hash);
+      }
+    } else {
+      showMainView("landing");
+    }
   }
 
   // Dynamic User UI Sync across Header, Navbar, and Dashboards
@@ -219,7 +238,12 @@ const SmartLearnApp = (function () {
     state.currentUser = null;
     updateUserUI(null);
     notify("Signed Out", "You have been logged out securely.", "info");
-    showMainView("landing");
+    const isLanding = document.getElementById("public-landing-view");
+    if (!isLanding) {
+      window.location.href = "index.html";
+    } else {
+      showMainView("landing");
+    }
   }
 
   // --- VIEW SWITCHING ---
@@ -228,6 +252,21 @@ const SmartLearnApp = (function () {
     const landing = document.getElementById("public-landing-view");
     const studentApp = document.getElementById("student-app-layout");
     const teacherApp = document.getElementById("teacher-app-layout");
+
+    // Seamless multi-page cross-navigation
+    const path = (window.location.pathname || "").toLowerCase();
+    if (viewName === "student-dashboard" && !studentApp && !path.includes("student.html")) {
+      window.location.href = "student.html";
+      return;
+    }
+    if (viewName === "teacher-dashboard" && !teacherApp && !path.includes("teacher.html")) {
+      window.location.href = "teacher.html";
+      return;
+    }
+    if (viewName === "landing" && !landing && !path.endsWith("index.html") && path !== "/") {
+      window.location.href = "index.html";
+      return;
+    }
 
     if (landing) landing.classList.toggle("hidden", viewName !== "landing");
     if (studentApp) studentApp.classList.toggle("hidden", viewName !== "student-dashboard");
