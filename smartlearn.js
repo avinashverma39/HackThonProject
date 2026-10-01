@@ -458,7 +458,7 @@ const SmartLearnApp = (function () {
       { icon: "crisis_alert", title: "Weak Topic Detection", desc: "Automatic identification of topics scoring below 70%, with clear error pattern diagnosis." },
       { icon: "psychology", title: "Personalized Recommendations", desc: "Transparent recommendation engine explaining exactly why a resource is suggested for you." },
       { icon: "fitness_center", title: "Practice Questions", desc: "Topic and difficulty-filtered practice drills with instant feedback and comprehensive rationales." },
-      { icon: "trending_up", title: "Learning Progress", desc: "Visual retention curves, weekly study hour tracking, study streaks, and degree milestone maps." },
+      { icon: "trending_up", title: "Learning Progress", desc: "Visual retention curves, consistent study hour tracking, study streaks, and degree milestone maps." },
       { icon: "folder_managed", title: "Teacher Course Management", desc: "Full curriculum builder for educators to upload notes, manage modules, and add video lectures." },
       { icon: "ballot", title: "Quiz Management", desc: "Intuitive quiz authoring interface for teachers to create multi-choice assessments with answer keys." }
     ];
