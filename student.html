@@ -147,10 +147,10 @@
         <div
           class="px-5 pt-3 pb-1 flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
           <span>Main Navigation</span>
-          <span class="text-emerald-400 font-mono text-[10px]">14 Tabs</span>
+          <span class="text-emerald-400 font-mono text-[10px]">Active</span>
         </div>
 
-        <!-- 14 Navigation Links -->
+        <!-- Navigation Links -->
         <nav class="flex flex-col gap-0.5 px-3 py-1 text-[13px]" id="student-sidebar-nav">
           <button
             class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
@@ -194,12 +194,6 @@
             <span class="material-symbols-outlined text-[18px]">fitness_center</span>
             <span>Practice</span>
           </button>
-          <button
-            class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
-            data-tab="performance" onclick="SmartLearnApp.showStudentTab('performance')">
-            <span class="material-symbols-outlined text-[18px]">monitoring</span>
-            <span>Performance</span>
-          </button>
           <!-- HIGHLIGHTED CORE SMART EDUCATION TABS -->
           <button
             class="student-nav-item flex items-center justify-between px-3 py-2 rounded-xl text-rose-300 hover:text-white hover:bg-rose-500/10 transition-all border border-rose-500/20 my-1"
@@ -229,7 +223,7 @@
             class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
             data-tab="profile" onclick="SmartLearnApp.showStudentTab('profile')">
             <span class="material-symbols-outlined text-[18px]">person</span>
-            <span>Profile</span>
+            <span>Profile &amp; Account</span>
           </button>
           <button
             class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
@@ -243,11 +237,8 @@
       <!-- Student Footer Panel -->
       <div class="p-3 bg-surface-container-lowest/60 border-t border-white/5 flex flex-col gap-2">
         <div class="flex items-center justify-between px-2 text-[12px]">
-          <span class="text-slate-400">Role: <strong class="text-white">Student</strong></span>
-          <button class="text-emerald-400 font-semibold hover:underline text-[11px]"
-            onclick="window.location.href='teacher.html'">
-            Teacher Mode →
-          </button>
+          <span class="text-slate-400">Account: <strong class="text-white">Active Student</strong></span>
+          <span class="text-emerald-400 font-mono text-[10px] font-semibold">Verified</span>
         </div>
         <button
           class="w-full py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-slate-300 hover:text-white text-[12px] font-medium flex items-center justify-center gap-2 transition-colors border border-white/5"
@@ -371,7 +362,7 @@
                 <div class="flex items-center gap-2">
                   <span id="dashboard-semester-badge"
                     class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20">
-                    Active Semester 5 • Week 6
+                    Active Semester 5 • Session 2024–2025
                   </span>
                   <span id="dashboard-student-dept" class="text-[12px] text-slate-400">Computer Science &amp; Engineering • Roll: 24CSE089</span>
                 </div>
@@ -404,7 +395,7 @@
               <div class="flex items-end justify-between mt-3">
                 <div>
                   <span id="dashboard-overall-progress" class="text-[28px] font-extrabold text-white font-mono">72%</span>
-                  <span class="block text-[11px] text-emerald-400">+4% this week</span>
+                  <span class="block text-[11px] text-emerald-400">+4% this term</span>
                 </div>
                 <div class="w-12 h-12 flex items-center justify-center">
                   <svg class="w-12 h-12 transform -rotate-90">
@@ -749,14 +740,14 @@
         <div id="subview-progress" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
           <div>
             <h2 class="text-[24px] font-bold text-white">Learning Progress &amp; Study Habit Analytics</h2>
-            <p class="text-[13px] text-slate-400">Review weekly focus hours, retention rates, and semester goals.</p>
+            <p class="text-[13px] text-slate-400">Review focus hours, retention rates, and semester goals.</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
-              <span class="text-[12px] text-slate-400 uppercase font-semibold">Weekly Study Time</span>
+              <span class="text-[12px] text-slate-400 uppercase font-semibold">Total Study Focus</span>
               <span class="text-[26px] font-extrabold text-white block mt-1 font-mono">18.5 hrs</span>
-              <span class="text-[11px] text-emerald-400">+2.5 hrs vs last week</span>
+              <span class="text-[11px] text-emerald-400">+2.5 hrs vs baseline</span>
             </div>
             <div class="p-5 rounded-2xl bg-surface-container border border-white/5">
               <span class="text-[12px] text-slate-400 uppercase font-semibold">Learning Streak</span>
@@ -846,6 +837,10 @@
                 </div>
                 <h3 id="profile-student-name" class="text-[20px] font-extrabold text-white mt-3 leading-tight">Avinash Verma</h3>
                 <span id="profile-student-email" class="text-[12px] text-slate-400 font-mono mt-0.5">avinash.verma@smartlearn.edu</span>
+                <span id="profile-student-phone" class="text-[11px] text-emerald-400 font-mono mt-1 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">phone</span>
+                  <span id="profile-student-phone-text">+91 98765 43210</span>
+                </span>
 
                 <div class="mt-4 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
                   <span class="text-slate-400">Roll Number:</span>
@@ -1025,6 +1020,141 @@
               </table>
             </div>
           </div>
+
+          <!-- USER-MANAGEABLE CORE PERSONAL DETAILS SECTION -->
+          <div class="p-6 rounded-3xl bg-surface-container border border-white/10 shadow-xl flex flex-col gap-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary-indigo/20 border border-primary-indigo/30 flex items-center justify-center text-primary-indigo">
+                  <span class="material-symbols-outlined text-[22px]">manage_accounts</span>
+                </div>
+                <div>
+                  <h3 class="text-[18px] font-bold text-white">Account Management &amp; Core Personal Details</h3>
+                  <p class="text-[12px] text-slate-400">Update your official display name, contact phone number, and primary email address.</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold border border-emerald-500/20 self-start sm:self-auto flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Directly Editable
+              </span>
+            </div>
+
+            <form onsubmit="SmartLearnApp.handlePersonalDetailsUpdate(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[15px] text-primary">badge</span>
+                  <span>Display Name / Full Name</span>
+                </label>
+                <input type="text" id="profile-manage-name" required class="uiverse-input" placeholder="e.g. Avinash Verma" value="Avinash Verma">
+              </div>
+
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[15px] text-emerald-400">call</span>
+                  <span>Mobile / Phone Number</span>
+                </label>
+                <input type="tel" id="profile-manage-phone" required class="uiverse-input" placeholder="e.g. +91 98765 43210" value="+91 98765 43210">
+              </div>
+
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[15px] text-secondary">mail</span>
+                  <span>Email Address</span>
+                </label>
+                <input type="email" id="profile-manage-email" required class="uiverse-input" placeholder="e.g. avinash.verma@smartlearn.edu" value="avinash.verma@smartlearn.edu">
+              </div>
+
+              <div class="md:col-span-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
+                <span class="text-[11px] text-slate-400">Updates immediately propagate across all headers, dashboards, and cloud profiles.</span>
+                <button type="submit" id="btn-save-personal-details" class="uiverse-btn-3d !py-2.5 !px-6 text-[13px] flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[17px]">save</span>
+                  <span>Save Personal Details</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- DEDICATED REPORT SECTION -->
+          <div class="p-6 rounded-3xl bg-surface-container border border-white/10 shadow-xl flex flex-col gap-6" id="profile-report-section">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400">
+                  <span class="material-symbols-outlined text-[22px]">report_problem</span>
+                </div>
+                <div>
+                  <h3 class="text-[18px] font-bold text-white">Student Support &amp; Issue Report Section</h3>
+                  <p class="text-[12px] text-slate-400">Directly submit bug reports, syllabus errors, UI glitches, or institutional feedback.</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-300 text-[11px] font-semibold border border-rose-500/20 self-start sm:self-auto flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">support_agent</span>
+                Direct Desk
+              </span>
+            </div>
+
+            <!-- Report Submission Form -->
+            <form onsubmit="SmartLearnApp.handleReportSubmit(event)" class="flex flex-col gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Category</label>
+                  <select id="report-category" class="uiverse-input">
+                    <option value="Bug Report">🐞 Bug Report / Technical Glitch</option>
+                    <option value="UI/UX Issue">🎨 UI/UX Layout Issue</option>
+                    <option value="Content Error">📖 Curriculum / Content Error</option>
+                    <option value="Feature Suggestion">💡 Feature Request / Improvement</option>
+                    <option value="Performance Problem">⚡ Performance / Latency Concern</option>
+                    <option value="Account / Security">🔒 Account / Security Inquiry</option>
+                  </select>
+                </div>
+
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Priority Level</label>
+                  <select id="report-priority" class="uiverse-input">
+                    <option value="Low">Low — General Suggestion</option>
+                    <option value="Medium" selected>Medium — Noticeable Issue</option>
+                    <option value="High">High — Impairs Learning Activity</option>
+                    <option value="Urgent">Urgent — Blocker / Examination Error</option>
+                  </select>
+                </div>
+
+                <div class="uiverse-input-group sm:col-span-1">
+                  <label class="text-[12px] font-medium text-slate-300">Issue Subject / Short Summary</label>
+                  <input type="text" id="report-subject" required class="uiverse-input" placeholder="e.g. Memory frame diagram glitch in pointers drill">
+                </div>
+              </div>
+
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300">Detailed Description &amp; Reproduction Steps</label>
+                <textarea id="report-description" required rows="3" class="uiverse-input !h-auto py-2.5" placeholder="Please describe what occurred, expected outcome, and which course module or question was involved..."></textarea>
+              </div>
+
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-[11px] text-slate-400">Tickets are logged with an auto-generated tracking ID.</span>
+                <button type="submit" id="btn-submit-report" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-primary-indigo hover:from-rose-500 hover:to-indigo-500 text-white font-semibold text-[13px] flex items-center gap-2 shadow-lg shadow-rose-900/30 transition-all">
+                  <span class="material-symbols-outlined text-[17px]">send</span>
+                  <span>Submit Issue Report</span>
+                </button>
+              </div>
+            </form>
+
+            <!-- Live Submitted Reports & Status Tracking -->
+            <div class="pt-4 border-t border-white/10 flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <h4 class="text-[14px] font-bold text-white">Your Submitted Reports &amp; Ticket Status</h4>
+                  <span id="reports-count-badge" class="px-2 py-0.5 rounded-full bg-surface-container-highest text-slate-300 font-mono text-[10px]">2 Active</span>
+                </div>
+                <button type="button" onclick="SmartLearnApp.renderUserReports()" class="text-secondary hover:underline text-[11px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">refresh</span>
+                  <span>Refresh Tickets</span>
+                </button>
+              </div>
+
+              <div id="user-reports-list" class="flex flex-col gap-2.5">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- SUBVIEW 13: SETTINGS -->
@@ -1096,12 +1226,23 @@
       <form onsubmit="SmartLearnApp.handleProfileUpdateSubmit(event)" class="flex flex-col gap-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Full Name</label>
+            <label class="text-[12px] font-medium text-slate-300">Full Name / Display Name</label>
             <input type="text" id="edit-student-name" required class="uiverse-input" placeholder="e.g. Avinash Verma">
           </div>
           <div class="uiverse-input-group">
             <label class="text-[12px] font-medium text-slate-300">University Roll Number</label>
             <input type="text" id="edit-student-roll" required class="uiverse-input" placeholder="e.g. 24CSE089">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Email Address</label>
+            <input type="email" id="edit-student-email" required class="uiverse-input" placeholder="e.g. avinash.verma@smartlearn.edu">
+          </div>
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300">Mobile / Phone Number</label>
+            <input type="tel" id="edit-student-phone" required class="uiverse-input" placeholder="e.g. +91 98765 43210">
           </div>
         </div>
 
