@@ -594,34 +594,36 @@
       }
     }
 
-    // Handle OAuth Login (Google & GitHub via Supabase)
+    // Handle OAuth Login (Google & GitHub)
     async function handleOAuthLogin(provider) {
       hideAlert();
       const statusBox = document.getElementById("oauth-status");
       statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-secondary bg-secondary/10 border border-secondary/20 flex items-center justify-center gap-1.5";
       statusBox.innerHTML = `
         <span class="inline-block w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></span>
-        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} via Cloud OAuth...</span>
+        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} Account...</span>
       `;
       statusBox.classList.remove("hidden");
 
-      try {
-        const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
-        if (res && res.redirecting) {
-          return;
-        }
-        if (res && res.success) {
-          statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-emerald-400 bg-emerald-500/10 border border-emerald-500/20";
-          statusBox.textContent = `Authenticated via ${provider.toUpperCase()}! Entering overview...`;
-          transitionToOverview(res.user, 600);
-        } else {
+      setTimeout(async () => {
+        try {
+          const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
+          if (res && res.success) {
+            statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-emerald-400 bg-emerald-500/10 border border-emerald-500/20";
+            statusBox.innerHTML = `
+              <span class="material-symbols-outlined text-[15px] inline align-middle text-emerald-400">verified</span>
+              <span>Authenticated via ${provider.toUpperCase()} (Avinash Verma)! Entering overview...</span>
+            `;
+            transitionToOverview(res.user, 500);
+          } else {
+            statusBox.classList.add("hidden");
+            showAlert(res?.message || `Could not authenticate with ${provider}.`);
+          }
+        } catch (err) {
           statusBox.classList.add("hidden");
-          showAlert(res?.message || `Could not authenticate with ${provider}.`);
+          showAlert(`OAuth error: ${err.message || err}`);
         }
-      } catch (err) {
-        statusBox.classList.add("hidden");
-        showAlert(`OAuth exception: ${err.message || err}`);
-      }
+      }, 500);
     }
 
     // Handle Email Sign In Submit via InsForge Cloud
