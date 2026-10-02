@@ -1935,6 +1935,19 @@ const SmartLearnApp = (function () {
         dropdown.classList.add("hidden");
       }
     });
+
+    // Listen for InsForge Cloud / Supabase authentication changes
+    window.addEventListener("smartlearn:auth_changed", e => {
+      const user = e.detail?.user;
+      if (user) {
+        state.currentUser = user;
+        state.currentRole = user.role || "student";
+        updateUserUI(user);
+      } else {
+        state.currentUser = null;
+        updateUserUI(null);
+      }
+    });
   }
 
   function openAIChatbot(initialPrompt = '') {
