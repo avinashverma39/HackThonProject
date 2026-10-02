@@ -30,41 +30,6 @@ const SmartLearnSupabase = (function () {
           }
         });
         console.log("⚡ Supabase Client initialized successfully with project: yhrjuzddndyrasniycca");
-
-        // Listen for live auth state changes across all tabs and components
-        client.auth.onAuthStateChange(async (event, session) => {
-          if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-            if (session && session.user) {
-              sessionStorage.removeItem("smartlearn_signed_out");
-              const { data: profile } = await client
-                .from("profiles")
-                .select("*")
-                .eq("id", session.user.id)
-                .maybeSingle();
-
-              activeProfile = profile || {
-                id: session.user.id,
-                email: session.user.email,
-                full_name: session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "Learner",
-                role: session.user.user_metadata?.role || "student",
-                department: session.user.user_metadata?.department || "Computer Science",
-                avatar_url: (session.user.user_metadata?.role === "teacher")
-                  ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-                  : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-                streak_days: 1,
-                overall_progress: 0,
-                quiz_average: 0
-              };
-              localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
-              window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: activeProfile } }));
-            }
-          } else if (event === "SIGNED_OUT") {
-            activeProfile = null;
-            localStorage.removeItem("smartlearn_active_profile");
-            sessionStorage.setItem("smartlearn_signed_out", "true");
-            window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: null } }));
-          }
-        });
       } else {
         console.warn("Supabase SDK not loaded on window, offline fallback active.");
       }
@@ -405,8 +370,6 @@ const SmartLearnSupabase = (function () {
     }
     activeProfile = null;
     localStorage.removeItem("smartlearn_active_profile");
-    sessionStorage.setItem("smartlearn_signed_out", "true");
-    window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: null } }));
     return { success: true, message: "Signed out successfully." };
   }
 
@@ -415,14 +378,20 @@ const SmartLearnSupabase = (function () {
    */
   async function restoreSession() {
     const sb = getClient();
-    const isExplicitlySignedOut = sessionStorage.getItem("smartlearn_signed_out") === "true";
 
-    // 1. Query Supabase for active session first (Highest authority)
+    // 1. Try local storage cache first
+    try {
+      const cached = localStorage.getItem("smartlearn_active_profile");
+      if (cached) {
+        activeProfile = JSON.parse(cached);
+      }
+    } catch (e) {}
+
+    // 2. Query Supabase for active session
     if (sb) {
       try {
         const { data: { session } } = await sb.auth.getSession();
         if (session && session.user) {
-          sessionStorage.removeItem("smartlearn_signed_out");
           const { data: profile } = await sb
             .from("profiles")
             .select("*")
@@ -432,26 +401,6 @@ const SmartLearnSupabase = (function () {
           if (profile) {
             activeProfile = profile;
             localStorage.setItem("smartlearn_active_profile", JSON.stringify(profile));
-            return activeProfile;
-          } else {
-            const userMeta = session.user.user_metadata || {};
-            const newProfile = {
-              id: session.user.id,
-              email: session.user.email,
-              full_name: userMeta.full_name || session.user.email?.split("@")[0] || "Learner",
-              role: userMeta.role || "student",
-              department: userMeta.department || "Computer Science",
-              avatar_url: (userMeta.role === "teacher")
-                ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-                : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-              streak_days: 1,
-              overall_progress: 0,
-              quiz_average: 0
-            };
-            await sb.from("profiles").upsert(newProfile);
-            activeProfile = newProfile;
-            localStorage.setItem("smartlearn_active_profile", JSON.stringify(newProfile));
-            return activeProfile;
           }
         }
       } catch (e) {
@@ -459,55 +408,36 @@ const SmartLearnSupabase = (function () {
       }
     }
 
-    // If user explicitly signed out, do not restore local cache
-    if (isExplicitlySignedOut) {
-      activeProfile = null;
-      return null;
+    // Default to real student Avinash Verma if no session exists yet
+    if (!activeProfile) {
+      activeProfile = {
+        id: "demo-student-avinash",
+        email: "avinash.verma@smartlearn.edu",
+        full_name: "Avinash Verma",
+        role: "student",
+        department: "Computer Science & Engineering",
+        college: "Institute of Engineering & Technology",
+        semester: "Semester 5 (3rd Year B.Tech)",
+        roll_no: "24CSE089",
+        avatar_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
+        streak_days: 12,
+        overall_progress: 72,
+        quiz_average: 78,
+        cgpa: "8.84",
+        attendance: "92.4%",
+        enrolled_courses_count: 5
+      };
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
     }
 
-    // 2. Try local storage cache
-    try {
-      const cached = localStorage.getItem("smartlearn_active_profile");
-      if (cached) {
-        activeProfile = JSON.parse(cached);
-        if (activeProfile && (activeProfile.full_name === "Alex Rivera" || activeProfile.id === "demo-student-alex")) {
-          activeProfile.full_name = "Avinash Verma";
-          activeProfile.email = "avinash.verma@smartlearn.edu";
-          activeProfile.roll_no = "24CSE089";
-          activeProfile.id = "demo-student-avinash";
-          localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
-        }
-        return activeProfile;
-      }
-    } catch (e) {}
-
-    // 3. For public landing pages, return null if no session exists
-    const path = (window.location.pathname || "").toLowerCase();
-    const isPublicPage = path.endsWith("index.html") || path.endsWith("login.html") || path === "" || path.endsWith("/");
-    if (isPublicPage) {
-      activeProfile = null;
-      return null;
+    if (activeProfile && (activeProfile.full_name === "Alex Rivera" || activeProfile.id === "demo-student-alex")) {
+      activeProfile.full_name = "Avinash Verma";
+      activeProfile.email = "avinash.verma@smartlearn.edu";
+      activeProfile.roll_no = "24CSE089";
+      activeProfile.id = "demo-student-avinash";
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
     }
 
-    // 4. Default to real student Avinash Verma when directly previewing portals
-    activeProfile = {
-      id: "demo-student-avinash",
-      email: "avinash.verma@smartlearn.edu",
-      full_name: "Avinash Verma",
-      role: "student",
-      department: "Computer Science & Engineering",
-      college: "Institute of Engineering & Technology",
-      semester: "Semester 5 (3rd Year B.Tech)",
-      roll_no: "24CSE089",
-      avatar_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
-      streak_days: 12,
-      overall_progress: 72,
-      quiz_average: 78,
-      cgpa: "8.84",
-      attendance: "92.4%",
-      enrolled_courses_count: 5
-    };
-    localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
     return activeProfile;
   }
 

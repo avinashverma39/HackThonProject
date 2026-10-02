@@ -68,21 +68,8 @@ const SmartLearnApp = (function () {
     setupGlobalEventListeners();
     setupTheme();
 
-    // 1. Restore active Supabase Cloud session
-    if (window.SmartLearnSupabase) {
-      try {
-        const user = await window.SmartLearnSupabase.restoreSession();
-        if (user) {
-          state.currentUser = user;
-          state.currentRole = user.role;
-          updateUserUI(user);
-        } else {
-          updateUserUI(null);
-        }
-      } catch (err) {
-        console.warn("Could not restore Supabase session:", err);
-      }
-    } else if (window.SmartLearnInsforge) {
+    // 1. Restore active InsForge Cloud session
+    if (window.SmartLearnInsforge) {
       try {
         const user = await window.SmartLearnInsforge.restoreSession();
         if (user) {
@@ -92,6 +79,17 @@ const SmartLearnApp = (function () {
         }
       } catch (err) {
         console.warn("Could not restore InsForge session:", err);
+      }
+    } else if (window.SmartLearnSupabase) {
+      try {
+        const user = await window.SmartLearnSupabase.restoreSession();
+        if (user) {
+          state.currentUser = user;
+          state.currentRole = user.role;
+          updateUserUI(user);
+        }
+      } catch (err) {
+        console.warn("Could not restore Supabase session:", err);
       }
     }
 
@@ -249,12 +247,7 @@ const SmartLearnApp = (function () {
   }
 
   async function signOut() {
-    if (window.SmartLearnSupabase) {
-      await window.SmartLearnSupabase.signOut();
-    }
-    if (window.SmartLearnAPI && window.SmartLearnAPI.signOut) {
-      await SmartLearnAPI.signOut();
-    }
+    await SmartLearnAPI.signOut();
     state.currentUser = null;
     updateUserUI(null);
     notify("Signed Out", "You have been logged out securely.", "info");
@@ -1941,14 +1934,6 @@ const SmartLearnApp = (function () {
       if (dropdown && searchBox && !searchBox.contains(e.target)) {
         dropdown.classList.add("hidden");
       }
-    });
-
-    // Listen for live Supabase auth state changes across windows & components
-    window.addEventListener("smartlearn:auth_changed", e => {
-      const user = e.detail?.user;
-      state.currentUser = user;
-      state.currentRole = user ? user.role : "student";
-      updateUserUI(user);
     });
   }
 

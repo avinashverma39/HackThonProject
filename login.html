@@ -204,20 +204,13 @@
           </span>
           <span class="text-emerald-400 font-mono text-[10px] font-bold">Fast Pass</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <button type="button"
-            class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-primary-indigo to-indigo-600 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-1.5 shadow-md transition-all group"
-            onclick="quickDemoStudentLogin()">
-            <span>🎓 Student (Avinash)</span>
-            <span class="material-symbols-outlined text-[15px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </button>
-          <button type="button"
-            class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-1.5 shadow-md transition-all group"
-            onclick="quickDemoTeacherLogin()">
-            <span>👩‍🏫 Faculty (Prof. Sarah)</span>
-            <span class="material-symbols-outlined text-[15px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </button>
-        </div>
+        <button type="button"
+          class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-primary-indigo via-secondary to-emerald-500 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
+          onclick="quickDemoStudentLogin()">
+          <span>🚀 Instant Demo Login (Avinash Verma — Student)</span>
+          <span
+            class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
       </div>
 
       <!-- Social Authentication (Google & GitHub via Supabase) -->
@@ -483,8 +476,8 @@
       const box = document.getElementById("auth-alert");
       if (!box) return;
       box.className = `p-3 rounded-xl text-[12px] border ${isError
-          ? "bg-rose-500/15 border-rose-500/30 text-rose-300"
-          : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+        ? "bg-rose-500/15 border-rose-500/30 text-rose-300"
+        : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
         } flex items-center gap-2`;
       box.innerHTML = `
         <span class="material-symbols-outlined text-[16px]">${isError ? 'error' : 'check_circle'}</span>
@@ -502,14 +495,11 @@
       showAlert("Password reset link has been dispatched to your registered email address.", false);
     }
 
-    // Smooth transition into Overview Dashboard based on role
+    // Smooth transition into Overview Dashboard
     function transitionToOverview(user, delayMs = 600) {
-      const isTeacher = user && (user.role === 'teacher' || (user.user_metadata && user.user_metadata.role === 'teacher'));
-      const targetDestination = isTeacher ? 'teacher.html' : 'student.html';
-      const roleTitle = isTeacher ? 'Faculty Portal' : 'Student Overview';
-      showAlert(`Authentication verified via Supabase Cloud! Welcome, ${user?.full_name || 'Learner'}. Redirecting to ${roleTitle}...`, false);
+      showAlert(`Authentication successful! Welcome, ${user.full_name || 'Learner'}. Entering overview dashboard...`, false);
       setTimeout(() => {
-        window.location.href = targetDestination;
+        window.location.href = OVERVIEW_DESTINATION;
       }, delayMs);
     }
 
@@ -519,7 +509,7 @@
       const btn = event?.currentTarget;
       if (btn) {
         btn.style.opacity = "0.7";
-        btn.innerText = "Connecting Student...";
+        btn.innerText = "Connecting to Overview...";
       }
 
       try {
@@ -527,31 +517,10 @@
         if (res && res.success) {
           transitionToOverview(res.user, 400);
         } else {
-          window.location.href = "student.html";
+          window.location.href = OVERVIEW_DESTINATION;
         }
       } catch (e) {
-        window.location.href = "student.html";
-      }
-    }
-
-    // 1-Click Fast Teacher Demo Login
-    async function quickDemoTeacherLogin() {
-      hideAlert();
-      const btn = event?.currentTarget;
-      if (btn) {
-        btn.style.opacity = "0.7";
-        btn.innerText = "Connecting Faculty...";
-      }
-
-      try {
-        const res = await SmartLearnSupabase.signIn("s.jenkins@smartlearn.edu", "Teacher@2026", "teacher");
-        if (res && res.success) {
-          transitionToOverview(res.user, 400);
-        } else {
-          window.location.href = "teacher.html";
-        }
-      } catch (e) {
-        window.location.href = "teacher.html";
+        window.location.href = OVERVIEW_DESTINATION;
       }
     }
 
@@ -567,9 +536,7 @@
       statusBox.classList.remove("hidden");
 
       try {
-        const pathPrefix = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1);
-        const targetRedirect = window.location.origin + pathPrefix + "student.html";
-        const res = await SmartLearnSupabase.signInWithOAuth(provider, targetRedirect);
+        const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
         if (res && res.redirecting) {
           // External OAuth redirect underway
           return;

@@ -146,6 +146,10 @@ const SmartLearnInsforge = (function () {
 
     activeUser = mergedUser;
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(mergedUser));
+    localStorage.setItem("smartlearn_active_profile", JSON.stringify(mergedUser));
+    try {
+      window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: mergedUser } }));
+    } catch (e) {}
 
     return {
       success: true,
@@ -240,6 +244,10 @@ const SmartLearnInsforge = (function () {
 
     activeUser = mergedUser;
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(mergedUser));
+    localStorage.setItem("smartlearn_active_profile", JSON.stringify(mergedUser));
+    try {
+      window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: mergedUser } }));
+    } catch (e) {}
 
     return {
       success: true,
@@ -292,6 +300,10 @@ const SmartLearnInsforge = (function () {
     const merged = { ...profile, name: profile.full_name };
     activeUser = merged;
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(merged));
+    localStorage.setItem("smartlearn_active_profile", JSON.stringify(merged));
+    try {
+      window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: merged } }));
+    } catch (e) {}
     return { success: true, user: merged, message: `Logged in as ${merged.full_name} via InsForge.` };
   }
 
@@ -300,7 +312,7 @@ const SmartLearnInsforge = (function () {
    */
   async function restoreSession() {
     const token = localStorage.getItem(STORAGE_TOKEN_KEY);
-    const cachedUser = localStorage.getItem(STORAGE_USER_KEY);
+    const cachedUser = localStorage.getItem(STORAGE_USER_KEY) || localStorage.getItem("smartlearn_active_profile");
 
     if (token) {
       // Validate session with InsForge API
@@ -312,6 +324,7 @@ const SmartLearnInsforge = (function () {
           const profile = profRes.data[0];
           activeUser = { ...profile, name: profile.full_name };
           localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(activeUser));
+          localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeUser));
           return activeUser;
         }
       }
@@ -320,6 +333,8 @@ const SmartLearnInsforge = (function () {
     if (cachedUser) {
       try {
         activeUser = JSON.parse(cachedUser);
+        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(activeUser));
+        localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeUser));
         return activeUser;
       } catch (e) {}
     }
@@ -339,7 +354,11 @@ const SmartLearnInsforge = (function () {
     localStorage.removeItem(STORAGE_TOKEN_KEY);
     localStorage.removeItem(STORAGE_REFRESH_KEY);
     localStorage.removeItem(STORAGE_USER_KEY);
+    localStorage.removeItem("smartlearn_active_profile");
     activeUser = null;
+    try {
+      window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: null } }));
+    } catch (e) {}
     return { success: true };
   }
 
@@ -370,6 +389,10 @@ const SmartLearnInsforge = (function () {
     if (activeUser) {
       activeUser = { ...activeUser, ...updatePayload, name: updatePayload.full_name };
       localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(activeUser));
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeUser));
+      try {
+        window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: activeUser } }));
+      } catch (e) {}
     }
 
     return { success: true, profile: activeUser };
