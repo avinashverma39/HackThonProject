@@ -102,7 +102,9 @@ const SmartLearnApp = (function () {
 
     if (isStudentPage) {
       showMainView("student-dashboard");
-      const hash = window.location.hash.replace("#", "");
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get("tab");
+      const hash = window.location.hash.replace("#", "") || tabParam;
       if (hash && document.getElementById(`subview-${hash}`)) {
         showStudentTab(hash);
       }
@@ -326,6 +328,7 @@ const SmartLearnApp = (function () {
         performance: "Performance Analytics & Mastery Curves",
         "weak-topics": "Weak Topics Identification & Action Plan",
         recommendations: "Personalized Study Recommendations",
+        "learn-skills": "Learn Skills — Interactive Documentation & Technical Notes",
         progress: "Learning Progress Tracking",
         profile: "Student Profile",
         settings: "Platform Settings"
@@ -341,6 +344,7 @@ const SmartLearnApp = (function () {
     if (tabName === "quizzes") renderQuizzes();
     if (tabName === "weak-topics") renderWeakTopics();
     if (tabName === "recommendations") renderRecommendations();
+    if (tabName === "learn-skills") initSkillsW3Workstation();
     if (tabName === "practice") startPracticeSession(state.activePracticeTopic || "Pointers");
     if (tabName === "progress") renderProgressDashboard();
 
@@ -2007,10 +2011,447 @@ const SmartLearnApp = (function () {
     });
   }
 
+  // =========================================================================
+  // W3SCHOOLS-STYLE TECHNICAL CONCEPTS & SKILLS WORKBENCH ENGINE
+  // =========================================================================
+  function initSkillsW3Workstation() {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+
+    renderSkillsW3TechSwitcher();
+    renderSkillsW3Nav();
+    renderSkillsW3Reader();
+    updateSkillsW3ProgressCounters();
+  }
+
+  function renderSkillsW3TechSwitcher() {
+    const data = window.SmartLearnSkillsDocs;
+    const container = document.getElementById("w3-tech-switcher-bar");
+    if (!container || !data) return;
+
+    container.innerHTML = data.technologies.map(t => {
+      const isActive = t.id === data.currentTech;
+      return `
+        <button type="button" 
+          class="w3-tech-btn px-4 py-2 rounded-xl text-[12px] font-bold transition-all flex items-center gap-2 flex-shrink-0 ${
+            isActive
+              ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
+              : "bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white border border-white/5"
+          }"
+          onclick="SmartLearnApp.switchSkillTech('${t.id}')">
+          <span class="w-2 h-2 rounded-full" style="background-color: ${t.color}"></span>
+          <span>${t.name}</span>
+          <span class="text-[10px] opacity-75 font-normal hidden sm:inline">• ${t.label}</span>
+        </button>
+      `;
+    }).join("");
+  }
+
+  function switchSkillTech(techId) {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+    data.currentTech = techId;
+
+    const docs = data.docs[techId] || [];
+    if (docs.length > 0) {
+      data.currentConceptId = docs[0].id;
+    }
+
+    renderSkillsW3TechSwitcher();
+    renderSkillsW3Nav();
+    renderSkillsW3Reader();
+  }
+
+  function renderSkillsW3Nav(filterText = "") {
+    const data = window.SmartLearnSkillsDocs;
+    const container = document.getElementById("w3-topics-menu-container");
+    if (!container || !data) return;
+
+    const docs = data.docs[data.currentTech] || [];
+    const q = (filterText || "").trim().toLowerCase();
+    const filteredDocs = q 
+      ? docs.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q) || (d.summary || '').toLowerCase().includes(q))
+      : docs;
+
+    // Group by category
+    const categories = {};
+    filteredDocs.forEach(d => {
+      const cat = d.category || "GENERAL REFERENCES";
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(d);
+    });
+
+    if (Object.keys(categories).length === 0) {
+      container.innerHTML = `
+        <div class="p-4 text-center text-slate-400 text-[12px]">
+          No technical topics found matching "${filterText}".
+        </div>
+      `;
+      return;
+    }
+
+    let html = "";
+    for (const [catName, items] of Object.entries(categories)) {
+      html += `
+        <div class="pt-2.5 pb-1 px-2 text-[10px] font-mono uppercase font-bold text-slate-400 tracking-wider flex items-center justify-between border-t border-white/5 first:border-0 first:pt-0">
+          <span>${catName}</span>
+          <span class="text-slate-500">${items.length}</span>
+        </div>
+      `;
+
+      items.forEach(item => {
+        const isCurrent = item.id === data.currentConceptId;
+        const isDone = data.completedConcepts.includes(item.id);
+
+        html += `
+          <button type="button"
+            class="w-full text-left px-3 py-2 rounded-xl text-[12px] transition-all flex items-center justify-between group ${
+              isCurrent
+                ? "bg-emerald-500/15 text-emerald-300 font-bold border border-emerald-500/30 shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-surface-container"
+            }"
+            onclick="SmartLearnApp.selectSkillConcept('${item.id}')">
+            <span class="truncate pr-2">${item.title}</span>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              ${isDone 
+                ? '<span class="material-symbols-outlined text-[15px] text-emerald-400" title="Completed">check_circle</span>' 
+                : `<span class="text-[10px] font-mono text-slate-500 group-hover:text-slate-400">+${item.xp}XP</span>`
+              }
+            </div>
+          </button>
+        `;
+      });
+    }
+
+    container.innerHTML = html;
+  }
+
+  function filterSkillsDocList(query) {
+    renderSkillsW3Nav(query);
+  }
+
+  function selectSkillConcept(conceptId) {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+    data.currentConceptId = conceptId;
+    renderSkillsW3Nav();
+    renderSkillsW3Reader();
+
+    const reader = document.getElementById("w3-reader-container");
+    if (reader) reader.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function renderSkillsW3Reader() {
+    const data = window.SmartLearnSkillsDocs;
+    const container = document.getElementById("w3-reader-container");
+    if (!container || !data) return;
+
+    const docs = data.docs[data.currentTech] || [];
+    const currentIndex = docs.findIndex(d => d.id === data.currentConceptId);
+    const concept = docs[currentIndex] || docs[0];
+    if (!concept) return;
+
+    data.currentConceptId = concept.id;
+    const isDone = data.completedConcepts.includes(concept.id);
+    const prevConcept = currentIndex > 0 ? docs[currentIndex - 1] : null;
+    const nextConcept = currentIndex < docs.length - 1 ? docs[currentIndex + 1] : null;
+
+    container.innerHTML = `
+      <!-- Concept Top Bar & Breadcrumb -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div>
+          <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-1">
+            <span class="uppercase text-emerald-400 font-bold">${data.currentTech}</span>
+            <span>&gt;</span>
+            <span>${concept.category}</span>
+          </div>
+          <h1 class="text-[26px] sm:text-[30px] font-extrabold text-white tracking-tight leading-tight">${concept.title}</h1>
+        </div>
+
+        <!-- Completion Toggle -->
+        <button type="button" 
+          class="px-4 py-2 rounded-xl text-[12px] font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto ${
+            isDone 
+              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30" 
+              : "bg-primary-indigo hover:bg-indigo-500 text-white shadow-md shadow-primary-indigo/30"
+          }"
+          onclick="SmartLearnApp.markConceptCompleted('${concept.id}')">
+          <span class="material-symbols-outlined text-[17px]">${isDone ? 'check_circle' : 'task_alt'}</span>
+          <span>${isDone ? 'Completed ✓' : 'Mark as Completed (+ ' + concept.xp + ' XP)'}</span>
+        </button>
+      </div>
+
+      <!-- Quick Badges Strip -->
+      <div class="flex flex-wrap items-center gap-2.5 text-[11px] font-mono">
+        <span class="px-2.5 py-1 rounded-lg bg-surface-container border border-white/5 text-slate-300 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] text-primary">schedule</span>
+          ${concept.readTime}
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">military_tech</span>
+          +${concept.xp} XP Reward
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-secondary/10 border border-secondary/20 text-secondary">
+          W3 Standard Reference
+        </span>
+      </div>
+
+      <!-- Summary Callout -->
+      <div class="p-3.5 rounded-xl bg-surface-container-high/60 border-l-4 border-emerald-400 text-[13px] text-slate-200">
+        ${concept.summary}
+      </div>
+
+      <!-- Main Technical Notes Body -->
+      <div class="prose prose-invert max-w-none text-slate-200 text-[14px]">
+        ${concept.contentHtml}
+      </div>
+
+      <!-- Interactive "Try It Yourself" Code Sandbox -->
+      <div class="rounded-2xl bg-surface-container-lowest border border-white/10 overflow-hidden shadow-2xl flex flex-col">
+        <div class="px-4 py-2.5 bg-surface-container-high border-b border-white/5 flex items-center justify-between">
+          <div class="flex items-center gap-2 text-[12px] font-mono text-slate-300">
+            <span class="material-symbols-outlined text-[16px] text-emerald-400">terminal</span>
+            <strong>Example Code Sandbox:</strong>
+            <span class="text-slate-500 hidden sm:inline">Try It Yourself</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" 
+              class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-container-highest text-slate-300 text-[11px] font-mono flex items-center gap-1 border border-white/5 transition-all"
+              onclick="navigator.clipboard.writeText(document.getElementById('w3-code-editor').value); SmartLearnApp.notify('Code copied to clipboard!', 'info');">
+              <span class="material-symbols-outlined text-[13px]">content_copy</span>
+              <span>Copy</span>
+            </button>
+            <button type="button" 
+              class="px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-[12px] font-mono flex items-center gap-1.5 transition-all shadow-sm shadow-emerald-500/30"
+              onclick="SmartLearnApp.runSkillCodeSandbox()">
+              <span class="material-symbols-outlined text-[14px]">play_arrow</span>
+              <span>Run Code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Editable Code Textarea -->
+        <textarea id="w3-code-editor" rows="9" 
+          class="w-full bg-[#0d1117] text-emerald-300 font-mono text-[13px] p-4 border-0 focus:outline-none focus:ring-0 resize-y leading-relaxed"
+          spellcheck="false">${concept.codeExample || '// No code snippet provided.'}</textarea>
+
+        <!-- Live Sandbox Output Panel -->
+        <div class="border-t border-white/10 bg-surface-container-low p-4 flex flex-col gap-2" id="w3-output-panel">
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+            <span class="flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live Sandbox Output Result:
+            </span>
+            <span class="text-slate-500">Rendered in sandboxed frame</span>
+          </div>
+          <div class="w-full min-h-[90px] rounded-xl bg-white text-slate-900 p-3 text-[13px] overflow-auto shadow-inner" id="w3-code-preview">
+            <em>Click "Run Code" above to execute and preview output.</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Interview Tip Callout -->
+      ${concept.interviewTip ? `
+        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
+          <span class="material-symbols-outlined text-[24px] text-amber-400 flex-shrink-0 mt-0.5">lightbulb</span>
+          <div class="flex flex-col gap-1">
+            <h4 class="text-[14px] font-bold text-amber-300">Technical Interview &amp; Exam Pro-Tip</h4>
+            <p class="text-[13px] text-slate-200 leading-relaxed">${concept.interviewTip}</p>
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Mini Knowledge-Check Quiz -->
+      ${concept.miniQuiz ? `
+        <div class="p-5 rounded-2xl bg-surface-container border border-white/10 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono text-secondary uppercase font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px]">quiz</span>
+              Quick Self-Assessment
+            </span>
+            <span class="text-[11px] text-slate-400 font-mono">1 Question</span>
+          </div>
+          <h4 class="text-[15px] font-bold text-white">${concept.miniQuiz.q}</h4>
+          
+          <div class="grid grid-cols-1 gap-2 pt-1" id="w3-quiz-options">
+            ${concept.miniQuiz.options.map((opt, idx) => `
+              <button type="button" 
+                class="w3-quiz-opt p-3 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/5 text-left text-[13px] text-slate-200 transition-all flex items-center justify-between"
+                onclick="SmartLearnApp.checkMiniQuiz(${idx})">
+                <span>${opt}</span>
+                <span class="w3-quiz-badge text-[12px] font-mono text-slate-500">Choice ${idx + 1}</span>
+              </button>
+            `).join("")}
+          </div>
+          <div id="w3-quiz-feedback" class="hidden p-3 rounded-xl text-[12px] border leading-relaxed"></div>
+        </div>
+      ` : ''}
+
+      <!-- Bottom Next / Previous Navigation -->
+      <div class="flex items-center justify-between pt-4 border-t border-white/10">
+        ${prevConcept ? `
+          <button type="button" 
+            class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/5 text-slate-300 hover:text-white text-[12px] font-semibold flex items-center gap-2 transition-all"
+            onclick="SmartLearnApp.selectSkillConcept('${prevConcept.id}')">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>${prevConcept.title}</span>
+          </button>
+        ` : '<div></div>'}
+
+        ${nextConcept ? `
+          <button type="button" 
+            class="px-5 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] font-bold flex items-center gap-2 transition-all shadow-md shadow-primary-indigo/30"
+            onclick="SmartLearnApp.selectSkillConcept('${nextConcept.id}')">
+            <span>Next: ${nextConcept.title}</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        ` : `
+          <button type="button" 
+            class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-bold flex items-center gap-2 transition-all"
+            onclick="SmartLearnApp.showStudentTab('quizzes')">
+            <span>Take Topic Quiz →</span>
+          </button>
+        `}
+      </div>
+    `;
+
+    runSkillCodeSandbox();
+  }
+
+  function runSkillCodeSandbox() {
+    const editor = document.getElementById("w3-code-editor");
+    const preview = document.getElementById("w3-code-preview");
+    if (!editor || !preview) return;
+
+    const rawCode = editor.value;
+    const data = window.SmartLearnSkillsDocs;
+    const isHtmlOrCss = data && (data.currentTech === "html" || data.currentTech === "css");
+
+    if (isHtmlOrCss) {
+      preview.innerHTML = `
+        <iframe class="w-full min-h-[140px] border-0 bg-white text-black rounded-lg" 
+          srcdoc="${rawCode.replace(/"/g, '&quot;')}" 
+          sandbox="allow-scripts"></iframe>
+      `;
+    } else {
+      try {
+        let out = [];
+        const simulatedFn = new Function(
+          "console",
+          `let out = []; console = { log: (...args) => out.push(args.join(" ")) }; ${rawCode}; return out;`
+        );
+        const result = simulatedFn();
+        if (result && result.length > 0) {
+          preview.className = "w-full min-h-[90px] rounded-xl bg-[#090d14] text-emerald-400 p-3 font-mono text-[12px] overflow-auto border border-white/10";
+          preview.innerHTML = result.map(l => `<div>&gt; ${l}</div>`).join("");
+        } else {
+          preview.className = "w-full min-h-[90px] rounded-xl bg-[#090d14] text-slate-300 p-3 font-mono text-[12px] overflow-auto border border-white/10";
+          preview.innerHTML = `<div class="text-emerald-400">&gt; Program executed cleanly with 0 runtime exceptions.</div>`;
+        }
+      } catch (err) {
+        preview.className = "w-full min-h-[90px] rounded-xl bg-[#090d14] text-rose-400 p-3 font-mono text-[12px] overflow-auto border border-rose-500/20";
+        preview.innerHTML = `<div>&gt; Execution Note: ${err.message || 'Syntax verified successfully.'}</div>`;
+      }
+    }
+  }
+
+  function markConceptCompleted(conceptId) {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+
+    const index = data.completedConcepts.indexOf(conceptId);
+    const docs = data.docs[data.currentTech] || [];
+    const concept = docs.find(d => d.id === conceptId);
+    const xp = concept ? concept.xp : 50;
+
+    if (index === -1) {
+      data.completedConcepts.push(conceptId);
+      notify("Concept Mastered! 🎉", `+${xp} XP added to your technical skills profile.`, "success");
+    } else {
+      data.completedConcepts.splice(index, 1);
+      notify("Concept Unmarked", "Marked as incomplete.", "info");
+    }
+
+    localStorage.setItem("smartlearn_completed_concepts", JSON.stringify(data.completedConcepts));
+    renderSkillsW3Nav();
+    renderSkillsW3Reader();
+    updateSkillsW3ProgressCounters();
+  }
+
+  function checkMiniQuiz(selectedIdx) {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+    const docs = data.docs[data.currentTech] || [];
+    const concept = docs.find(d => d.id === data.currentConceptId);
+    if (!concept || !concept.miniQuiz) return;
+
+    const correct = concept.miniQuiz.answer === selectedIdx;
+    const feedback = document.getElementById("w3-quiz-feedback");
+    const buttons = document.querySelectorAll(".w3-quiz-opt");
+
+    buttons.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === concept.miniQuiz.answer) {
+        btn.classList.add("bg-emerald-500/20", "border-emerald-500", "text-emerald-300");
+      } else if (idx === selectedIdx && !correct) {
+        btn.classList.add("bg-rose-500/20", "border-rose-500", "text-rose-300");
+      }
+    });
+
+    if (feedback) {
+      feedback.className = `p-3 rounded-xl text-[12px] border ${
+        correct 
+          ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300" 
+          : "bg-rose-500/10 border-rose-500/30 text-rose-300"
+      }`;
+      feedback.innerHTML = `
+        <div class="flex items-center gap-1.5 font-bold mb-1">
+          <span class="material-symbols-outlined text-[16px]">${correct ? 'check_circle' : 'cancel'}</span>
+          <span>${correct ? 'Correct Answer! +25 XP' : 'Incorrect choice.'}</span>
+        </div>
+        <p>${concept.miniQuiz.explanation}</p>
+      `;
+      feedback.classList.remove("hidden");
+    }
+
+    if (correct && !data.completedConcepts.includes(concept.id)) {
+      markConceptCompleted(concept.id);
+    }
+  }
+
+  function updateSkillsW3ProgressCounters() {
+    const data = window.SmartLearnSkillsDocs;
+    if (!data) return;
+
+    const countEl = document.getElementById("w3-completed-count");
+    const xpEl = document.getElementById("w3-total-xp");
+
+    const completed = data.completedConcepts.length;
+    let earnedXp = 0;
+
+    Object.values(data.docs).forEach(docList => {
+      docList.forEach(item => {
+        if (data.completedConcepts.includes(item.id)) {
+          earnedXp += (item.xp || 50);
+        }
+      });
+    });
+
+    if (countEl) countEl.textContent = completed;
+    if (xpEl) xpEl.textContent = `+${earnedXp} XP`;
+  }
+
   return {
     init,
     showMainView,
     filterSkills,
+    initSkillsW3Workstation,
+    switchSkillTech,
+    selectSkillConcept,
+    filterSkillsDocList,
+    runSkillCodeSandbox,
+    markConceptCompleted,
+    checkMiniQuiz,
     showStudentTab,
     setCourseSubjectFilter,
     filterCoursesByKeyword,

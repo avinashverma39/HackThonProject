@@ -220,6 +220,15 @@
             <span class="px-1.5 py-0.2 rounded bg-secondary/20 text-[10px] font-mono text-secondary">AI</span>
           </button>
           <button
+            class="student-nav-item flex items-center justify-between px-3 py-2 rounded-xl text-emerald-300 hover:text-white hover:bg-emerald-500/10 transition-all border border-emerald-500/25 my-1"
+            data-tab="learn-skills" onclick="SmartLearnApp.showStudentTab('learn-skills')">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-emerald-400">menu_book</span>
+              <span class="font-semibold text-emerald-200">Learn Skills</span>
+            </div>
+            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-[9px] font-mono text-emerald-300 font-bold">W3 DOCS</span>
+          </button>
+          <button
             class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
             data-tab="progress" onclick="SmartLearnApp.showStudentTab('progress')">
             <span class="material-symbols-outlined text-[18px]">trending_up</span>
@@ -244,10 +253,10 @@
       <div class="p-3 bg-surface-container-lowest/60 border-t border-white/5 flex flex-col gap-2">
         <div class="flex items-center justify-between px-2 text-[12px]">
           <span class="text-slate-400">Role: <strong class="text-white">Student</strong></span>
-          <button class="text-emerald-400 font-semibold hover:underline text-[11px]"
-            onclick="window.location.href='teacher.html'">
-            Teacher Mode →
-          </button>
+          <span class="text-emerald-400 font-semibold text-[11px] flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Active Learner
+          </span>
         </div>
         <button
           class="w-full py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-slate-300 hover:text-white text-[12px] font-medium flex items-center justify-center gap-2 transition-colors border border-white/5"
@@ -577,6 +586,75 @@
           </div>
           <!-- Materials Grid -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materials-grid"></div>
+        </div>
+
+        <!-- SUBVIEW: LEARN SKILLS (W3SCHOOLS-STYLE TECHNICAL WORKBENCH) -->
+        <div id="subview-learn-skills" class="student-subview hidden flex flex-col gap-4 max-w-7xl mx-auto w-full">
+
+          <!-- Header & Quick Metrics -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-surface-container-low border border-white/5 shadow-md">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-mono text-[10px] font-bold border border-emerald-500/25">
+                  W3-STYLE TECHNICAL DOCS
+                </span>
+                <span class="text-slate-400 text-[12px] font-mono">• Structured Learning &amp; Concept Reference</span>
+              </div>
+              <h2 class="text-[24px] font-extrabold text-white tracking-tight mt-0.5">Learn Skills &amp; Concepts</h2>
+            </div>
+            
+            <!-- Progress Counter -->
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-white/5">
+                <span class="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>
+                <div class="text-[12px] leading-tight">
+                  <span class="text-slate-400">Completed:</span>
+                  <strong class="text-white ml-1 font-mono" id="w3-completed-count">0</strong>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-white/5">
+                <span class="material-symbols-outlined text-[18px] text-amber-400">bolt</span>
+                <div class="text-[12px] leading-tight">
+                  <span class="text-slate-400">Skills XP:</span>
+                  <strong class="text-white ml-1 font-mono" id="w3-total-xp">+0 XP</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Technology Switcher Bar (W3Schools Style) -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1" id="w3-tech-switcher-bar">
+            <!-- Filled dynamically by JavaScript -->
+          </div>
+
+          <!-- Main Dual-Column Learning Workstation -->
+          <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
+
+            <!-- LEFT COLUMN: W3Schools Sidebar Navigation -->
+            <div class="w-full lg:w-72 xl:w-80 flex-shrink-0 rounded-2xl bg-surface-container-low border border-white/5 p-3 flex flex-col gap-2.5 max-h-[820px] overflow-hidden shadow-lg sticky top-20">
+              
+              <!-- Search Filter Input -->
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-slate-400 pointer-events-none">search</span>
+                <input type="text" id="w3-search-input"
+                  class="w-full pl-8 pr-3 py-2 rounded-xl bg-surface-container-lowest border border-white/5 text-[12px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/50"
+                  placeholder="Filter concepts or topics..."
+                  oninput="SmartLearnApp.filterSkillsDocList(this.value)">
+              </div>
+
+              <!-- Technical Concept Tree (Scrollable List) -->
+              <div class="flex flex-col gap-1 overflow-y-auto pr-1 flex-1 custom-scrollbar max-h-[700px]" id="w3-topics-menu-container">
+                <!-- Injected by smartlearn.js -->
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Active Technical Concept Reader & Interactive Code Sandbox -->
+            <div class="flex-1 min-w-0 w-full rounded-2xl bg-surface-container-low border border-white/5 p-5 sm:p-7 flex flex-col gap-6 shadow-xl" id="w3-reader-container">
+              <!-- Injected by smartlearn.js -->
+            </div>
+
+          </div>
+
         </div>
 
         <!-- SUBVIEW 5: VIDEO LEARNING -->
@@ -1571,6 +1649,7 @@
   <script src="api_service.js"></script>
   <script src="ai_engine.js"></script>
   <script src="app.js"></script>
+  <script src="skills_w3_data.js"></script>
   <script src="smartlearn.js"></script>
   <script src="smartlearn_3d.js"></script>
 

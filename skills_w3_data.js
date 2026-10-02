@@ -367,6 +367,476 @@ window.SmartLearnSkillsDocs = {
           answer: 2,
           explanation: 'PATCH applies partial modifications to a resource, while PUT replaces the target resource representation entirely.'
         }
+      },
+      {
+        id: 'html-summary',
+        category: 'STUDY PLAN & PREP',
+        title: 'HTML Summary & Best Practices',
+        readTime: '4 min read',
+        xp: 40,
+        summary: 'Executive summary of HTML5 core standards, clean nesting rules, and validation guidelines.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>HTML (HyperText Markup Language) is the backbone of all web applications. Here is the concise summary of architectural guidelines:</p>
+            <div class="space-y-2">
+              <div class="p-3 rounded-xl bg-surface-container border border-white/5">
+                <strong class="text-white font-semibold">1. Always declare DOCTYPE:</strong> Ensures modern rendering engines trigger standard mode instead of quirks mode.
+              </div>
+              <div class="p-3 rounded-xl bg-surface-container border border-white/5">
+                <strong class="text-white font-semibold">2. Always declare language:</strong> Use <code>&lt;html lang="en"&gt;</code> to guide text-to-speech tools and translation engines.
+              </div>
+              <div class="p-3 rounded-xl bg-surface-container border border-white/5">
+                <strong class="text-white font-semibold">3. Use lowercase tag names:</strong> While HTML is case-insensitive, W3C standards prescribe lowercase element and attribute names.
+              </div>
+              <div class="p-3 rounded-xl bg-surface-container border border-white/5">
+                <strong class="text-white font-semibold">4. Always provide <code>alt</code> on images:</strong> Screen readers and fallback renderers depend on meaningful alternative text.
+              </div>
+            </div>
+          </div>
+        `,
+        codeExample: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartLearn Clean Summary</title>
+</head>
+<body>
+  <h1>Clean Semantic Architecture</h1>
+  <p>Follow W3C standards for optimal SEO and accessibility.</p>
+</body>
+</html>`,
+        interviewTip: 'Interviewers often ask how to validate an HTML document. Mention the official W3C Markup Validation Service (validator.w3.org).',
+        miniQuiz: {
+          q: 'Why should every HTML page declare the lang attribute on the <html> tag?',
+          options: ['To change font family', 'To aid screen readers, translation engines, and search indexing', 'To enforce server-side locale', 'To speed up CSS parsing'],
+          answer: 1,
+          explanation: 'Declaring lang="en" allows assistive screen readers to pronounce words with the correct dialect and assists translation engines.'
+        }
+      },
+      {
+        id: 'html-accessibility',
+        category: 'STUDY PLAN & PREP',
+        title: 'HTML Accessibility (a11y) & ARIA',
+        readTime: '6 min read',
+        xp: 50,
+        summary: 'WCAG compliance guidelines, ARIA roles, live regions, and semantic landmark elements.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Web accessibility ensures that websites, tools, and technologies are designed and developed so that people with disabilities can use them.</p>
+            <h4 class="text-[16px] font-bold text-white border-b border-white/10 pb-1">First Rule of ARIA</h4>
+            <blockquote class="p-3 rounded-xl bg-surface-container-high border-l-4 border-amber-400 text-slate-200 text-[13px]">
+              "If you can use a native HTML element or attribute with the semantics and behavior already built in, then do so instead of re-purposing an element and adding ARIA."
+            </blockquote>
+            <p>Use native <code>&lt;button&gt;</code> instead of <code>&lt;div onclick="..." role="button"&gt;</code>.</p>
+          </div>
+        `,
+        codeExample: `<!-- Accessible Modal Dialog with proper ARIA attributes -->
+<div role="dialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
+  <h2 id="dialog-title">Confirm Enrollment</h2>
+  <p id="dialog-desc">Are you sure you want to enroll in the Data Structures track?</p>
+  <button type="button" aria-label="Close dialog">Cancel</button>
+  <button type="button">Confirm</button>
+</div>`,
+        interviewTip: 'Remember the POUR principles of WCAG: Perceivable, Operable, Understandable, Robust.',
+        miniQuiz: {
+          q: 'What is the First Rule of ARIA in web accessibility?',
+          options: ['Always add role="button" to div elements', 'Use native semantic HTML elements whenever possible instead of ARIA', 'Never use alt text on images', 'ARIA is only required for mobile devices'],
+          answer: 1,
+          explanation: 'Native HTML elements have built-in keyboard navigation and screen-reader behaviors that ARIA requires custom JavaScript to emulate.'
+        }
+      },
+      {
+        id: 'html-global-attributes',
+        category: 'HTML REFERENCES',
+        title: 'HTML Global Attributes',
+        readTime: '5 min read',
+        xp: 45,
+        summary: 'Detailed guide to hidden, title, draggable, spellcheck, translate, and dir global attributes.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Global attributes are attributes common to all HTML elements; they can be used on all elements, though they may have no effect on some.</p>
+            <ul class="list-disc list-inside space-y-1.5 ml-2">
+              <li><code>hidden</code>: Boolean attribute indicating that the element is not yet, or is no longer, directly relevant.</li>
+              <li><code>draggable</code>: Enumerated attribute (<code>true</code> or <code>false</code>) indicating whether the element can be dragged.</li>
+              <li><code>spellcheck</code>: Enumerated attribute (<code>true</code> or <code>false</code>) indicating if element is to have its spelling/grammar checked.</li>
+              <li><code>dir</code>: Text direction (<code>ltr</code>, <code>rtl</code>, <code>auto</code>).</li>
+            </ul>
+          </div>
+        `,
+        codeExample: `<div draggable="true" ondragstart="console.log('Dragging started')" class="draggable-card">
+  <p spellcheck="true" contenteditable="true">Drag this card or edit text!</p>
+</div>`,
+        interviewTip: 'Notice the difference between the <code>hidden</code> HTML attribute and CSS <code>display: none</code>: CSS overrides the hidden attribute unless styled with [hidden] { display: none !important; }.',
+        miniQuiz: {
+          q: 'Which global attribute specifies whether an element can be dragged using native Drag and Drop APIs?',
+          options: ['movable', 'draggable', 'drag', 'can-drag'],
+          answer: 1,
+          explanation: 'The draggable attribute is an enumerated attribute (true/false) used to define drag behavior.'
+        }
+      },
+      {
+        id: 'html-browser-support',
+        category: 'HTML REFERENCES',
+        title: 'HTML Browser Support & CanIUse',
+        readTime: '4 min read',
+        xp: 35,
+        summary: 'Cross-browser compatibility testing, polyfills, progressive enhancement, and feature detection.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Browser support matrix testing across Chromium, Gecko (Firefox), and WebKit (Safari). Always verify bleeding-edge HTML5 APIs using Modernizr or feature queries.</p>
+          </div>
+        `,
+        codeExample: `<script>
+  if ('IntersectionObserver' in window) {
+    console.log('Modern viewport lazy loading supported!');
+  } else {
+    console.log('Fallback to immediate content loading.');
+  }
+</script>`,
+        interviewTip: 'Explain Progressive Enhancement: Start with baseline core HTML content accessible to all browsers, then enhance with CSS and JavaScript for modern environments.',
+        miniQuiz: {
+          q: 'Which strategy builds a baseline functional version first, then adds advanced features for capable browsers?',
+          options: ['Graceful Degradation', 'Progressive Enhancement', 'Server-Side Rendering', 'Responsive Retrofitting'],
+          answer: 1,
+          explanation: 'Progressive Enhancement ensures essential content is reachable everywhere while modern browsers get an enhanced experience.'
+        }
+      },
+      {
+        id: 'html-events',
+        category: 'HTML REFERENCES',
+        title: 'HTML Events Reference',
+        readTime: '6 min read',
+        xp: 50,
+        summary: 'Window events, form events, keyboard events, mouse events, and clipboard events.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>HTML elements trigger DOM events when users interact with the page or when the browser environment changes state.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px]">
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Mouse:</strong> onclick, ondblclick, onmouseenter, onmouseleave</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Keyboard:</strong> onkeydown, onkeyup</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Form:</strong> onsubmit, onchange, oninput, onfocus, onblur</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Window:</strong> onload, onresize, onscroll</div>
+            </div>
+          </div>
+        `,
+        codeExample: `<input type="text" id="username" placeholder="Type here..." oninput="handleInput(event)">
+<p id="output"></p>
+
+<script>
+  function handleInput(e) {
+    document.getElementById('output').textContent = 'You typed: ' + e.target.value;
+  }
+</script>`,
+        interviewTip: 'Understand the three phases of DOM event propagation: 1. Capturing Phase, 2. Target Phase, 3. Bubbling Phase.',
+        miniQuiz: {
+          q: 'Which event fires immediately whenever the value of an <input> element changes via keystrokes?',
+          options: ['onchange', 'oninput', 'onselect', 'onblur'],
+          answer: 1,
+          explanation: 'oninput fires synchronously every time the value changes, whereas onchange only fires when the input loses focus.'
+        }
+      },
+      {
+        id: 'html-colors',
+        category: 'HTML REFERENCES',
+        title: 'HTML Colors: HEX, RGB, HSL',
+        readTime: '5 min read',
+        xp: 40,
+        summary: 'Color systems in web standards: named colors, hexadecimal notation, RGB(A), and modern HSL(A) palettes.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Colors in HTML and CSS can be specified using color names, HEX codes, RGB, and HSL values.</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li><strong class="text-white">HEX:</strong> <code>#6366f1</code> (Red: 63, Green: 66, Blue: F1)</li>
+              <li><strong class="text-white">RGB(A):</strong> <code>rgba(99, 102, 241, 0.8)</code></li>
+              <li><strong class="text-white">HSL(A):</strong> <code>hsl(239, 84%, 67%)</code> (Hue, Saturation, Lightness)</li>
+            </ul>
+          </div>
+        `,
+        codeExample: `<div style="display: flex; gap: 10px;">
+  <div style="background-color: #6366f1; color: white; padding: 15px; border-radius: 8px;">Indigo (HEX)</div>
+  <div style="background-color: rgb(16, 185, 129); color: white; padding: 15px; border-radius: 8px;">Emerald (RGB)</div>
+  <div style="background-color: hsl(199, 89%, 48%); color: white; padding: 15px; border-radius: 8px;">Sky (HSL)</div>
+</div>`,
+        interviewTip: 'HSL is preferred for dynamic theming because adjusting lightness (L) lets you easily generate hover and focus tints without changing the hue or saturation.',
+        miniQuiz: {
+          q: 'What does the "A" stand for in RGBA and HSLA color notations?',
+          options: ['Accuracy', 'Alpha (Opacity / Transparency)', 'Angle', 'Array'],
+          answer: 1,
+          explanation: 'Alpha specifies opacity from 0.0 (fully transparent) to 1.0 (fully opaque).'
+        }
+      },
+      {
+        id: 'html-canvas',
+        category: 'HTML REFERENCES',
+        title: 'HTML5 Canvas 2D Graphics API',
+        readTime: '6 min read',
+        xp: 60,
+        summary: 'Direct pixel manipulation, rendering paths, rectangles, circles, and animation loops.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>The HTML <code>&lt;canvas&gt;</code> element is used to draw graphics on the fly via JavaScript. It is resolution-dependent and bitmap-based.</p>
+          </div>
+        `,
+        codeExample: `<canvas id="demoCanvas" width="300" height="150" style="background:#0f172a; border-radius:8px;"></canvas>
+<script>
+  const canvas = document.getElementById('demoCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#6366f1';
+  ctx.fillRect(20, 20, 100, 60);
+  ctx.fillStyle = '#10b981';
+  ctx.beginPath();
+  ctx.arc(200, 50, 30, 0, Math.PI * 2);
+  ctx.fill();
+</script>`,
+        interviewTip: 'Contrast Canvas with SVG: Canvas is pixel/bitmap based and optimal for high-frequency game rendering; SVG is vector/DOM-based and optimal for scalable icons and charts.',
+        miniQuiz: {
+          q: 'Which method obtains the 2D rendering context for drawing on a <canvas>?',
+          options: ['canvas.getContext("2d")', 'canvas.get2DContext()', 'canvas.createContext()', 'canvas.render2D()'],
+          answer: 0,
+          explanation: 'canvas.getContext("2d") returns the CanvasRenderingContext2D object used for vector drawing.'
+        }
+      },
+      {
+        id: 'html-audio-video',
+        category: 'HTML REFERENCES',
+        title: 'HTML5 Audio & Video Media APIs',
+        readTime: '5 min read',
+        xp: 45,
+        summary: 'Native multimedia players, codec compatibility (MP4/H.264, WebM), and programmatic controls.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>HTML5 eliminated the need for third-party media plugins (like Flash) by introducing native <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> tags.</p>
+          </div>
+        `,
+        codeExample: `<video width="320" height="180" controls poster="https://via.placeholder.com/320x180">
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>`,
+        interviewTip: 'Why provide multiple &lt;source&gt; tags? Different web browsers support different video codecs (e.g. H.264 vs AV1 vs VP9); the browser plays the first compatible format.',
+        miniQuiz: {
+          q: 'Which attribute displays an image while the video is downloading or until the user hits the play button?',
+          options: ['preview', 'thumbnail', 'poster', 'cover'],
+          answer: 2,
+          explanation: 'The poster attribute specifies an image URL displayed until the user plays the video.'
+        }
+      },
+      {
+        id: 'html-doctypes',
+        category: 'HTML REFERENCES',
+        title: 'HTML Doctypes & Rendering Modes',
+        readTime: '4 min read',
+        xp: 35,
+        summary: 'History of DOCTYPE declarations from HTML 4.01 Strict, XHTML 1.0 to HTML5, and Quirks Mode implications.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>The DOCTYPE declaration must always be the very first line of any HTML file before the <code>&lt;html&gt;</code> tag.</p>
+            <p>In HTML5, the DOCTYPE is simply: <code>&lt;!DOCTYPE html&gt;</code>.</p>
+          </div>
+        `,
+        codeExample: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Standard Mode Document</title>
+</head>
+<body>
+  <p>Rendered in Full Standards Mode.</p>
+</body>
+</html>`,
+        interviewTip: 'If DOCTYPE is omitted, modern browsers render in Quirks Mode, which emulates Netscape 4 and Internet Explorer 5 layout bugs.',
+        miniQuiz: {
+          q: 'What mode will a browser render a web page in if the DOCTYPE declaration is missing?',
+          options: ['Strict Mode', 'Quirks Mode', 'Standard Mode', 'Sandbox Mode'],
+          answer: 1,
+          explanation: 'Omitting DOCTYPE triggers Quirks Mode to support backward compatibility with outdated 1990s web code.'
+        }
+      },
+      {
+        id: 'html-character-sets',
+        category: 'HTML REFERENCES',
+        title: 'HTML Character Sets & UTF-8',
+        readTime: '4 min read',
+        xp: 35,
+        summary: 'Character encoding standards: ASCII, ANSI, ISO-8859-1, and universal UTF-8 representation.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>To display an HTML page correctly, the browser must know the character set used. Modern web standards mandate UTF-8.</p>
+            <p>UTF-8 covers almost all characters and symbols in the world, including all human languages and emoji.</p>
+          </div>
+        `,
+        codeExample: `<meta charset="UTF-8">`,
+        interviewTip: 'Always place <code>&lt;meta charset="UTF-8"&gt;</code> as the first child of <code>&lt;head&gt;</code> so the browser recognizes the encoding before encountering text.',
+        miniQuiz: {
+          q: 'What is the recommended universal character encoding for all modern HTML5 pages?',
+          options: ['ISO-8859-1', 'ASCII', 'UTF-8', 'Windows-1252'],
+          answer: 2,
+          explanation: 'UTF-8 is the default universal standard encoding capable of representing all Unicode characters.'
+        }
+      },
+      {
+        id: 'html-url-encode',
+        category: 'HTML REFERENCES',
+        title: 'HTML URL Encoding & Percent Encoding',
+        readTime: '4 min read',
+        xp: 40,
+        summary: 'How non-ASCII and reserved characters are converted into %XX hex triplets for URI safety.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>URLs can only be sent over the Internet using the ASCII character set. Unsafe characters are replaced with a <code>%</code> followed by two hexadecimal digits.</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>Space: <code>%20</code> or <code>+</code></li>
+              <li>Exclamation (!): <code>%21</code></li>
+              <li>Question mark (?): <code>%3F</code></li>
+              <li>Ampersand (&amp;): <code>%26</code></li>
+            </ul>
+          </div>
+        `,
+        codeExample: `<script>
+  const query = "SmartLearn & SIH 2026";
+  const encoded = encodeURIComponent(query);
+  console.log(encoded); // "SmartLearn%20%26%20SIH%202026"
+</script>`,
+        interviewTip: 'Contrast <code>encodeURI()</code> with <code>encodeURIComponent()</code>: <code>encodeURIComponent()</code> encodes reserved characters like &, ?, and / making it ideal for query string parameters.',
+        miniQuiz: {
+          q: 'What is the URL percent-encoded representation for a space character?',
+          options: ['%00', '%20', '%50', '%99'],
+          answer: 1,
+          explanation: 'ASCII code 32 (decimal) is 0x20 in hex, which encodes as %20.'
+        }
+      },
+      {
+        id: 'html-lang-codes',
+        category: 'HTML REFERENCES',
+        title: 'HTML Language Codes (ISO 639-1)',
+        readTime: '4 min read',
+        xp: 35,
+        summary: 'ISO two-letter language codes and region sub-tags (en-US, hi-IN, fr-FR) for global accessibility.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Language codes in the <code>lang</code> attribute inform browsers and screen readers of the linguistic context.</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li><code>en</code>: English</li>
+              <li><code>hi</code>: Hindi (India)</li>
+              <li><code>es</code>: Spanish</li>
+              <li><code>zh</code>: Chinese</li>
+              <li><code>fr</code>: French</li>
+            </ul>
+          </div>
+        `,
+        codeExample: `<html lang="hi-IN">
+<head>
+  <meta charset="UTF-8">
+  <title>स्मार्टलर्न - स्मार्ट शिक्षा</title>
+</head>
+<body>
+  <h1>स्मार्टलर्न में आपका स्वागत है</h1>
+</body>
+</html>`,
+        interviewTip: 'Adding region tags (e.g. <code>en-US</code> vs <code>en-GB</code>) ensures speech synthesis uses correct accent and phonetic dictionary.',
+        miniQuiz: {
+          q: 'Which ISO standard defines the two-letter language codes used in HTML?',
+          options: ['ISO 9001', 'ISO 639-1', 'ISO 27001', 'ISO 3166'],
+          answer: 1,
+          explanation: 'ISO 639-1 provides two-letter language identifier codes.'
+        }
+      },
+      {
+        id: 'http-messages',
+        category: 'HTML REFERENCES',
+        title: 'HTTP Messages & Header Structures',
+        readTime: '5 min read',
+        xp: 45,
+        summary: 'Anatomy of HTTP Request and Response packets: Headers, Body, Status Lines, and Cookies.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Every web communication consists of an HTTP Request from client to server and an HTTP Response back.</p>
+            <h4 class="text-[16px] font-bold text-white border-b border-white/10 pb-1">Key Headers</h4>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li><code>Content-Type: application/json</code></li>
+              <li><code>Authorization: Bearer &lt;token&gt;</code></li>
+              <li><code>Cache-Control: max-age=3600</code></li>
+              <li><code>CORS: Access-Control-Allow-Origin: *</code></li>
+            </ul>
+          </div>
+        `,
+        codeExample: `// Inspecting HTTP response headers via fetch
+fetch('/api/status')
+  .then(response => {
+    console.log('Status:', response.status);
+    console.log('Content-Type:', response.headers.get('Content-Type'));
+  });`,
+        interviewTip: 'Be prepared to explain CORS (Cross-Origin Resource Sharing) and preflight <code>OPTIONS</code> requests triggered by custom headers.',
+        miniQuiz: {
+          q: 'Which HTTP method does a browser send as a CORS preflight request to verify allowed origins?',
+          options: ['HEAD', 'OPTIONS', 'CONNECT', 'TRACE'],
+          answer: 1,
+          explanation: 'Browsers automatically issue an HTTP OPTIONS preflight request before sending certain cross-origin requests.'
+        }
+      },
+      {
+        id: 'px-to-em',
+        category: 'HTML REFERENCES',
+        title: 'PX to EM / REM Responsive Converter',
+        readTime: '4 min read',
+        xp: 40,
+        summary: 'Mathematical formulas and differences between absolute pixels, parent-relative em, and root-relative rem.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Formulas for responsive web typography:</p>
+            <div class="p-3 rounded-xl bg-surface-container border border-white/5 font-mono text-[13px] text-emerald-400">
+              rem = Target_Pixels / Root_Font_Size (typically 16px)
+            </div>
+            <p>If base font size is 16px: <strong>24px = 1.5rem</strong>, <strong>32px = 2rem</strong>, <strong>12px = 0.75rem</strong>.</p>
+          </div>
+        `,
+        codeExample: `/* Using REM for accessible scalable sizing */
+html {
+  font-size: 16px; /* Browser default root size */
+}
+
+h1 {
+  font-size: 2rem; /* 32px */
+  margin-bottom: 1rem; /* 16px */
+}`,
+        interviewTip: 'Why is REM better than PX for typography? Users who change browser default font size for visual impairment will have REM text resize properly, while PX text remains stubbornly fixed.',
+        miniQuiz: {
+          q: 'What is the rem equivalent of 24px when root html font-size is 16px?',
+          options: ['1.25rem', '1.5rem', '1.75rem', '2rem'],
+          answer: 1,
+          explanation: '24 / 16 = 1.5rem.'
+        }
+      },
+      {
+        id: 'keyboard-shortcuts',
+        category: 'HTML REFERENCES',
+        title: 'Web Dev & DevTools Keyboard Shortcuts',
+        readTime: '4 min read',
+        xp: 35,
+        summary: 'Essential keyboard accelerators for Chrome DevTools, VS Code, and terminal workflows.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Productivity shortcuts for frontend engineers:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px]">
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Inspect Element:</strong> Ctrl + Shift + C (Win) / Cmd + Shift + C (Mac)</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Console Drawer:</strong> ESC in DevTools</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Hard Refresh:</strong> Ctrl + F5 or Ctrl + Shift + R</div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-white/5"><strong class="text-white">Format Code:</strong> Shift + Alt + F (VS Code)</div>
+            </div>
+          </div>
+        `,
+        codeExample: `<!-- Built-in accesskey shortcut attribute in HTML -->
+<button accesskey="s" onclick="alert('Saved!')">
+  <u>S</u>ave (Alt + Shift + S)
+</button>`,
+        interviewTip: 'The <code>accesskey</code> attribute specifies a shortcut key to activate or focus an element directly via keyboard.',
+        miniQuiz: {
+          q: 'Which DevTools shortcut toggles the Element Inspector cursor to inspect any DOM node?',
+          options: ['Ctrl + Shift + C', 'Ctrl + Shift + P', 'F12 only', 'Alt + Tab'],
+          answer: 0,
+          explanation: 'Ctrl + Shift + C (or Cmd + Option + C on macOS) immediately activates the inspect element tool.'
+        }
       }
     ],
 
