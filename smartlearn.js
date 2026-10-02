@@ -1567,6 +1567,7 @@ const SmartLearnApp = (function () {
   async function handleRegisterSubmit(event) {
     if (event) event.preventDefault();
     const name = document.getElementById("auth-reg-name").value;
+    const phone = document.getElementById("auth-reg-phone")?.value || "";
     const email = document.getElementById("auth-reg-email").value;
     const role = document.getElementById("auth-reg-role").value;
     const password = document.getElementById("auth-reg-password")?.value || "";

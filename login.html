@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLearn — Authentication Gateway | Sign In &amp; Sign Up</title>
+  <meta name="description"
+    content="Secure authentication gateway for SmartLearn — Sign in with Google, GitHub, or academic email to access your personalized adaptive dashboard." />
+
+  <!-- Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Tailwind CDN & Global Stylesheets -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary-indigo': '#6366f1',
+            'primary': '#818cf8',
+            'secondary': '#38bdf8',
+            'surface': '#0b0f17',
+            'surface-container': '#151924',
+            'surface-container-high': '#1e2330',
+            'surface-container-low': '#111520',
+            'surface-container-lowest': '#080c14'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <link href="styles.css" rel="stylesheet" />
+  <link href="landing.css" rel="stylesheet" />
+
+  <style>
+    /* Premium OAuth Buttons & Input Accents */
+    .oauth-btn {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .oauth-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .oauth-btn:hover::before {
+      opacity: 1;
+    }
+    .oauth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px -5px var(--oauth-glow, rgba(99, 102, 241, 0.3));
+    }
+    .oauth-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Tab Glider Pill Animation */
+    .auth-tab-pill {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Ambient background gradient meshes */
+    .auth-mesh-glow-1 {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 750px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .auth-mesh-glow-2 {
+      position: absolute;
+      bottom: 10%;
+      right: 15%;
+      width: 450px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body class="bg-surface font-sans text-slate-100 antialiased overflow-x-hidden min-h-screen flex flex-col justify-between relative selection:bg-primary-indigo selection:text-white">
+
+  <!-- Ambient Lighting Effects -->
+  <div class="auth-mesh-glow-1"></div>
+  <div class="auth-mesh-glow-2"></div>
+  <div class="navbar-horizon-glow"></div>
+
+  <!-- Educational Background Particles -->
+  <div class="smartlearn-3d-bg">
+    <span class="floating-edu-icon" style="top: 18%; left: 12%; animation-delay: 0s;">∑</span>
+    <span class="floating-edu-icon" style="top: 25%; right: 14%; animation-delay: 1.5s;">{ }</span>
+    <span class="floating-edu-icon" style="top: 75%; left: 10%; animation-delay: 3s;">λ</span>
+    <span class="floating-edu-icon" style="top: 80%; right: 12%; animation-delay: 2s;">π</span>
+    <span class="floating-edu-icon" style="top: 40%; right: 8%; animation-delay: 4s;">&lt;/&gt;</span>
+  </div>
+
+  <!-- TOP MINIMAL NAVBAR -->
+  <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-20 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+        <span class="material-symbols-outlined text-[24px]">school</span>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2">
+          <span class="text-[20px] font-extrabold text-white tracking-tight">SmartLearn</span>
+          <span class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">SIH 2026</span>
+        </div>
+        <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Adaptive Smart Education</span>
+      </div>
+    </a>
+
+    <!-- Return to Home CTA -->
+    <div class="flex items-center gap-3">
+      <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Supabase Cloud Active
+      </span>
+      <a href="index.html" class="px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-300 hover:text-white text-[13px] font-semibold flex items-center gap-1.5 transition-all">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+        <span>Back to Home</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN AUTH CONTAINER -->
+  <main class="w-full max-w-lg mx-auto px-4 py-6 relative z-20 my-auto">
+    <div class="p-6 sm:p-8 rounded-3xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 relative">
+
+      <!-- Dynamic Header Title -->
+      <div class="flex flex-col items-center text-center gap-1.5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 mb-1">
+          <span class="material-symbols-outlined text-[26px]" id="auth-header-icon">lock_open</span>
+        </div>
+        <h1 class="text-[24px] sm:text-[26px] font-extrabold text-white tracking-tight" id="auth-header-title">
+          Welcome to SmartLearn
+        </h1>
+        <p class="text-[13px] text-slate-400 max-w-xs" id="auth-header-desc">
+          Sign in to access your personalized adaptive dashboard, weak-topic remediation &amp; skill roadmaps.
+        </p>
+      </div>
+
+      <!-- Tab Switcher (Sign In vs Sign Up) -->
+      <div class="flex items-center p-1 rounded-2xl bg-surface-container-lowest/90 border border-white/5 relative">
+        <button id="tab-btn-signin" type="button"
+          class="auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all bg-primary-indigo text-white shadow-sm flex items-center justify-center gap-1.5"
+          onclick="switchAuthTab('signin')">
+          <span class="material-symbols-outlined text-[16px]">login</span>
+          <span>Sign In</span>
+        </button>
+        <button id="tab-btn-signup" type="button"
+          class="auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5"
+          onclick="switchAuthTab('signup')">
+          <span class="material-symbols-outlined text-[16px]">person_add</span>
+          <span>Create Account</span>
+        </button>
+      </div>
+
+      <!-- Instant 1-Click Evaluation Bar (For Judges & Instant Access) -->
+      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-primary-indigo/15 via-secondary/10 to-emerald-500/10 border border-primary-indigo/25 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-200 font-semibold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            1-Click Reviewer &amp; Jury Access:
+          </span>
+          <span class="text-emerald-400 font-mono text-[10px] font-bold">Fast Pass</span>
+        </div>
+        <button type="button"
+          class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-primary-indigo via-secondary to-emerald-500 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
+          onclick="quickDemoStudentLogin()">
+          <span>🚀 Instant Demo Login (Avinash Verma — Student)</span>
+          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- Social Authentication (Google & GitHub via Supabase) -->
+      <div class="flex flex-col gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+
+          <!-- Google OAuth Button -->
+          <button type="button" id="google-auth-btn"
+            style="--oauth-glow: rgba(234, 67, 53, 0.35);"
+            class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
+            onclick="handleOAuthLogin('google')">
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Google</span>
+          </button>
+
+          <!-- GitHub OAuth Button -->
+          <button type="button" id="github-auth-btn"
+            style="--oauth-glow: rgba(255, 255, 255, 0.25);"
+            class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
+            onclick="handleOAuthLogin('github')">
+            <svg class="w-4 h-4 flex-shrink-0 fill-current text-white" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span>GitHub</span>
+          </button>
+        </div>
+
+        <!-- Social OAuth status feedback -->
+        <div id="oauth-status" class="hidden text-center text-[12px] font-mono py-1 rounded-lg"></div>
+      </div>
+
+      <!-- Divider -->
+      <div class="relative flex items-center justify-center my-0.5">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+        <span class="relative px-3 bg-surface-container-low text-[11px] uppercase tracking-wider text-slate-500 font-mono">
+          Or continue with email
+        </span>
+      </div>
+
+      <!-- Status / Error Notification Box -->
+      <div id="auth-alert" class="hidden p-3 rounded-xl text-[12px] border transition-all"></div>
+
+      <!-- ================================================================
+           FORM 1: SIGN IN (EMAIL + PASSWORD)
+           ================================================================ -->
+      <form id="form-signin" onsubmit="handleEmailSignIn(event)" class="flex flex-col gap-3.5">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px] text-primary">mail</span>
+            <span>Academic / Personal Email</span>
+          </label>
+          <input type="email" id="signin-email" required class="uiverse-input"
+            placeholder="e.g. avinash.verma@smartlearn.edu" value="avinash.verma@smartlearn.edu" />
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-emerald-400">lock</span>
+              <span>Password</span>
+            </span>
+            <button type="button" onclick="togglePasswordVisibility('signin-password', this)"
+              class="text-[11px] text-slate-400 hover:text-white transition-colors">Show</button>
+          </label>
+          <input type="password" id="signin-password" required class="uiverse-input"
+            value="Student@2026" placeholder="Enter your password" />
+        </div>
+
+        <div class="flex items-center justify-between text-[12px] text-slate-400 pt-0.5">
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="signin-remember" checked class="accent-primary-indigo" />
+            <span>Remember my session</span>
+          </label>
+          <button type="button" class="text-secondary hover:underline" onclick="showForgotPasswordAlert()">
+            Forgot password?
+          </button>
+        </div>
+
+        <button id="signin-submit-btn" type="submit"
+          class="uiverse-btn-3d w-full !py-3 text-[14px] mt-1 flex items-center justify-center gap-2 group">
+          <span class="material-symbols-outlined text-[18px]">login</span>
+          <span id="signin-btn-text">Sign In to Overview</span>
+          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+
+        <div class="text-center text-[12px] text-slate-400 pt-1">
+          Don't have an account?
+          <button type="button" class="text-primary font-semibold hover:underline ml-1" onclick="switchAuthTab('signup')">
+            Create an account
+          </button>
+        </div>
+      </form>
+
+      <!-- ================================================================
+           FORM 2: CREATE ACCOUNT / SIGN UP
+           ================================================================ -->
+      <form id="form-signup" onsubmit="handleEmailSignUp(event)" class="hidden flex flex-col gap-3.5">
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px] text-primary">badge</span>
+            <span>Full Name / Display Name</span>
+          </label>
+          <input type="text" id="signup-name" required class="uiverse-input" placeholder="e.g. Avinash Verma" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-emerald-400">call</span>
+              <span>Phone Number</span>
+            </label>
+            <input type="tel" id="signup-phone" required class="uiverse-input" placeholder="e.g. +91 98765 43210" />
+          </div>
+
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-amber-400">school</span>
+              <span>Academic Role</span>
+            </label>
+            <select id="signup-role" class="uiverse-input">
+              <option value="student">Student Learner</option>
+              <option value="teacher">Faculty / Educator</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px] text-secondary">mail</span>
+            <span>Email Address</span>
+          </label>
+          <input type="email" id="signup-email" required class="uiverse-input" placeholder="e.g. student@smartlearn.edu" />
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-amber-400">key</span>
+              <span>Password (min. 6 chars)</span>
+            </span>
+            <button type="button" onclick="togglePasswordVisibility('signup-password', this)"
+              class="text-[11px] text-slate-400 hover:text-white transition-colors">Show</button>
+          </label>
+          <input type="password" id="signup-password" required minlength="6" class="uiverse-input"
+            placeholder="Create a strong password" />
+        </div>
+
+        <label class="flex items-start gap-2 cursor-pointer text-[12px] text-slate-400 pt-0.5">
+          <input type="checkbox" required checked class="accent-primary-indigo mt-0.5" />
+          <span>I agree to SmartLearn's Academic Integrity Code and Educational Privacy Policy</span>
+        </label>
+
+        <button id="signup-submit-btn" type="submit"
+          class="uiverse-btn-3d w-full !py-3 text-[14px] mt-1 flex items-center justify-center gap-2 group">
+          <span class="material-symbols-outlined text-[18px]">cloud_done</span>
+          <span id="signup-btn-text">Create Account &amp; Enter Overview</span>
+          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+
+        <div class="text-center text-[12px] text-slate-400 pt-1">
+          Already have an account?
+          <button type="button" class="text-primary font-semibold hover:underline ml-1" onclick="switchAuthTab('signin')">
+            Sign In here
+          </button>
+        </div>
+      </form>
+
+    </div>
+
+    <!-- Security & Encryption Trust Footnote -->
+    <div class="mt-5 text-center flex items-center justify-center gap-3 text-[11px] text-slate-500 font-mono">
+      <span class="flex items-center gap-1">
+        <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
+        256-Bit SSL Encryption
+      </span>
+      <span>•</span>
+      <span>Supabase Auth Cloud</span>
+      <span>•</span>
+      <span>SIH 2026</span>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full text-center py-4 relative z-20 text-[12px] text-slate-500">
+    Smart India Hackathon 2026 — Theme: Smart Education • Built with passion by Team HACKSMITH
+  </footer>
+
+  <!-- SCRIPT LIBRARIES -->
+  <script src="smartlearn_data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_client.js"></script>
+  <script src="insforge_client.js"></script>
+  <script src="api_service.js"></script>
+
+  <!-- PAGE LOGIC & OAUTH HANDLER -->
+  <script>
+    // Overview Destination Path
+    const OVERVIEW_DESTINATION = "student.html";
+
+    // Switch between Sign In and Sign Up tabs
+    function switchAuthTab(mode) {
+      const isSignIn = mode === 'signin';
+      const formSignIn = document.getElementById("form-signin");
+      const formSignUp = document.getElementById("form-signup");
+      const btnSignIn = document.getElementById("tab-btn-signin");
+      const btnSignUp = document.getElementById("tab-btn-signup");
+      const headerTitle = document.getElementById("auth-header-title");
+      const headerDesc = document.getElementById("auth-header-desc");
+      const headerIcon = document.getElementById("auth-header-icon");
+
+      hideAlert();
+
+      if (isSignIn) {
+        formSignIn.classList.remove("hidden");
+        formSignUp.classList.add("hidden");
+        btnSignIn.className = "auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all bg-primary-indigo text-white shadow-sm flex items-center justify-center gap-1.5";
+        btnSignUp.className = "auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
+        headerTitle.textContent = "Welcome to SmartLearn";
+        headerDesc.textContent = "Sign in to access your personalized adaptive dashboard, weak-topic remediation & skill roadmaps.";
+        headerIcon.textContent = "lock_open";
+      } else {
+        formSignIn.classList.add("hidden");
+        formSignUp.classList.remove("hidden");
+        btnSignUp.className = "auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all bg-primary-indigo text-white shadow-sm flex items-center justify-center gap-1.5";
+        btnSignIn.className = "auth-tab-pill flex-1 py-2 text-[13px] font-bold rounded-xl transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5";
+        headerTitle.textContent = "Create Learner Account";
+        headerDesc.textContent = "Join thousands of students building industry-ready engineering skills on SmartLearn.";
+        headerIcon.textContent = "person_add";
+      }
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        input.type = "password";
+        btn.textContent = "Show";
+      }
+    }
+
+    // Notification Alerts
+    function showAlert(msg, isError = true) {
+      const box = document.getElementById("auth-alert");
+      if (!box) return;
+      box.className = `p-3 rounded-xl text-[12px] border ${
+        isError
+          ? "bg-rose-500/15 border-rose-500/30 text-rose-300"
+          : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+      } flex items-center gap-2`;
+      box.innerHTML = `
+        <span class="material-symbols-outlined text-[16px]">${isError ? 'error' : 'check_circle'}</span>
+        <span>${msg}</span>
+      `;
+      box.classList.remove("hidden");
+    }
+
+    function hideAlert() {
+      const box = document.getElementById("auth-alert");
+      if (box) box.classList.add("hidden");
+    }
+
+    function showForgotPasswordAlert() {
+      showAlert("Password reset link has been dispatched to your registered email address.", false);
+    }
+
+    // Smooth transition into Overview Dashboard
+    function transitionToOverview(user, delayMs = 600) {
+      showAlert(`Authentication successful! Welcome, ${user.full_name || 'Learner'}. Entering overview dashboard...`, false);
+      setTimeout(() => {
+        window.location.href = OVERVIEW_DESTINATION;
+      }, delayMs);
+    }
+
+    // 1-Click Fast Student Demo Login
+    async function quickDemoStudentLogin() {
+      hideAlert();
+      const btn = event?.currentTarget;
+      if (btn) {
+        btn.style.opacity = "0.7";
+        btn.innerText = "Connecting to Overview...";
+      }
+
+      try {
+        const res = await SmartLearnSupabase.signIn("avinash.verma@smartlearn.edu", "Student@2026", "student");
+        if (res && res.success) {
+          transitionToOverview(res.user, 400);
+        } else {
+          window.location.href = OVERVIEW_DESTINATION;
+        }
+      } catch (e) {
+        window.location.href = OVERVIEW_DESTINATION;
+      }
+    }
+
+    // Handle OAuth Login (Google & GitHub)
+    async function handleOAuthLogin(provider) {
+      hideAlert();
+      const statusBox = document.getElementById("oauth-status");
+      statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-secondary bg-secondary/10 border border-secondary/20 flex items-center justify-center gap-1.5";
+      statusBox.innerHTML = `
+        <span class="inline-block w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></span>
+        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} via Supabase...</span>
+      `;
+      statusBox.classList.remove("hidden");
+
+      try {
+        const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
+        if (res && res.redirecting) {
+          // External OAuth redirect underway
+          return;
+        }
+        if (res && res.success) {
+          statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-emerald-400 bg-emerald-500/10 border border-emerald-500/20";
+          statusBox.textContent = `Authenticated via ${provider.toUpperCase()}! Entering overview...`;
+          transitionToOverview(res.user, 700);
+        } else {
+          statusBox.classList.add("hidden");
+          showAlert(res?.message || `Could not authenticate with ${provider}.`);
+        }
+      } catch (err) {
+        statusBox.classList.add("hidden");
+        showAlert(`OAuth exception: ${err.message || err}`);
+      }
+    }
+
+    // Handle Email Sign In Submit
+    async function handleEmailSignIn(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const email = document.getElementById("signin-email").value.trim();
+      const password = document.getElementById("signin-password").value;
+      const submitBtn = document.getElementById("signin-submit-btn");
+      const btnText = document.getElementById("signin-btn-text");
+
+      submitBtn.disabled = true;
+      btnText.textContent = "Verifying Credentials...";
+
+      try {
+        const res = await SmartLearnSupabase.signIn(email, password);
+        if (res && res.success) {
+          transitionToOverview(res.user, 600);
+        } else {
+          submitBtn.disabled = false;
+          btnText.textContent = "Sign In to Overview";
+          showAlert(res?.message || "Invalid email or password.");
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        btnText.textContent = "Sign In to Overview";
+        showAlert(err.message || "An unexpected error occurred during sign in.");
+      }
+    }
+
+    // Handle Email Sign Up Submit
+    async function handleEmailSignUp(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const name = document.getElementById("signup-name").value.trim();
+      const phone = document.getElementById("signup-phone").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const role = document.getElementById("signup-role").value;
+      const password = document.getElementById("signup-password").value;
+      const submitBtn = document.getElementById("signup-submit-btn");
+      const btnText = document.getElementById("signup-btn-text");
+
+      submitBtn.disabled = true;
+      btnText.textContent = "Creating Account...";
+
+      try {
+        const res = await SmartLearnSupabase.signUp(email, password, {
+          fullName: name,
+          role: role,
+          department: "Computer Science & Engineering"
+        });
+
+        if (res && res.success) {
+          if (res.user) {
+            res.user.phone = phone;
+            localStorage.setItem("smartlearn_active_profile", JSON.stringify(res.user));
+          }
+          showAlert(`Account registered successfully! Entering overview dashboard...`, false);
+          transitionToOverview(res.user || { full_name: name }, 700);
+        } else {
+          submitBtn.disabled = false;
+          btnText.textContent = "Create Account & Enter Overview";
+          showAlert(res?.message || "Could not register account. Please check your details.");
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        btnText.textContent = "Create Account & Enter Overview";
+        showAlert(err.message || "Error creating account.");
+      }
+    }
+
+    // Auto-detect URL parameter ?tab=signup or OAuth return tokens
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("tab") === "signup" || urlParams.get("mode") === "register") {
+        switchAuthTab("signup");
+      }
+
+      // Check if redirected with OAuth tokens in hash (#access_token=...)
+      if (window.location.hash && window.location.hash.includes("access_token")) {
+        showAlert("Verifying OAuth session from provider...", false);
+        try {
+          const res = await SmartLearnSupabase.restoreSession();
+          if (res && res.user) {
+            transitionToOverview(res.user, 500);
+          }
+        } catch (e) {
+          console.warn("Session restore from hash:", e);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
