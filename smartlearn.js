@@ -2436,8 +2436,10 @@ const SmartLearnApp = (function () {
     if (!data) return;
 
     const countEl = document.getElementById("w3-completed-count");
+    const totalEl = document.getElementById("w3-total-count");
     const xpEl = document.getElementById("w3-total-xp");
 
+    const totalConcepts = Object.values(data.docs).reduce((sum, list) => sum + list.length, 0);
     const completed = data.completedConcepts.length;
     let earnedXp = 0;
 
@@ -2450,6 +2452,7 @@ const SmartLearnApp = (function () {
     });
 
     if (countEl) countEl.textContent = completed;
+    if (totalEl) totalEl.textContent = totalConcepts;
     if (xpEl) xpEl.textContent = `+${earnedXp} XP`;
   }
 
