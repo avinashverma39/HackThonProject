@@ -59,7 +59,6 @@ const SmartLearnAPI = (function () {
       practiceQuestionBank: SmartLearnData.practiceQuestionBank,
       teacherStudents: SmartLearnData.teacherStudents,
       notifications: SmartLearnData.notifications,
-      userReports: SmartLearnData.userReports || [],
       quizHistory: []
     };
     saveLocalStore(initial);
@@ -609,47 +608,10 @@ const SmartLearnAPI = (function () {
     }
     const store = getLocalStore();
     if (store.currentUser) {
-      const displayName = profileData.fullName || profileData.full_name || profileData.name || store.currentUser.name;
-      store.currentUser = {
-        ...store.currentUser,
-        ...profileData,
-        name: displayName,
-        full_name: displayName,
-        phone: profileData.phone || profileData.mobile || store.currentUser.phone || "+91 98765 43210",
-        email: profileData.email || store.currentUser.email
-      };
+      store.currentUser = { ...store.currentUser, ...profileData, name: profileData.fullName || profileData.name };
       saveLocalStore(store);
     }
     return { success: true, profile: store.currentUser };
-  }
-
-  async function getUserReports() {
-    const store = getLocalStore();
-    if (!store.userReports || !store.userReports.length) {
-      store.userReports = [...(SmartLearnData.userReports || [])];
-      saveLocalStore(store);
-    }
-    return store.userReports;
-  }
-
-  async function submitUserReport(reportData) {
-    const store = getLocalStore();
-    if (!store.userReports) {
-      store.userReports = [...(SmartLearnData.userReports || [])];
-    }
-    const newReport = {
-      id: "REP-2026-" + String(Math.floor(100 + Math.random() * 900)),
-      category: reportData.category || "General Feedback",
-      subject: reportData.subject || "Issue Report",
-      description: reportData.description || "",
-      priority: reportData.priority || "Medium",
-      status: "Under Review",
-      date: new Date().toISOString().split("T")[0],
-      resolution: "Logged and assigned to SmartLearn platform support."
-    };
-    store.userReports.unshift(newReport);
-    saveLocalStore(store);
-    return { success: true, report: newReport };
   }
 
   async function createTeacherQuiz(quizPayload) {
@@ -709,8 +671,6 @@ const SmartLearnAPI = (function () {
     createTeacherCourse,
     createTeacherQuiz,
     updateProfile,
-    getUserReports,
-    submitUserReport,
     getNotifications,
     markAllNotificationsRead
   };

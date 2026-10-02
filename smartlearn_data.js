@@ -10,7 +10,6 @@ const SmartLearnData = (function () {
     id: "stu-101",
     name: "Avinash Verma",
     email: "avinash.verma@smartlearn.edu",
-    phone: "+91 98765 43210",
     role: "student", // 'student' | 'teacher'
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
     college: "Institute of Engineering & Technology",
@@ -22,7 +21,6 @@ const SmartLearnData = (function () {
     enrolledCoursesCount: 5,
     completedLessons: 48,
     pendingQuizzes: 3,
-    studyHours: 18.5,
     studyHoursThisWeek: 18.5
   };
 
@@ -1009,29 +1007,6 @@ wordCounts.merge("algorithm", 1, Integer::sum);
     }
   ];
 
-  const userReports = [
-    {
-      id: "REP-2026-001",
-      category: "Bug Report",
-      subject: "Pointer simulation diagram rendering overlap on mobile viewport",
-      description: "When viewing the 15-minute pointer remediation drill on mobile portrait screen, the stack frame canvas overlaps with the explanation card.",
-      priority: "Medium",
-      status: "Investigating",
-      date: "2026-09-28",
-      resolution: "Under active investigation by frontend team."
-    },
-    {
-      id: "REP-2026-002",
-      category: "Feature Suggestion",
-      subject: "Add step-by-step debugger for C pointer arithmetic drills",
-      description: "Would love an interactive single-step memory stepper showing memory address offsets in hex during dynamic allocation.",
-      priority: "Low",
-      status: "Under Review",
-      date: "2026-09-30",
-      resolution: "Queued for Sprint 4 evaluation."
-    }
-  ];
-
   return {
     currentUser,
     currentTeacher,
@@ -1044,8 +1019,7 @@ wordCounts.merge("algorithm", 1, Integer::sum);
     recommendations,
     practiceQuestionBank,
     teacherStudents,
-    notifications,
-    userReports
+    notifications
   };
 })();
 

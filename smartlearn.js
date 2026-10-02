@@ -97,18 +97,10 @@ const SmartLearnApp = (function () {
 
     // Automatically detect which page or section is active
     const path = (window.location.pathname || "").toLowerCase();
-    const hasAuthGateway = !!document.getElementById("step1-auth-gateway");
-    const isStudentPage = path.includes("student.html") || (document.getElementById("student-app-layout") && !document.getElementById("public-landing-view") && !hasAuthGateway);
-    const isTeacherPage = path.includes("teacher.html") || (document.getElementById("teacher-app-layout") && !document.getElementById("public-landing-view") && !hasAuthGateway);
+    const isStudentPage = path.includes("student.html") || (document.getElementById("student-app-layout") && !document.getElementById("public-landing-view"));
+    const isTeacherPage = path.includes("teacher.html") || (document.getElementById("teacher-app-layout") && !document.getElementById("public-landing-view"));
 
-    if (hasAuthGateway) {
-      const sessionActive = localStorage.getItem("smartlearn_session_active") === "true";
-      if (sessionActive && state.currentUser) {
-        showCoreDashboard("dashboard");
-      } else {
-        showAuthGateway();
-      }
-    } else if (isStudentPage) {
+    if (isStudentPage) {
       showMainView("student-dashboard");
       const hash = window.location.hash.replace("#", "");
       if (hash && document.getElementById(`subview-${hash}`)) {
@@ -152,8 +144,6 @@ const SmartLearnApp = (function () {
       : "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80");
 
     const firstName = userName.trim().split(" ")[0] || "Student";
-    const phone = user.phone || user.mobile || "+91 98765 43210";
-    const email = user.email || `${userName.toLowerCase().replace(/\s+/g, '.')}@smartlearn.edu`;
     const streakDays = user.streak_days || user.streakDays || 12;
     const rollNo = user.roll_no || user.rollNo || "24CSE089";
     const dept = user.department || "Computer Science & Engineering";
@@ -186,17 +176,7 @@ const SmartLearnApp = (function () {
     if (stuAvatar) stuAvatar.src = avatar;
     if (stuStreak) stuStreak.textContent = `${streakDays}-day streak`;
 
-    // 2b. Update Core Dashboard Header (Step 2)
-    const coreHeaderName = document.getElementById("core-header-name");
-    const coreHeaderRole = document.getElementById("core-header-role");
-    const coreHeaderAvatar = document.getElementById("core-header-avatar");
-    const coreHeaderStreak = document.getElementById("core-header-streak");
-    if (coreHeaderName) coreHeaderName.textContent = userName;
-    if (coreHeaderRole) coreHeaderRole.textContent = `Student • ${dept.includes('Computer') ? 'CS' : dept}`;
-    if (coreHeaderAvatar) coreHeaderAvatar.src = avatar;
-    if (coreHeaderStreak) coreHeaderStreak.textContent = `${streakDays}-day streak`;
-
-    // 3. Update Student Dashboard Welcome Banner
+    // 3. Update Student Dashboard Welcome Banner (Real student name & details)
     const heroGreeting = document.getElementById("dashboard-student-greeting");
     const heroSubtitle = document.getElementById("dashboard-student-subtitle");
     const heroDept = document.getElementById("dashboard-student-dept");
@@ -207,7 +187,7 @@ const SmartLearnApp = (function () {
       heroSubtitle.textContent = `You've maintained your ${streakDays}-day study streak. You have 1 prioritized weak topic ready for remediation and 3 pending quizzes.`;
     }
     if (heroDept) heroDept.textContent = `${dept} • Roll: ${rollNo}`;
-    if (heroSemester) heroSemester.textContent = `Active ${semester.split(' ')[0] + ' ' + (semester.split(' ')[1] || '')} • Session 2024–2025`;
+    if (heroSemester) heroSemester.textContent = `Active ${semester.split(' ')[0] + ' ' + (semester.split(' ')[1] || '')} • Week 6`;
 
     // 4. Update Top Analytics Metric Cards
     const overallProg = document.getElementById("dashboard-overall-progress");
@@ -229,8 +209,6 @@ const SmartLearnApp = (function () {
     // 6. Update Profile Subview Elements
     const profName = document.getElementById("profile-student-name");
     const profEmail = document.getElementById("profile-student-email");
-    const profPhoneText = document.getElementById("profile-student-phone-text");
-    const profPhoneEl = document.getElementById("profile-student-phone");
     const profAvatar = document.getElementById("profile-student-avatar");
     const profRoll = document.getElementById("profile-student-roll");
     const profDept = document.getElementById("profile-student-dept");
@@ -241,9 +219,7 @@ const SmartLearnApp = (function () {
     const profStreak = document.getElementById("profile-student-streak");
 
     if (profName) profName.textContent = userName;
-    if (profEmail) profEmail.textContent = email;
-    if (profPhoneText) profPhoneText.textContent = phone;
-    else if (profPhoneEl) profPhoneEl.innerHTML = `<span class="material-symbols-outlined text-[13px]">phone</span> ${phone}`;
+    if (profEmail) profEmail.textContent = user.email || `${userName.toLowerCase().replace(/\s+/g, '.')}@smartlearn.edu`;
     if (profAvatar) profAvatar.src = avatar;
     if (profRoll) profRoll.textContent = rollNo;
     if (profDept) profDept.textContent = dept;
@@ -252,14 +228,6 @@ const SmartLearnApp = (function () {
     if (profBio && user.bio) profBio.textContent = user.bio;
     if (profMastery) profMastery.textContent = `${user.overall_progress || user.overallProgress || 72}%`;
     if (profStreak) profStreak.textContent = `${streakDays} Days`;
-
-    // 6b. Update In-Page Personal Details Editor Form Inputs
-    const manageName = document.getElementById("profile-manage-name");
-    const managePhone = document.getElementById("profile-manage-phone");
-    const manageEmail = document.getElementById("profile-manage-email");
-    if (manageName) manageName.value = userName;
-    if (managePhone) managePhone.value = phone;
-    if (manageEmail) manageEmail.value = email;
 
     // 7. Update Copilot Initial Welcome Message
     const copilotMsg = document.getElementById("copilot-welcome-message");
@@ -277,15 +245,15 @@ const SmartLearnApp = (function () {
   }
 
   async function signOut() {
-    localStorage.removeItem("smartlearn_session_active");
     await SmartLearnAPI.signOut();
     state.currentUser = null;
     updateUserUI(null);
     notify("Signed Out", "You have been logged out securely.", "info");
-    if (document.getElementById("step1-auth-gateway")) {
-      showAuthGateway();
-    } else {
+    const isLanding = document.getElementById("public-landing-view");
+    if (!isLanding) {
       window.location.href = "index.html";
+    } else {
+      showMainView("landing");
     }
   }
 
@@ -458,7 +426,7 @@ const SmartLearnApp = (function () {
       { icon: "crisis_alert", title: "Weak Topic Detection", desc: "Automatic identification of topics scoring below 70%, with clear error pattern diagnosis." },
       { icon: "psychology", title: "Personalized Recommendations", desc: "Transparent recommendation engine explaining exactly why a resource is suggested for you." },
       { icon: "fitness_center", title: "Practice Questions", desc: "Topic and difficulty-filtered practice drills with instant feedback and comprehensive rationales." },
-      { icon: "trending_up", title: "Learning Progress", desc: "Visual retention curves, consistent study hour tracking, study streaks, and degree milestone maps." },
+      { icon: "trending_up", title: "Learning Progress", desc: "Visual retention curves, weekly study hour tracking, study streaks, and degree milestone maps." },
       { icon: "folder_managed", title: "Teacher Course Management", desc: "Full curriculum builder for educators to upload notes, manage modules, and add video lectures." },
       { icon: "ballot", title: "Quiz Management", desc: "Intuitive quiz authoring interface for teachers to create multi-choice assessments with answer keys." }
     ];
@@ -1722,8 +1690,6 @@ const SmartLearnApp = (function () {
     if (!modal) return;
 
     const nameInput = document.getElementById("edit-student-name");
-    const emailInput = document.getElementById("edit-student-email");
-    const phoneInput = document.getElementById("edit-student-phone");
     const rollInput = document.getElementById("edit-student-roll");
     const deptInput = document.getElementById("edit-student-dept");
     const semInput = document.getElementById("edit-student-semester");
@@ -1732,8 +1698,6 @@ const SmartLearnApp = (function () {
     const avatarInput = document.getElementById("edit-student-avatar-url");
 
     if (nameInput) nameInput.value = user.full_name || user.name || "Avinash Verma";
-    if (emailInput) emailInput.value = user.email || "avinash.verma@smartlearn.edu";
-    if (phoneInput) phoneInput.value = user.phone || user.mobile || "+91 98765 43210";
     if (rollInput) rollInput.value = user.roll_no || user.rollNo || "24CSE089";
     if (deptInput) deptInput.value = user.department || "Computer Science & Engineering";
     if (semInput) semInput.value = user.semester || "Semester 5 (3rd Year B.Tech)";
@@ -1747,8 +1711,6 @@ const SmartLearnApp = (function () {
   async function handleProfileUpdateSubmit(event) {
     if (event) event.preventDefault();
     const name = document.getElementById("edit-student-name")?.value.trim() || "Avinash Verma";
-    const email = document.getElementById("edit-student-email")?.value.trim() || "avinash.verma@smartlearn.edu";
-    const phone = document.getElementById("edit-student-phone")?.value.trim() || "+91 98765 43210";
     const roll = document.getElementById("edit-student-roll")?.value.trim() || "24CSE089";
     const dept = document.getElementById("edit-student-dept")?.value.trim() || "Computer Science & Engineering";
     const semester = document.getElementById("edit-student-semester")?.value.trim() || "Semester 5 (3rd Year B.Tech)";
@@ -1758,9 +1720,6 @@ const SmartLearnApp = (function () {
 
     const updatedData = {
       full_name: name,
-      name: name,
-      email: email,
-      phone: phone,
       roll_no: roll,
       department: dept,
       semester: semester,
@@ -1783,359 +1742,7 @@ const SmartLearnApp = (function () {
 
     updateUserUI(state.currentUser);
     closeModal("modal-edit-profile");
-    notify("Profile Updated", `Your core details for ${name} (${phone}) have been updated across the dashboard.`, "success");
-  }
-
-  // --- IN-PAGE USER-MANAGEABLE CORE PERSONAL DETAILS ---
-  async function handlePersonalDetailsUpdate(event) {
-    if (event) event.preventDefault();
-    const nameInput = document.getElementById("profile-manage-name");
-    const phoneInput = document.getElementById("profile-manage-phone");
-    const emailInput = document.getElementById("profile-manage-email");
-
-    const name = nameInput?.value.trim() || "Avinash Verma";
-    const phone = phoneInput?.value.trim() || "+91 98765 43210";
-    const email = emailInput?.value.trim() || "avinash.verma@smartlearn.edu";
-
-    const updatedData = {
-      full_name: name,
-      name: name,
-      phone: phone,
-      email: email
-    };
-
-    if (window.SmartLearnAPI && window.SmartLearnAPI.updateProfile) {
-      await window.SmartLearnAPI.updateProfile(state.currentUser?.id, updatedData);
-    } else if (window.SmartLearnSupabase && window.SmartLearnSupabase.updateProfile) {
-      await window.SmartLearnSupabase.updateProfile(updatedData);
-    }
-
-    if (state.currentUser) {
-      state.currentUser = { ...state.currentUser, ...updatedData };
-    } else {
-      state.currentUser = updatedData;
-    }
-
-    updateUserUI(state.currentUser);
-    notify("Personal Details Saved", `Updated details for ${name} (${phone} • ${email}) successfully saved.`, "success");
-  }
-
-  // --- DEDICATED REPORT & ISSUE SUBMISSION SECTION ---
-  async function handleReportSubmit(event) {
-    if (event) event.preventDefault();
-    const category = document.getElementById("report-category")?.value || "Bug Report";
-    const priority = document.getElementById("report-priority")?.value || "Medium";
-    const subject = document.getElementById("report-subject")?.value.trim() || "";
-    const description = document.getElementById("report-description")?.value.trim() || "";
-
-    if (!subject || !description) {
-      notify("Missing Fields", "Please provide both an issue subject and description.", "error");
-      return;
-    }
-
-    const submitBtn = document.getElementById("btn-submit-report");
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>Submitting Ticket...</span>`;
-    }
-
-    try {
-      const res = await SmartLearnAPI.submitUserReport({ category, priority, subject, description });
-      const ticketId = res.report?.id || "REP-" + Math.floor(1000 + Math.random() * 9000);
-
-      // Reset form fields
-      const subInput = document.getElementById("report-subject");
-      const descInput = document.getElementById("report-description");
-      if (subInput) subInput.value = "";
-      if (descInput) descInput.value = "";
-
-      notify("Report Submitted! 🎫", `Ticket #${ticketId} created. Our engineering team has logged your issue.`, "success");
-      await renderUserReports();
-    } catch (e) {
-      console.error("Report submit failed:", e);
-      notify("Submission Error", "Could not submit report right now.", "error");
-    } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span class="material-symbols-outlined text-[17px]">send</span><span>Submit Issue Report</span>`;
-      }
-    }
-  }
-
-  async function renderUserReports() {
-    const list = document.getElementById("user-reports-list");
-    const countBadge = document.getElementById("reports-count-badge");
-    if (!list) return;
-
-    const reports = await SmartLearnAPI.getUserReports();
-    if (countBadge) countBadge.textContent = `${reports.length} Logged`;
-
-    if (!reports || reports.length === 0) {
-      list.innerHTML = `
-        <div class="p-4 rounded-xl bg-surface-container-high/40 border border-white/5 text-center text-[12px] text-slate-400">
-          No issue reports or feedback tickets submitted yet. Use the form above to submit an issue directly.
-        </div>
-      `;
-      return;
-    }
-
-    list.innerHTML = reports.map(r => {
-      const prioColor = r.priority === 'Urgent' ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' :
-                        r.priority === 'High' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                        'bg-surface-container text-slate-300 border-white/10';
-
-      const statusColor = r.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
-                          r.status === 'Investigating' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' :
-                          'bg-amber-500/20 text-amber-300 border-amber-500/30';
-
-      return `
-        <div class="p-3.5 rounded-2xl bg-surface-container-high/60 border border-white/5 flex flex-col gap-2 hover:border-white/15 transition-all">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-mono text-[11px] font-bold text-primary-indigo">${r.id}</span>
-              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border ${prioColor}">${r.priority}</span>
-              <span class="px-2 py-0.5 rounded-md text-[10px] font-medium bg-surface-container text-slate-300 border border-white/5">${r.category}</span>
-            </div>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1 ${statusColor}">
-              <span class="w-1.5 h-1.5 rounded-full ${r.status === 'Resolved' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'}"></span>
-              ${r.status}
-            </span>
-          </div>
-          <div>
-            <h5 class="text-[13px] font-semibold text-white">${r.subject}</h5>
-            <p class="text-[12px] text-slate-400 mt-0.5 leading-relaxed">${r.description}</p>
-          </div>
-          <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-white/5">
-            <span>Submitted on ${r.date}</span>
-            <span class="italic text-slate-400 font-mono text-[10px]">${r.resolution || 'Assigned to triage'}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // --- STRICT 2-STEP HOME PAGE & AUTHENTICATION FLOW ---
-  function showAuthGateway() {
-    const gateway = document.getElementById("step1-auth-gateway");
-    const dashboard = document.getElementById("step2-core-dashboard");
-    const publicLanding = document.getElementById("public-landing-view");
-
-    if (gateway) gateway.classList.remove("hidden");
-    if (dashboard) dashboard.classList.add("hidden");
-    if (publicLanding) publicLanding.classList.add("hidden");
-    state.currentMainView = "auth-gateway";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function showCoreDashboard(tab = "dashboard") {
-    const gateway = document.getElementById("step1-auth-gateway");
-    const dashboard = document.getElementById("step2-core-dashboard");
-    const publicLanding = document.getElementById("public-landing-view");
-
-    if (gateway) gateway.classList.add("hidden");
-    if (dashboard) dashboard.classList.remove("hidden");
-    if (publicLanding) publicLanding.classList.add("hidden");
-
-    state.currentMainView = "core-dashboard";
-    localStorage.setItem("smartlearn_session_active", "true");
-
-    if (!state.currentUser) {
-      const stored = SmartLearnAPI.getLocalStore ? SmartLearnAPI.getLocalStore().currentUser : null;
-      state.currentUser = stored || SmartLearnData.currentUser;
-      state.currentRole = state.currentUser?.role || "student";
-    }
-    updateUserUI(state.currentUser);
-
-    showCoreDashboardTab(tab);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function switchGatewayTab(mode) {
-    const loginSection = document.getElementById("gateway-tab-login");
-    const regSection = document.getElementById("gateway-tab-register");
-    const tabBtnLogin = document.getElementById("gateway-pill-login");
-    const tabBtnReg = document.getElementById("gateway-pill-reg");
-    const errBox = document.getElementById("gateway-auth-error");
-    if (errBox) errBox.classList.add("hidden");
-
-    if (mode === "register") {
-      if (loginSection) loginSection.classList.add("hidden");
-      if (regSection) regSection.classList.remove("hidden");
-      if (tabBtnLogin) {
-        tabBtnLogin.classList.remove("bg-primary-indigo", "text-white");
-        tabBtnLogin.classList.add("text-slate-400");
-      }
-      if (tabBtnReg) {
-        tabBtnReg.classList.add("bg-primary-indigo", "text-white");
-        tabBtnReg.classList.remove("text-slate-400");
-      }
-    } else {
-      if (loginSection) loginSection.classList.remove("hidden");
-      if (regSection) regSection.classList.add("hidden");
-      if (tabBtnLogin) {
-        tabBtnLogin.classList.add("bg-primary-indigo", "text-white");
-        tabBtnLogin.classList.remove("text-slate-400");
-      }
-      if (tabBtnReg) {
-        tabBtnReg.classList.remove("bg-primary-indigo", "text-white");
-        tabBtnReg.classList.add("text-slate-400");
-      }
-    }
-  }
-
-  async function handleGatewayLogin(event) {
-    if (event) event.preventDefault();
-    const email = document.getElementById("gateway-login-email")?.value.trim() || "avinash.verma@smartlearn.edu";
-    const password = document.getElementById("gateway-login-password")?.value || "Student@2026";
-    const errBox = document.getElementById("gateway-auth-error");
-    const btn = document.getElementById("gateway-login-submit-btn");
-
-    if (errBox) errBox.classList.add("hidden");
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = `<span>Authenticating...</span>`;
-    }
-
-    try {
-      const res = await SmartLearnAPI.login(email, password, "student");
-      if (!res.success) {
-        if (errBox) {
-          errBox.textContent = res.message || "Invalid email or password.";
-          errBox.classList.remove("hidden");
-        }
-        return;
-      }
-
-      state.currentUser = res.user;
-      state.currentRole = res.user.role || "student";
-      localStorage.setItem("smartlearn_session_active", "true");
-      updateUserUI(res.user);
-      notify("Authentication Successful 🎉", `Welcome back, ${res.user.full_name || res.user.name || "Student"}!`, "success");
-      
-      showCoreDashboard("dashboard");
-    } catch (err) {
-      console.error(err);
-      if (errBox) {
-        errBox.textContent = "Error during authentication. Please retry.";
-        errBox.classList.remove("hidden");
-      }
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Sign In to Dashboard</span><span class="material-symbols-outlined text-[16px]">arrow_forward</span>`;
-      }
-    }
-  }
-
-  async function handleGatewayRegister(event) {
-    if (event) event.preventDefault();
-    const name = document.getElementById("gateway-reg-name")?.value.trim() || "New Student";
-    const phone = document.getElementById("gateway-reg-phone")?.value.trim() || "+91 98765 43210";
-    const email = document.getElementById("gateway-reg-email")?.value.trim() || "";
-    const password = document.getElementById("gateway-reg-password")?.value || "";
-    const errBox = document.getElementById("gateway-auth-error");
-    const btn = document.getElementById("gateway-reg-submit-btn");
-
-    if (errBox) errBox.classList.add("hidden");
-
-    if (!email || !password || password.length < 6) {
-      if (errBox) {
-        errBox.textContent = "Password must be at least 6 characters long.";
-        errBox.classList.remove("hidden");
-      }
-      return;
-    }
-
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = `<span>Creating Account...</span>`;
-    }
-
-    try {
-      const res = await SmartLearnAPI.register({ fullName: name, email, password, role: "student" });
-      if (!res.success) {
-        if (errBox) {
-          errBox.textContent = res.message || "Could not register account.";
-          errBox.classList.remove("hidden");
-        }
-        return;
-      }
-
-      const userWithPhone = { ...res.user, phone, mobile: phone };
-      await SmartLearnAPI.updateProfile(userWithPhone.id, { phone, full_name: name, email });
-
-      state.currentUser = userWithPhone;
-      state.currentRole = "student";
-      localStorage.setItem("smartlearn_session_active", "true");
-      updateUserUI(userWithPhone);
-      notify("Account Created 🎉", `Welcome to SmartLearn, ${name}!`, "success");
-
-      showCoreDashboard("dashboard");
-    } catch (err) {
-      console.error(err);
-      if (errBox) {
-        errBox.textContent = "Error saving profile. Please retry.";
-        errBox.classList.remove("hidden");
-      }
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Create Account &amp; Enter Dashboard</span><span class="material-symbols-outlined text-[16px]">arrow_forward</span>`;
-      }
-    }
-  }
-
-  async function quickDemoLogin(role = "student") {
-    const email = "avinash.verma@smartlearn.edu";
-    const password = "Student@2026";
-    const res = await SmartLearnAPI.login(email, password, role);
-    state.currentUser = res.user || SmartLearnData.currentUser;
-    state.currentRole = "student";
-    localStorage.setItem("smartlearn_session_active", "true");
-    updateUserUI(state.currentUser);
-    notify("Demo Session Activated 🚀", `Logged in as ${state.currentUser.full_name || state.currentUser.name} (Student Overview ready)`, "success");
-    showCoreDashboard("dashboard");
-  }
-
-  function showCoreDashboardTab(tabName) {
-    state.currentStudentTab = tabName;
-    document.querySelectorAll(".core-dashboard-panel").forEach(panel => panel.classList.add("hidden"));
-    const target = document.getElementById(`panel-${tabName}`);
-    if (target) {
-      target.classList.remove("hidden");
-    }
-
-    document.querySelectorAll(".core-dashboard-nav-btn").forEach(btn => {
-      const isTarget = btn.getAttribute("data-tab") === tabName;
-      if (isTarget) {
-        btn.classList.add("bg-primary-indigo", "text-white", "font-semibold");
-        btn.classList.remove("text-slate-400", "hover:text-white");
-      } else {
-        btn.classList.remove("bg-primary-indigo", "text-white", "font-semibold");
-        btn.classList.add("text-slate-400", "hover:text-white");
-      }
-    });
-
-    const crumb = document.getElementById("core-header-crumb");
-    if (crumb) {
-      const titles = {
-        dashboard: "Dashboard Overview",
-        courses: "My Enrolled Courses",
-        quizzes: "Quizzes & Assessments",
-        "weak-topics": "Weak Topics Diagnostics",
-        recommendations: "Personalized Recommendations",
-        materials: "Study Materials Archive",
-        profile: "Profile & Account Management"
-      };
-      crumb.textContent = titles[tabName] || "Dashboard Overview";
-    }
-
-    if (tabName === "courses") renderCourses();
-    if (tabName === "quizzes") renderQuizzes();
-    if (tabName === "weak-topics") renderWeakTopics();
-    if (tabName === "recommendations") renderRecommendations();
-    if (tabName === "materials") renderMaterials();
-    if (tabName === "profile") renderUserReports();
+    notify("Profile Updated", `Your academic credentials for ${name} have been updated across the dashboard.`, "success");
   }
 
   function downloadAcademicTranscript() {
@@ -2376,9 +1983,33 @@ const SmartLearnApp = (function () {
     }
   }
 
+  function filterSkills(category, btnElement) {
+    if (btnElement) {
+      document.querySelectorAll(".skill-filter-pill").forEach(p => {
+        p.classList.remove("active", "bg-emerald-500", "text-white", "shadow-md", "shadow-emerald-500/20");
+        p.classList.add("bg-surface-container", "text-slate-300");
+      });
+      btnElement.classList.add("active", "bg-emerald-500", "text-white", "shadow-md", "shadow-emerald-500/20");
+      btnElement.classList.remove("bg-surface-container", "text-slate-300");
+    }
+
+    const cards = document.querySelectorAll("#skills-cards-grid .skill-card");
+    cards.forEach(card => {
+      const cardCat = card.getAttribute("data-category");
+      if (!category || category === "all" || cardCat === category) {
+        card.style.display = "";
+        card.classList.remove("hidden");
+      } else {
+        card.style.display = "none";
+        card.classList.add("hidden");
+      }
+    });
+  }
+
   return {
     init,
     showMainView,
+    filterSkills,
     showStudentTab,
     setCourseSubjectFilter,
     filterCoursesByKeyword,
@@ -2417,16 +2048,6 @@ const SmartLearnApp = (function () {
     openForgotPasswordModal,
     openEditProfileModal,
     handleProfileUpdateSubmit,
-    handlePersonalDetailsUpdate,
-    handleReportSubmit,
-    renderUserReports,
-    showAuthGateway,
-    showCoreDashboard,
-    switchGatewayTab,
-    handleGatewayLogin,
-    handleGatewayRegister,
-    quickDemoLogin,
-    showCoreDashboardTab,
     downloadAcademicTranscript,
     getCurrentUserName,
     handleLoginSubmit,
