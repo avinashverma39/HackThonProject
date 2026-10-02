@@ -472,9 +472,10 @@
 
     // Smooth transition into Overview Dashboard
     function transitionToOverview(user, delayMs = 600) {
-      showAlert(`Authentication successful! Welcome, ${user.full_name || 'Learner'}. Entering overview dashboard...`, false);
+      const destination = (user && user.role === "teacher") ? "teacher.html" : "student.html";
+      showAlert(`Authentication successful! Welcome, ${user?.full_name || 'Learner'}. Entering ${destination === 'teacher.html' ? 'Faculty Portal' : 'Student Overview'}...`, false);
       setTimeout(() => {
-        window.location.href = OVERVIEW_DESTINATION;
+        window.location.href = destination;
       }, delayMs);
     }
 
@@ -613,8 +614,9 @@
         showAlert("Verifying OAuth session from provider...", false);
         try {
           const res = await SmartLearnSupabase.restoreSession();
-          if (res && res.user) {
-            transitionToOverview(res.user, 500);
+          const user = res?.user || res;
+          if (user) {
+            transitionToOverview(user, 500);
           }
         } catch (e) {
           console.warn("Session restore from hash:", e);
