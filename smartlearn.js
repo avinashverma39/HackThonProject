@@ -2073,6 +2073,18 @@ const SmartLearnApp = (function () {
       ? docs.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q) || (d.summary || '').toLowerCase().includes(q))
       : docs;
 
+    // Update sidebar progress bar for active technology
+    const techObj = data.technologies.find(t => t.id === data.currentTech);
+    const techLabel = document.getElementById("w3-sidebar-tech-label");
+    const progressPctEl = document.getElementById("w3-sidebar-progress-pct");
+    const progressFillEl = document.getElementById("w3-sidebar-progress-fill");
+    const totalDocs = docs.length;
+    const completedDocs = docs.filter(d => data.completedConcepts.includes(d.id)).length;
+    const pct = totalDocs > 0 ? Math.round((completedDocs / totalDocs) * 100) : 0;
+    if (techLabel) techLabel.textContent = `${techObj ? techObj.name : 'Tech'} Progress`;
+    if (progressPctEl) progressPctEl.textContent = `${pct}% (${completedDocs}/${totalDocs})`;
+    if (progressFillEl) progressFillEl.style.width = `${pct}%`;
+
     // Group by category
     const categories = {};
     filteredDocs.forEach(d => {
