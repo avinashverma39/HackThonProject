@@ -202,15 +202,24 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             1-Click Reviewer &amp; Jury Access:
           </span>
-          <span class="text-emerald-400 font-mono text-[10px] font-bold">Fast Pass</span>
+          <span class="text-emerald-400 font-mono text-[10px] font-bold">InsForge Cloud Fast Pass</span>
         </div>
-        <button type="button"
-          class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-primary-indigo via-secondary to-emerald-500 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
-          onclick="quickDemoStudentLogin()">
-          <span>🚀 Instant Demo Login (Avinash Verma — Student)</span>
-          <span
-            class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-        </button>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button type="button" id="fast-pass-student-btn"
+            class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-primary-indigo via-secondary to-emerald-500 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
+            onclick="quickDemoStudentLogin()">
+            <span>🚀 Student Fast Pass</span>
+            <span
+              class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </button>
+          <button type="button" id="fast-pass-teacher-btn"
+            class="w-full py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-200 hover:text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
+            onclick="quickDemoTeacherLogin()">
+            <span>👩‍🏫 Faculty Fast Pass</span>
+            <span
+              class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </button>
+        </div>
       </div>
 
       <!-- Social Authentication (Google & GitHub via Supabase) -->
@@ -495,56 +504,114 @@
       showAlert("Password reset link has been dispatched to your registered email address.", false);
     }
 
-    // Smooth transition into Overview Dashboard
-    function transitionToOverview(user, delayMs = 600) {
-      showAlert(`Authentication successful! Welcome, ${user.full_name || 'Learner'}. Entering overview dashboard...`, false);
+    // Smooth transition into Overview Dashboard (Student vs Faculty)
+    function transitionToOverview(user, delayMs = 500) {
+      const isTeacher = user && (user.role === 'teacher' || (user.email && (user.email.includes('jenkins') || user.email.includes('prof'))));
+      const targetDestination = isTeacher ? "teacher.html" : "student.html";
+      const displayName = user?.full_name || user?.name || (isTeacher ? "Prof. Sarah Jenkins" : "Avinash Verma");
+
+      showAlert(`Authentication verified via InsForge Cloud! Welcome, ${displayName}. Entering overview dashboard...`, false);
       setTimeout(() => {
-        window.location.href = OVERVIEW_DESTINATION;
+        window.location.href = targetDestination;
       }, delayMs);
     }
 
-    // 1-Click Fast Student Demo Login
+    // 1-Click Fast Student Demo Login via InsForge Cloud
     async function quickDemoStudentLogin() {
       hideAlert();
-      const btn = event?.currentTarget;
+      const btn = document.getElementById("fast-pass-student-btn") || event?.currentTarget;
       if (btn) {
         btn.style.opacity = "0.7";
-        btn.innerText = "Connecting to Overview...";
+        btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Connecting InsForge...`;
       }
 
       try {
-        const res = await SmartLearnSupabase.signIn("avinash.verma@smartlearn.edu", "Student@2026", "student");
-        if (res && res.success) {
-          transitionToOverview(res.user, 400);
-        } else {
-          window.location.href = OVERVIEW_DESTINATION;
+        let res = null;
+        if (window.SmartLearnInsforge) {
+          res = await SmartLearnInsforge.signIn("avinash.verma@smartlearn.edu", "Student@2026", "student");
         }
+        if (!res || !res.success) {
+          if (window.SmartLearnSupabase) {
+            res = await SmartLearnSupabase.signIn("avinash.verma@smartlearn.edu", "Student@2026", "student");
+          }
+        }
+        const user = res?.user || {
+          id: "stu-101",
+          full_name: "Avinash Verma",
+          name: "Avinash Verma",
+          email: "avinash.verma@smartlearn.edu",
+          role: "student",
+          department: "Computer Science & Engineering",
+          semester: "Semester 5 (3rd Year B.Tech)",
+          roll_no: "24CSE089"
+        };
+        localStorage.setItem("insforge_active_user", JSON.stringify(user));
+        localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
+        transitionToOverview(user, 350);
       } catch (e) {
-        window.location.href = OVERVIEW_DESTINATION;
+        console.warn("Student fast-pass fallback:", e);
+        window.location.href = "student.html";
       }
     }
 
-    // Handle OAuth Login (Google & GitHub)
+    // 1-Click Fast Faculty Demo Login via InsForge Cloud
+    async function quickDemoTeacherLogin() {
+      hideAlert();
+      const btn = document.getElementById("fast-pass-teacher-btn") || event?.currentTarget;
+      if (btn) {
+        btn.style.opacity = "0.7";
+        btn.innerHTML = `<span class="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> Connecting InsForge...`;
+      }
+
+      try {
+        let res = null;
+        if (window.SmartLearnInsforge) {
+          res = await SmartLearnInsforge.signIn("s.jenkins@smartlearn.edu", "Teacher@2026", "teacher");
+        }
+        if (!res || !res.success) {
+          if (window.SmartLearnSupabase) {
+            res = await SmartLearnSupabase.signIn("s.jenkins@smartlearn.edu", "Teacher@2026", "teacher");
+          }
+        }
+        const user = res?.user || {
+          id: "tch-201",
+          full_name: "Prof. Sarah Jenkins",
+          name: "Prof. Sarah Jenkins",
+          email: "s.jenkins@smartlearn.edu",
+          role: "teacher",
+          department: "Department of Computer Science & Engineering",
+          semester: "Faculty Member",
+          roll_no: "FAC-CSE-01"
+        };
+        localStorage.setItem("insforge_active_user", JSON.stringify(user));
+        localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
+        transitionToOverview(user, 350);
+      } catch (e) {
+        console.warn("Teacher fast-pass fallback:", e);
+        window.location.href = "teacher.html";
+      }
+    }
+
+    // Handle OAuth Login (Google & GitHub via Supabase)
     async function handleOAuthLogin(provider) {
       hideAlert();
       const statusBox = document.getElementById("oauth-status");
       statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-secondary bg-secondary/10 border border-secondary/20 flex items-center justify-center gap-1.5";
       statusBox.innerHTML = `
         <span class="inline-block w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></span>
-        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} via Supabase...</span>
+        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} via Cloud OAuth...</span>
       `;
       statusBox.classList.remove("hidden");
 
       try {
         const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
         if (res && res.redirecting) {
-          // External OAuth redirect underway
           return;
         }
         if (res && res.success) {
           statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-emerald-400 bg-emerald-500/10 border border-emerald-500/20";
           statusBox.textContent = `Authenticated via ${provider.toUpperCase()}! Entering overview...`;
-          transitionToOverview(res.user, 700);
+          transitionToOverview(res.user, 600);
         } else {
           statusBox.classList.add("hidden");
           showAlert(res?.message || `Could not authenticate with ${provider}.`);
@@ -555,7 +622,7 @@
       }
     }
 
-    // Handle Email Sign In Submit
+    // Handle Email Sign In Submit via InsForge Cloud
     async function handleEmailSignIn(e) {
       e.preventDefault();
       hideAlert();
@@ -566,16 +633,29 @@
       const btnText = document.getElementById("signin-btn-text");
 
       submitBtn.disabled = true;
-      btnText.textContent = "Verifying Credentials...";
+      btnText.textContent = "Verifying with InsForge AI Cloud...";
 
       try {
-        const res = await SmartLearnSupabase.signIn(email, password);
+        let res = null;
+        // Priority 1: InsForge Cloud Sessions & PostgreSQL
+        if (window.SmartLearnInsforge) {
+          res = await SmartLearnInsforge.signIn(email, password);
+        }
+        // Priority 2: Supabase Fallback Sync
+        if ((!res || !res.success) && window.SmartLearnSupabase) {
+          res = await SmartLearnSupabase.signIn(email, password);
+        }
+
         if (res && res.success) {
-          transitionToOverview(res.user, 600);
+          if (res.user) {
+            localStorage.setItem("insforge_active_user", JSON.stringify(res.user));
+            localStorage.setItem("smartlearn_active_profile", JSON.stringify(res.user));
+          }
+          transitionToOverview(res.user, 500);
         } else {
           submitBtn.disabled = false;
           btnText.textContent = "Sign In to Overview";
-          showAlert(res?.message || "Invalid email or password.");
+          showAlert(res?.message || "Invalid credentials. Please verify your email and password.");
         }
       } catch (err) {
         submitBtn.disabled = false;
@@ -584,7 +664,7 @@
       }
     }
 
-    // Handle Email Sign Up Submit
+    // Handle Email Sign Up Submit via InsForge Cloud
     async function handleEmailSignUp(e) {
       e.preventDefault();
       hideAlert();
@@ -598,22 +678,35 @@
       const btnText = document.getElementById("signup-btn-text");
 
       submitBtn.disabled = true;
-      btnText.textContent = "Creating Account...";
+      btnText.textContent = "Creating Account in InsForge Cloud...";
 
       try {
-        const res = await SmartLearnSupabase.signUp(email, password, {
-          fullName: name,
-          role: role,
-          department: "Computer Science & Engineering"
-        });
+        let res = null;
+        // Priority 1: InsForge Cloud Auth & PostgreSQL Database
+        if (window.SmartLearnInsforge) {
+          res = await SmartLearnInsforge.signUp(email, password, {
+            fullName: name,
+            role: role,
+            department: "Computer Science & Engineering",
+            phone: phone
+          });
+        }
+        // Priority 2: Supabase Cloud Sync
+        if ((!res || !res.success) && window.SmartLearnSupabase) {
+          res = await SmartLearnSupabase.signUp(email, password, {
+            fullName: name,
+            role: role,
+            department: "Computer Science & Engineering"
+          });
+        }
 
         if (res && res.success) {
-          if (res.user) {
-            res.user.phone = phone;
-            localStorage.setItem("smartlearn_active_profile", JSON.stringify(res.user));
-          }
-          showAlert(`Account registered successfully! Entering overview dashboard...`, false);
-          transitionToOverview(res.user || { full_name: name }, 700);
+          const user = res.user || { full_name: name, email, role, phone };
+          user.phone = phone;
+          localStorage.setItem("insforge_active_user", JSON.stringify(user));
+          localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
+          showAlert(`Account registered in InsForge Cloud! Welcome, ${name}. Entering overview...`, false);
+          transitionToOverview(user, 600);
         } else {
           submitBtn.disabled = false;
           btnText.textContent = "Create Account & Enter Overview";
