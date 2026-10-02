@@ -125,14 +125,14 @@ const SmartLearnApp = (function () {
     if (!user) {
       if (navContainer) {
         navContainer.innerHTML = `
-          <button class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3.5 !py-1.5 text-[13px]" onclick="SmartLearnApp.openLoginModal('student')">
+          <a href="login.html" class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3 !py-1.5 text-[12px] sm:text-[13px] flex items-center gap-1.5">
             <span class="material-symbols-outlined text-[15px]">login</span>
             <span class="hidden sm:inline">Sign In</span>
-          </button>
-          <button class="uiverse-btn-3d text-[13px] !py-2 !px-4 navbar-cta-shimmer" onclick="SmartLearnApp.openRegisterModal()">
-            <span class="relative z-10 font-bold">Sign Up Free</span>
-            <span class="material-symbols-outlined text-[16px] relative z-10">arrow_forward</span>
-          </button>
+          </a>
+          <a href="login.html?tab=signup" class="uiverse-btn-3d text-[12px] sm:text-[13px] !py-1.5 sm:!py-2 !px-3 sm:!px-4 navbar-cta-shimmer flex items-center gap-1">
+            <span class="relative z-10 font-bold whitespace-nowrap">Sign Up</span>
+            <span class="material-symbols-outlined text-[15px] relative z-10 hidden sm:inline">arrow_forward</span>
+          </a>
         `;
       }
       return;
@@ -296,6 +296,7 @@ const SmartLearnApp = (function () {
 
   function showStudentTab(tabName) {
     state.currentStudentTab = tabName;
+    closeStudentMobileSidebar();
     document.querySelectorAll(".student-subview").forEach(el => el.classList.add("hidden"));
     const target = document.getElementById(`subview-${tabName}`);
     if (target) {
@@ -2162,6 +2163,16 @@ const SmartLearnApp = (function () {
     renderSkillsW3Nav();
     renderSkillsW3Reader();
 
+    // Auto-collapse mobile topics menu so the reader is immediately viewed
+    if (window.innerWidth < 1024) {
+      const sidebarCol = document.getElementById("w3-topics-sidebar-col");
+      const icon = document.getElementById("w3-mobile-topics-toggle-icon");
+      if (sidebarCol && !sidebarCol.classList.contains("hidden")) {
+        sidebarCol.classList.add("hidden");
+        if (icon) icon.textContent = "expand_more";
+      }
+    }
+
     const reader = document.getElementById("w3-reader-container");
     if (reader) reader.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -2233,21 +2244,21 @@ const SmartLearnApp = (function () {
 
       <!-- Interactive "Try It Yourself" Code Sandbox -->
       <div class="rounded-2xl bg-surface-container-lowest border border-white/10 overflow-hidden shadow-2xl flex flex-col">
-        <div class="px-4 py-2.5 bg-surface-container-high border-b border-white/5 flex items-center justify-between">
+        <div class="px-3 sm:px-4 py-2.5 bg-surface-container-high border-b border-white/5 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2 text-[12px] font-mono text-slate-300">
             <span class="material-symbols-outlined text-[16px] text-emerald-400">terminal</span>
             <strong>Example Code Sandbox:</strong>
             <span class="text-slate-500 hidden sm:inline">Try It Yourself</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <button type="button" 
-              class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-container-highest text-slate-300 text-[11px] font-mono flex items-center gap-1 border border-white/5 transition-all"
+              class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-slate-300 text-[11px] font-mono flex items-center gap-1 border border-white/5 transition-all"
               onclick="navigator.clipboard.writeText(document.getElementById('w3-code-editor').value); SmartLearnApp.notify('Code copied to clipboard!', 'info');">
               <span class="material-symbols-outlined text-[13px]">content_copy</span>
               <span>Copy</span>
             </button>
             <button type="button" 
-              class="px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-[12px] font-mono flex items-center gap-1.5 transition-all shadow-sm shadow-emerald-500/30"
+              class="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-[12px] font-mono flex items-center gap-1.5 transition-all shadow-sm shadow-emerald-500/30"
               onclick="SmartLearnApp.runSkillCodeSandbox()">
               <span class="material-symbols-outlined text-[14px]">play_arrow</span>
               <span>Run Code</span>
@@ -2257,17 +2268,29 @@ const SmartLearnApp = (function () {
 
         <!-- Editable Code Textarea -->
         <textarea id="w3-code-editor" rows="9" 
-          class="w-full bg-[#0d1117] text-emerald-300 font-mono text-[13px] p-4 border-0 focus:outline-none focus:ring-0 resize-y leading-relaxed"
+          class="w-full bg-[#0d1117] text-emerald-300 font-mono text-[13px] p-3 sm:p-4 border-0 focus:outline-none focus:ring-0 resize-y leading-relaxed"
           spellcheck="false">${concept.codeExample || '// No code snippet provided.'}</textarea>
 
+        <!-- Code Sandbox Secondary Run Bar -->
+        <div class="px-3 sm:px-4 py-2 bg-[#0a0f16] border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-400">
+          <span class="hidden sm:inline">Live JavaScript / HTML / CSS Execution</span>
+          <span class="sm:hidden">Sandboxed Preview</span>
+          <button type="button" 
+            class="px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold text-[11px] font-mono flex items-center gap-1 transition-all"
+            onclick="SmartLearnApp.runSkillCodeSandbox()">
+            <span class="material-symbols-outlined text-[13px]">play_arrow</span>
+            <span>Execute Preview</span>
+          </button>
+        </div>
+
         <!-- Live Sandbox Output Panel -->
-        <div class="border-t border-white/10 bg-surface-container-low p-4 flex flex-col gap-2" id="w3-output-panel">
+        <div class="border-t border-white/10 bg-surface-container-low p-3 sm:p-4 flex flex-col gap-2" id="w3-output-panel">
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
             <span class="flex items-center gap-1">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               Live Sandbox Output Result:
             </span>
-            <span class="text-slate-500">Rendered in sandboxed frame</span>
+            <span class="text-slate-500 text-[10px] sm:text-[11px]">Sandboxed frame</span>
           </div>
           <div class="w-full min-h-[90px] rounded-xl bg-white text-slate-900 p-3 text-[13px] overflow-auto shadow-inner" id="w3-code-preview">
             <em>Click "Run Code" above to execute and preview output.</em>
@@ -2469,6 +2492,55 @@ const SmartLearnApp = (function () {
     if (xpEl) xpEl.textContent = `+${earnedXp} XP`;
   }
 
+  function toggleMobileSkillsTopics() {
+    const sidebarCol = document.getElementById("w3-topics-sidebar-col");
+    const icon = document.getElementById("w3-mobile-topics-toggle-icon");
+    if (!sidebarCol) return;
+    const isHidden = sidebarCol.classList.contains("hidden");
+    if (isHidden) {
+      sidebarCol.classList.remove("hidden");
+      if (icon) icon.textContent = "expand_less";
+      sidebarCol.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      sidebarCol.classList.add("hidden");
+      if (icon) icon.textContent = "expand_more";
+    }
+  }
+
+  function toggleAiButtonSize() {
+    const label = document.getElementById("floating-ai-label");
+    const icon = document.getElementById("floating-ai-toggle-icon");
+    if (!label) return;
+    if (label.classList.contains("hidden")) {
+      label.classList.remove("hidden");
+      if (icon) icon.textContent = "chevron_right";
+    } else {
+      label.classList.add("hidden");
+      if (icon) icon.textContent = "chevron_left";
+    }
+  }
+
+  function toggleStudentMobileSidebar() {
+    const sidebar = document.getElementById("student-sidebar");
+    const backdrop = document.getElementById("student-sidebar-backdrop");
+    if (!sidebar || !backdrop) return;
+    const isClosed = sidebar.classList.contains("-translate-x-full");
+    if (isClosed) {
+      sidebar.classList.remove("-translate-x-full");
+      backdrop.classList.remove("hidden");
+    } else {
+      sidebar.classList.add("-translate-x-full");
+      backdrop.classList.add("hidden");
+    }
+  }
+
+  function closeStudentMobileSidebar() {
+    const sidebar = document.getElementById("student-sidebar");
+    const backdrop = document.getElementById("student-sidebar-backdrop");
+    if (sidebar) sidebar.classList.add("-translate-x-full");
+    if (backdrop) backdrop.classList.add("hidden");
+  }
+
   return {
     init,
     showMainView,
@@ -2478,6 +2550,10 @@ const SmartLearnApp = (function () {
     switchSkillTech,
     selectSkillConcept,
     filterSkillsDocList,
+    toggleMobileSkillsTopics,
+    toggleAiButtonSize,
+    toggleStudentMobileSidebar,
+    closeStudentMobileSidebar,
     runSkillCodeSandbox,
     markConceptCompleted,
     checkMiniQuiz,

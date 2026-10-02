@@ -118,9 +118,12 @@
 
   <div id="student-app-layout" class="min-h-screen flex bg-surface">
 
+    <!-- STUDENT SIDEBAR BACKDROP FOR MOBILE -->
+    <div id="student-sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity" onclick="SmartLearnApp.closeStudentMobileSidebar()"></div>
+
     <!-- STUDENT SIDEBAR (14 Destinations) -->
     <aside
-      class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between border-r border-white/5 shadow-2xl transition-transform duration-300"
+      class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between border-r border-white/5 shadow-2xl transition-transform duration-300 -translate-x-full lg:translate-x-0"
       id="student-sidebar">
 
       <div class="flex flex-col flex-1 overflow-y-auto">
@@ -269,28 +272,36 @@
     </aside>
 
     <!-- STUDENT MAIN CONTENT AREA -->
-    <div class="pl-72 flex-1 flex flex-col min-h-screen">
+    <div class="pl-0 lg:pl-72 flex-1 flex flex-col min-h-screen w-full min-w-0 overflow-x-hidden">
 
       <!-- Student Header Bar -->
       <header
-        class="sticky top-0 z-40 h-16 bg-surface/85 backdrop-blur-xl border-b border-white/5 px-6 flex items-center justify-between">
+        class="sticky top-0 z-30 h-16 bg-surface/85 backdrop-blur-xl border-b border-white/5 px-3 sm:px-6 flex items-center justify-between gap-2">
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 sm:gap-4 min-w-0">
+          <!-- Mobile Sidebar Toggle Button -->
+          <button id="student-mobile-sidebar-toggle"
+            class="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-surface-container transition-colors flex-shrink-0"
+            aria-label="Toggle navigation menu"
+            onclick="SmartLearnApp.toggleStudentMobileSidebar()">
+            <span class="material-symbols-outlined text-[22px]">menu</span>
+          </button>
+
           <!-- Active Breadcrumb -->
-          <div class="flex items-center gap-2 text-[13px] text-slate-400">
-            <span class="cursor-pointer hover:text-white"
+          <div class="flex items-center gap-1.5 sm:gap-2 text-[12px] sm:text-[13px] text-slate-400 truncate">
+            <span class="cursor-pointer hover:text-white hidden sm:inline"
               onclick="SmartLearnApp.showStudentTab('dashboard')">SmartLearn</span>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span class="text-white font-medium" id="student-header-crumb">Dashboard Overview</span>
+            <span class="material-symbols-outlined text-[14px] hidden sm:inline">chevron_right</span>
+            <span class="text-white font-medium truncate" id="student-header-crumb">Dashboard Overview</span>
           </div>
 
           <!-- Global Search Container -->
-          <div class="relative w-64 lg:w-96" id="global-search-container">
+          <div class="relative hidden md:block w-48 lg:w-80" id="global-search-container">
             <span
               class="material-symbols-outlined absolute left-3 top-2.5 text-[18px] text-slate-400 pointer-events-none">search</span>
             <input type="text"
               class="w-full pl-9 pr-10 py-1.5 rounded-xl bg-surface-container-lowest border border-white/10 text-slate-200 text-[13px] focus:outline-none focus:ring-1 focus:ring-primary-indigo"
-              placeholder="Search courses, subjects, notes, quizzes..."
+              placeholder="Search courses, subjects, notes..."
               oninput="SmartLearnApp.handleGlobalSearch(this.value)">
             <!-- Autocomplete Results Dropdown -->
             <div id="global-search-results-dropdown"
@@ -299,22 +310,22 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           <!-- AI Study Assistant Copilot -->
           <button
-            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[13px] font-medium transition-all shadow-sm"
+            class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] sm:text-[13px] font-medium transition-all shadow-sm"
             id="btn-student-copilot"
             onclick="document.getElementById('copilot-drawer').classList.toggle('translate-x-full')">
             <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
-            <span>Study Assistant</span>
+            <span class="hidden sm:inline">Study Assistant</span>
           </button>
 
           <!-- Study Streak Indicator -->
           <div
-            class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-[12px] font-medium text-emerald-400 border border-white/5 cursor-pointer"
+            class="flex items-center gap-1 px-2 sm:px-3 py-1 rounded-full bg-surface-container text-[11px] sm:text-[12px] font-medium text-emerald-400 border border-white/5 cursor-pointer"
             onclick="SmartLearnApp.showStudentTab('progress')">
             <span>🔥</span>
-            <span id="student-header-streak">12-day streak</span>
+            <span id="student-header-streak" class="hidden xs:inline sm:inline">12-day</span>
           </div>
 
           <!-- Notifications Bell -->
@@ -367,7 +378,7 @@
       </header>
 
       <!-- STUDENT SUBVIEWS ROUTER -->
-      <main class="p-6 lg:p-8 flex-1">
+      <main class="p-4 sm:p-6 lg:p-8 flex-1 pb-32 sm:pb-24 min-w-0 w-full">
 
         <!-- SUBVIEW 1: DASHBOARD OVERVIEW -->
         <div id="subview-dashboard" class="student-subview flex flex-col gap-6 max-w-7xl mx-auto">
@@ -588,74 +599,6 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materials-grid"></div>
         </div>
 
-        <!-- SUBVIEW: LEARN SKILLS (W3SCHOOLS-STYLE TECHNICAL WORKBENCH) -->
-        <div id="subview-learn-skills" class="student-subview hidden flex flex-col gap-4 max-w-7xl mx-auto w-full">
-
-          <!-- Header & Quick Metrics -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-surface-container-low border border-white/5 shadow-md">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-mono text-[10px] font-bold border border-emerald-500/25">
-                  W3-STYLE TECHNICAL DOCS
-                </span>
-                <span class="text-slate-400 text-[12px] font-mono">• Structured Learning &amp; Concept Reference</span>
-              </div>
-              <h2 class="text-[24px] font-extrabold text-white tracking-tight mt-0.5">Learn Skills &amp; Concepts</h2>
-            </div>
-            
-            <!-- Progress Counter -->
-            <div class="flex items-center gap-3">
-              <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-white/5">
-                <span class="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>
-                <div class="text-[12px] leading-tight">
-                  <span class="text-slate-400">Completed:</span>
-                  <strong class="text-white ml-1 font-mono" id="w3-completed-count">0</strong>
-                </div>
-              </div>
-              <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-white/5">
-                <span class="material-symbols-outlined text-[18px] text-amber-400">bolt</span>
-                <div class="text-[12px] leading-tight">
-                  <span class="text-slate-400">Skills XP:</span>
-                  <strong class="text-white ml-1 font-mono" id="w3-total-xp">+0 XP</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Technology Switcher Bar (W3Schools Style) -->
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-1" id="w3-tech-switcher-bar">
-            <!-- Filled dynamically by JavaScript -->
-          </div>
-
-          <!-- Main Dual-Column Learning Workstation -->
-          <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
-
-            <!-- LEFT COLUMN: W3Schools Sidebar Navigation -->
-            <div class="w-full lg:w-72 xl:w-80 flex-shrink-0 rounded-2xl bg-surface-container-low border border-white/5 p-3 flex flex-col gap-2.5 max-h-[820px] overflow-hidden shadow-lg sticky top-20">
-              
-              <!-- Search Filter Input -->
-              <div class="relative">
-                <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-slate-400 pointer-events-none">search</span>
-                <input type="text" id="w3-search-input"
-                  class="w-full pl-8 pr-3 py-2 rounded-xl bg-surface-container-lowest border border-white/5 text-[12px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/50"
-                  placeholder="Filter concepts or topics..."
-                  oninput="SmartLearnApp.filterSkillsDocList(this.value)">
-              </div>
-
-              <!-- Technical Concept Tree (Scrollable List) -->
-              <div class="flex flex-col gap-1 overflow-y-auto pr-1 flex-1 custom-scrollbar max-h-[700px]" id="w3-topics-menu-container">
-                <!-- Injected by smartlearn.js -->
-              </div>
-            </div>
-
-            <!-- RIGHT COLUMN: Active Technical Concept Reader & Interactive Code Sandbox -->
-            <div class="flex-1 min-w-0 w-full rounded-2xl bg-surface-container-low border border-white/5 p-5 sm:p-7 flex flex-col gap-6 shadow-xl" id="w3-reader-container">
-              <!-- Injected by smartlearn.js -->
-            </div>
-
-          </div>
-
-        </div>
 
         <!-- SUBVIEW 5: VIDEO LEARNING -->
         <div id="subview-videos" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
@@ -1211,10 +1154,21 @@
           </div>
 
           <!-- Main Dual-Pane Technical Workstation -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div class="flex flex-col lg:grid lg:grid-cols-12 gap-6 items-start w-full">
+
+            <!-- Mobile Topics Toggle Button (Visible only on mobile/tablet) -->
+            <button type="button" id="w3-mobile-toggle-topics-btn" 
+              class="lg:hidden w-full py-2.5 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white font-medium text-[13px] flex items-center justify-between transition-all shadow-md"
+              onclick="SmartLearnApp.toggleMobileSkillsTopics()">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-emerald-400">format_list_bulleted</span>
+                <span id="w3-mobile-topics-btn-text">Browse Topics List</span>
+              </span>
+              <span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="w3-mobile-topics-toggle-icon">expand_more</span>
+            </button>
 
             <!-- LEFT COLUMN: Search & Categorized Topics Sidebar (W3 Style) -->
-            <div class="lg:col-span-4 xl:col-span-3.5 rounded-3xl bg-surface-container border border-white/10 p-4 shadow-xl flex flex-col gap-3 sticky top-24 max-h-[calc(100vh-8rem)]">
+            <div id="w3-topics-sidebar-col" class="w-full lg:col-span-4 xl:col-span-3.5 rounded-3xl bg-surface-container border border-white/10 p-4 shadow-xl flex-col gap-3 static lg:sticky lg:top-20 max-h-[460px] lg:max-h-[calc(100vh-7rem)] hidden lg:flex">
               <!-- Search & Filter Box -->
               <div class="relative">
                 <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
@@ -1253,7 +1207,7 @@
             </div>
 
             <!-- RIGHT COLUMN: Interactive Concept Reader & Live Code Workbench -->
-            <div class="lg:col-span-8 xl:col-span-8.5 flex flex-col gap-6" id="w3-reader-container">
+            <div class="w-full lg:col-span-8 xl:col-span-8.5 flex flex-col gap-6 min-w-0" id="w3-reader-container">
               <!-- Dynamically populated by SmartLearnApp.renderSkillsW3Reader() -->
             </div>
 
@@ -1746,15 +1700,24 @@
     </div>
   </aside>
 
-  <!-- FLOATING AI CHATBOT BUTTON -->
-  <!-- FLOATING AI CHATBOT BUTTON (VISIBLE ACROSS ENTIRE PLATFORM) -->
-  <button id="floating-ai-chatbot-btn"
-    class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[13px] shadow-[0_0_24px_rgba(99,102,241,0.45)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
-    onclick="document.getElementById('copilot-drawer').classList.remove('translate-x-full'); document.getElementById('copilot-input').focus();">
-    <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
-    <span>Ask AI (GPT / Gemini)</span>
-    <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
-  </button>
+  <!-- FLOATING AI CHATBOT BUTTON (RESPONSIVE & NON-OBTRUSIVE) -->
+  <div id="floating-ai-chatbot-wrapper" class="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-1.5 sm:gap-2">
+    <!-- Collapse / Expand Toggle Button -->
+    <button id="floating-ai-toggle-btn"
+      class="hidden md:flex w-7 h-7 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest border border-white/10 items-center justify-center text-slate-400 hover:text-white shadow-md transition-all text-[13px]"
+      title="Minimize / Expand AI Assistant Pill"
+      onclick="SmartLearnApp.toggleAiButtonSize()">
+      <span class="material-symbols-outlined text-[16px]" id="floating-ai-toggle-icon">chevron_right</span>
+    </button>
+
+    <button id="floating-ai-chatbot-btn"
+      class="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[12px] sm:text-[13px] shadow-[0_4px_24px_rgba(99,102,241,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
+      onclick="document.getElementById('copilot-drawer').classList.remove('translate-x-full'); document.getElementById('copilot-input').focus();">
+      <span class="material-symbols-outlined text-[18px] sm:text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
+      <span id="floating-ai-label" class="whitespace-nowrap">Ask AI (GPT / Gemini)</span>
+      <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+    </button>
+  </div>
 
   <!-- TOAST CONTAINER -->
   <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
