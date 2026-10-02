@@ -2024,6 +2024,13 @@ const SmartLearnApp = (function () {
     updateSkillsW3ProgressCounters();
   }
 
+  function scrollTechBar(delta) {
+    const bar = document.getElementById("w3-tech-switcher-bar");
+    if (bar) {
+      bar.scrollBy({ left: delta, behavior: "smooth" });
+    }
+  }
+
   function renderSkillsW3TechSwitcher() {
     const data = window.SmartLearnSkillsDocs;
     const container = document.getElementById("w3-tech-switcher-bar");
@@ -2033,15 +2040,15 @@ const SmartLearnApp = (function () {
       const isActive = t.id === data.currentTech;
       return `
         <button type="button" 
-          class="w3-tech-btn px-4 py-2 rounded-xl text-[12px] font-bold transition-all flex items-center gap-2 flex-shrink-0 ${
+          data-tech="${t.id}"
+          class="w3-tech-btn px-4 py-2 rounded-xl text-[12px] font-bold tracking-wider uppercase transition-all flex items-center gap-1.5 flex-shrink-0 ${
             isActive
-              ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
-              : "bg-surface-container hover:bg-surface-container-high text-slate-300 hover:text-white border border-white/5"
+              ? "bg-[#04AA6D] text-white shadow-md shadow-[#04AA6D]/30"
+              : "text-slate-300 hover:text-white hover:bg-[#383a45]"
           }"
           onclick="SmartLearnApp.switchSkillTech('${t.id}')">
           <span class="w-2 h-2 rounded-full" style="background-color: ${t.color}"></span>
           <span>${t.name}</span>
-          <span class="text-[10px] opacity-75 font-normal hidden sm:inline">• ${t.label}</span>
         </button>
       `;
     }).join("");
@@ -2060,6 +2067,12 @@ const SmartLearnApp = (function () {
     renderSkillsW3TechSwitcher();
     renderSkillsW3Nav();
     renderSkillsW3Reader();
+
+    // Auto-scroll active button into view in the top navigation bar
+    const activeBtn = document.querySelector(`.w3-tech-btn[data-tech="${techId}"]`);
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
   }
 
   function renderSkillsW3Nav(filterText = "") {
@@ -2461,6 +2474,7 @@ const SmartLearnApp = (function () {
     showMainView,
     filterSkills,
     initSkillsW3Workstation,
+    scrollTechBar,
     switchSkillTech,
     selectSkillConcept,
     filterSkillsDocList,

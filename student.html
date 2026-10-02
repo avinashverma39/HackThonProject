@@ -1184,9 +1184,30 @@
             </div>
           </div>
 
-          <!-- Top Technology Switcher Tabs (W3Schools Style) -->
-          <div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-surface-container-low border border-white/10 overflow-x-auto shadow-inner" id="w3-tech-switcher-bar">
-            <!-- Dynamically populated by SmartLearnApp.renderSkillsW3TechSwitcher() -->
+          <!-- Top Technology Switcher Tabs (Exact W3Schools Style Navigation Bar) -->
+          <div class="relative flex items-center bg-[#282a35] rounded-2xl border border-white/10 shadow-lg p-1 overflow-hidden group/bar">
+            <!-- Left scroll button -->
+            <button type="button"
+              id="w3-scroll-left-btn"
+              class="flex items-center justify-center w-8 h-9 rounded-xl bg-[#282a35] hover:bg-[#383d4d] text-slate-300 hover:text-white transition-all z-10 flex-shrink-0"
+              onclick="SmartLearnApp.scrollTechBar(-240)"
+              title="Scroll left">
+              <span class="text-[14px] font-bold">❮</span>
+            </button>
+
+            <!-- Scrollable Track -->
+            <div class="flex items-center gap-1 overflow-x-auto scroll-smooth py-1 px-2 flex-1 no-scrollbar" id="w3-tech-switcher-bar" style="scrollbar-width: none; -ms-overflow-style: none;">
+              <!-- Dynamically populated by SmartLearnApp.renderSkillsW3TechSwitcher() -->
+            </div>
+
+            <!-- Right scroll button (Exact W3Schools ❯ character from screenshot) -->
+            <button type="button"
+              id="w3-scroll-right-btn"
+              class="flex items-center justify-center w-8 h-9 rounded-xl bg-[#282a35] hover:bg-[#383d4d] text-slate-300 hover:text-white transition-all z-10 flex-shrink-0 border-l border-white/10"
+              onclick="SmartLearnApp.scrollTechBar(240)"
+              title="Scroll right">
+              <span class="text-[14px] font-bold">❯</span>
+            </button>
           </div>
 
           <!-- Main Dual-Pane Technical Workstation -->
