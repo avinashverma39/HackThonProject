@@ -1141,6 +1141,105 @@
           </div>
         </div>
 
+        <!-- SUBVIEW 11: LEARN SKILLS (W3SCHOOLS-STYLE INTERACTIVE TECHNICAL DOCUMENTATION & SANDBOX) -->
+        <div id="subview-learn-skills" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
+
+          <!-- Learn Skills Header & Progress Bar -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-surface-container via-surface-container-high to-surface-container-lowest p-6 sm:p-8 border border-white/10 shadow-xl">
+            <div class="absolute -right-10 -top-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-mono font-bold border border-emerald-500/30 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    W3Schools Technical Hub
+                  </span>
+                  <span class="text-slate-400 text-[12px]">Interactive References • Code Sandboxes • Interview Prep</span>
+                </div>
+                <h2 class="text-[26px] sm:text-[32px] font-extrabold text-white tracking-tight">
+                  Learn Skills &amp; Technical Notes
+                </h2>
+                <p class="text-slate-300 text-[13px] sm:text-[14px] max-w-3xl leading-relaxed">
+                  Structured concept-by-concept guides following the battle-tested W3Schools architecture. Master syntax, explore edge cases, run code in the live sandbox, and test your understanding with mini-quizzes.
+                </p>
+              </div>
+
+              <!-- Live Progress & XP Badges -->
+              <div class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                <div class="p-3.5 rounded-2xl bg-surface-container-highest/60 border border-white/5 flex flex-col items-center min-w-[110px]">
+                  <span class="text-[11px] text-slate-400 font-medium">Completed</span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span id="w3-completed-count" class="text-[22px] font-extrabold text-emerald-400 font-mono">0</span>
+                    <span class="text-[13px] text-slate-400 font-mono">/ <span id="w3-total-count">0</span></span>
+                  </div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-surface-container-highest/60 border border-white/5 flex flex-col items-center min-w-[120px]">
+                  <span class="text-[11px] text-slate-400 font-medium">Skill XP</span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span id="w3-total-xp" class="text-[22px] font-extrabold text-primary font-mono">0</span>
+                    <span class="text-[11px] text-primary/80 font-bold">XP</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Technology Switcher Tabs (W3Schools Style) -->
+          <div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-surface-container-low border border-white/10 overflow-x-auto shadow-inner" id="w3-tech-switcher-bar">
+            <!-- Dynamically populated by SmartLearnApp.renderSkillsW3TechSwitcher() -->
+          </div>
+
+          <!-- Main Dual-Pane Technical Workstation -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- LEFT COLUMN: Search & Categorized Topics Sidebar (W3 Style) -->
+            <div class="lg:col-span-4 xl:col-span-3.5 rounded-3xl bg-surface-container border border-white/10 p-4 shadow-xl flex flex-col gap-3 sticky top-24 max-h-[calc(100vh-8rem)]">
+              <!-- Search & Filter Box -->
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
+                <input
+                  type="text"
+                  id="w3-search-input"
+                  placeholder="Filter topics (e.g. tag list, box model, promises)..."
+                  class="w-full bg-surface-container-lowest text-white text-[12px] rounded-xl pl-9 pr-8 py-2 border border-white/10 focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder-slate-500 transition-all"
+                  oninput="SmartLearnApp.filterSkillsDocList(this.value)"
+                >
+                <button
+                  type="button"
+                  id="w3-clear-search-btn"
+                  class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-white"
+                  onclick="document.getElementById('w3-search-input').value = ''; SmartLearnApp.filterSkillsDocList('');"
+                >
+                  <span class="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              </div>
+
+              <!-- Quick Progress Bar in Sidebar -->
+              <div class="space-y-1 px-1">
+                <div class="flex justify-between text-[11px]">
+                  <span class="text-slate-400" id="w3-sidebar-tech-label">HTML Progress</span>
+                  <span class="text-emerald-400 font-mono font-bold" id="w3-sidebar-progress-pct">0%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+                  <div id="w3-sidebar-progress-fill" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Categorized Scrollable Topics List -->
+              <div class="flex-1 overflow-y-auto space-y-4 pr-1 custom-scrollbar text-[13px]" id="w3-topics-menu-container">
+                <!-- Dynamically rendered by SmartLearnApp.renderSkillsW3Nav() -->
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Interactive Concept Reader & Live Code Workbench -->
+            <div class="lg:col-span-8 xl:col-span-8.5 flex flex-col gap-6" id="w3-reader-container">
+              <!-- Dynamically populated by SmartLearnApp.renderSkillsW3Reader() -->
+            </div>
+
+          </div>
+
+        </div>
+
       </main>
 
     </div>

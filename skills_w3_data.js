@@ -964,6 +964,88 @@ h1 {
           answer: 1,
           explanation: 'minmax(min, max) defines a size range greater than or equal to min and less than or equal to max.'
         }
+      },
+      {
+        id: 'css-selectors',
+        category: 'CSS SELECTORS & SPECIFICITY',
+        title: 'CSS Selectors & Specificity Matrix',
+        readTime: '5 min read',
+        xp: 50,
+        summary: 'Class, ID, Attribute, Pseudo-classes, and specificity calculations (Inline > ID > Class > Element).',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>CSS Specificity determines which style rules take precedence when multiple conflicting declarations match an element.</p>
+            <h4 class="text-[16px] font-bold text-white border-b border-white/10 pb-1">The Specificity Hierarchy</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-center text-[12px]">
+              <div class="p-2.5 rounded-lg bg-surface-container border border-rose-500/30 text-rose-400 font-mono">
+                <strong>(1,0,0,0)</strong><br/>Inline styles
+              </div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-amber-500/30 text-amber-400 font-mono">
+                <strong>(0,1,0,0)</strong><br/>ID selectors (#id)
+              </div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-secondary/30 text-secondary font-mono">
+                <strong>(0,0,1,0)</strong><br/>Classes (.cls), [attr], :pseudo
+              </div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-emerald-500/30 text-emerald-400 font-mono">
+                <strong>(0,0,0,1)</strong><br/>Elements (div, p, ::before)
+              </div>
+            </div>
+          </div>
+        `,
+        codeExample: `/* Specificity: (0, 0, 1, 1) - One class + one element */
+ul.nav-list li {
+  color: #94a3b8;
+}
+
+/* Specificity: (0, 1, 0, 0) - One ID (Higher precedence!) */
+#primary-nav {
+  color: #6366f1;
+}`,
+        interviewTip: 'What happens with <code>!important</code>? It overrides normal specificity entirely. If two conflicting rules both have <code>!important</code>, normal specificity breaks the tie.',
+        miniQuiz: {
+          q: 'Which selector has higher CSS specificity?',
+          options: ['div.container .card p', '#sidebar p', 'html body div p', '.nav-item:hover'],
+          answer: 1,
+          explanation: '#sidebar p contains an ID selector (0,1,0,1), which beats any combination of classes without IDs.'
+        }
+      },
+      {
+        id: 'css-transitions',
+        category: 'CSS ANIMATIONS',
+        title: 'CSS Transitions & Keyframe Animations',
+        readTime: '6 min read',
+        xp: 55,
+        summary: 'GPU-accelerated transforms (translate, scale, rotate), transition-timing-function, and keyframes.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Always animate <strong>transform</strong> and <strong>opacity</strong> to achieve 60/120 FPS hardware acceleration that avoids triggering browser reflows and repaints.</p>
+          </div>
+        `,
+        codeExample: `@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+  }
+}
+
+.uiverse-button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.uiverse-button:hover {
+  animation: pulseGlow 1.5s infinite;
+}`,
+        interviewTip: 'Why avoid animating <code>width</code>, <code>height</code>, or <code>top</code>/<code>left</code>? They trigger full Layout/Reflow recalculations on the CPU, causing frame drops.',
+        miniQuiz: {
+          q: 'Which CSS properties are composite-only and can be animated smoothly on the GPU without triggering layout reflows?',
+          options: ['width and height', 'transform and opacity', 'margin and padding', 'top and left'],
+          answer: 1,
+          explanation: 'transform and opacity can be handled directly by the GPU compositor thread without forcing CPU style reflows.'
+        }
       }
     ],
 
@@ -1045,6 +1127,80 @@ console.log(counter.count);       // undefined (protected encapsulation!)`,
           options: ['Hoisting', 'Closures & Lexical Scope', 'Prototypal Inheritance', 'Event Bubbling'],
           answer: 1,
           explanation: 'A closure retains a live reference to the outer lexical environment where the function was declared.'
+        }
+      },
+      {
+        id: 'js-array-methods',
+        category: 'JAVASCRIPT DATA & OBJECTS',
+        title: 'Array Functional Methods: map, filter, reduce',
+        readTime: '6 min read',
+        xp: 55,
+        summary: 'Immutable array transformations, chaining paradigms, and accumulator reduction patterns.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>Modern JavaScript prioritizes functional programming paradigms that transform arrays immutably without mutating original memory references.</p>
+          </div>
+        `,
+        codeExample: `const scores = [85, 92, 45, 78, 96, 62];
+
+// Filter passed scores, normalize by 10%, and calculate average
+const passedAverage = scores
+  .filter(s => s >= 50)
+  .map(s => Math.min(100, s * 1.05))
+  .reduce((acc, curr, idx, arr) => acc + curr / arr.length, 0);
+
+console.log('Passed Curved Average:', Math.round(passedAverage));`,
+        interviewTip: 'What is the return value of <code>forEach()</code> vs <code>map()</code>? <code>forEach()</code> always returns <code>undefined</code> and is used for side-effects; <code>map()</code> allocates and returns a brand-new array.',
+        miniQuiz: {
+          q: 'Which Array method reduces an entire array to a single cumulative value (like sum or object hash)?',
+          options: ['map()', 'filter()', 'reduce()', 'find()'],
+          answer: 2,
+          explanation: 'reduce() runs a reducer callback on each element, passing the accumulated result to subsequent iterations.'
+        }
+      },
+      {
+        id: 'js-promises',
+        category: 'JAVASCRIPT ASYNC & APIS',
+        title: 'Promises, Async/Await & Promise Combinators',
+        readTime: '7 min read',
+        xp: 65,
+        summary: 'Promise states (Pending, Fulfilled, Rejected), try/catch async blocks, and Promise.all vs allSettled.',
+        contentHtml: `
+          <div class="space-y-4 text-slate-300 text-[14px] leading-relaxed">
+            <p>A <strong>Promise</strong> is a proxy for a value not necessarily known when the promise is created. <code>async/await</code> provides synchronous-looking syntax over Promise chains.</p>
+            <h4 class="text-[16px] font-bold text-white border-b border-white/10 pb-1">Promise Combinators</h4>
+            <ul class="list-disc list-inside space-y-1 ml-2 text-[13px]">
+              <li><code>Promise.all([p1, p2])</code>: Rejects immediately if ANY promise rejects (fail-fast).</li>
+              <li><code>Promise.allSettled([p1, p2])</code>: Waits for ALL promises to complete, returning status and results for all.</li>
+              <li><code>Promise.race([p1, p2])</code>: Resolves or rejects as soon as the first promise settles.</li>
+            </ul>
+          </div>
+        `,
+        codeExample: `async function fetchStudentAnalytics(studentId) {
+  try {
+    const [profileRes, scoresRes] = await Promise.all([
+      fetch('/api/student/' + studentId),
+      fetch('/api/scores/' + studentId)
+    ]);
+    const profile = await profileRes.json();
+    const scores = await scoresRes.json();
+    return { profile, scores };
+  } catch (err) {
+    console.error('Fetch error:', err.message);
+    throw err;
+  }
+}`,
+        interviewTip: 'When should you use <code>Promise.allSettled</code> instead of <code>Promise.all</code>? When you want all independent operations to finish regardless of whether some succeed and some fail (e.g. multi-service status checks).',
+        miniQuiz: {
+          q: 'What happens in Promise.all() if one of the promises rejects?',
+          options: [
+            'It waits for the others and ignores the error',
+            'It immediately rejects with the first encountered rejection error',
+            'It returns null',
+            'It retries the failed promise 3 times'
+          ],
+          answer: 1,
+          explanation: 'Promise.all is fail-fast: if any promise in the iterable rejects, the whole returned promise immediately rejects.'
         }
       }
     ],
