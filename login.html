@@ -52,6 +52,7 @@
       position: relative;
       overflow: hidden;
     }
+
     .oauth-btn::before {
       content: '';
       position: absolute;
@@ -60,13 +61,16 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
+
     .oauth-btn:hover::before {
       opacity: 1;
     }
+
     .oauth-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px -5px var(--oauth-glow, rgba(99, 102, 241, 0.3));
     }
+
     .oauth-btn:active {
       transform: translateY(0);
     }
@@ -89,6 +93,7 @@
       pointer-events: none;
       z-index: 1;
     }
+
     .auth-mesh-glow-2 {
       position: absolute;
       bottom: 10%;
@@ -103,7 +108,8 @@
   </style>
 </head>
 
-<body class="bg-surface font-sans text-slate-100 antialiased overflow-x-hidden min-h-screen flex flex-col justify-between relative selection:bg-primary-indigo selection:text-white">
+<body
+  class="bg-surface font-sans text-slate-100 antialiased overflow-x-hidden min-h-screen flex flex-col justify-between relative selection:bg-primary-indigo selection:text-white">
 
   <!-- Ambient Lighting Effects -->
   <div class="auth-mesh-glow-1"></div>
@@ -123,13 +129,16 @@
   <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-20 flex items-center justify-between">
     <!-- Brand Logo -->
     <a href="index.html" class="flex items-center gap-3 group">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+      <div
+        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
         <span class="material-symbols-outlined text-[24px]">school</span>
       </div>
       <div class="flex flex-col">
         <div class="flex items-center gap-2">
           <span class="text-[20px] font-extrabold text-white tracking-tight">SmartLearn</span>
-          <span class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">SIH 2026</span>
+          <span
+            class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">SIH
+            2026</span>
         </div>
         <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Adaptive Smart Education</span>
       </div>
@@ -137,11 +146,13 @@
 
     <!-- Return to Home CTA -->
     <div class="flex items-center gap-3">
-      <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-mono">
+      <span
+        class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-mono">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         Supabase Cloud Active
       </span>
-      <a href="index.html" class="px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-300 hover:text-white text-[13px] font-semibold flex items-center gap-1.5 transition-all">
+      <a href="index.html"
+        class="px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-300 hover:text-white text-[13px] font-semibold flex items-center gap-1.5 transition-all">
         <span class="material-symbols-outlined text-[16px]">arrow_back</span>
         <span>Back to Home</span>
       </a>
@@ -150,11 +161,13 @@
 
   <!-- MAIN AUTH CONTAINER -->
   <main class="w-full max-w-lg mx-auto px-4 py-6 relative z-20 my-auto">
-    <div class="p-6 sm:p-8 rounded-3xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 relative">
+    <div
+      class="p-6 sm:p-8 rounded-3xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 relative">
 
       <!-- Dynamic Header Title -->
       <div class="flex flex-col items-center text-center gap-1.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 mb-1">
+        <div
+          class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 mb-1">
           <span class="material-symbols-outlined text-[26px]" id="auth-header-icon">lock_open</span>
         </div>
         <h1 class="text-[24px] sm:text-[26px] font-extrabold text-white tracking-tight" id="auth-header-title">
@@ -182,7 +195,8 @@
       </div>
 
       <!-- Instant 1-Click Evaluation Bar (For Judges & Instant Access) -->
-      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-primary-indigo/15 via-secondary/10 to-emerald-500/10 border border-primary-indigo/25 flex flex-col gap-2">
+      <div
+        class="p-3.5 rounded-2xl bg-gradient-to-r from-primary-indigo/15 via-secondary/10 to-emerald-500/10 border border-primary-indigo/25 flex flex-col gap-2">
         <div class="flex items-center justify-between text-[11px]">
           <span class="text-slate-200 font-semibold flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -194,7 +208,8 @@
           class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-primary-indigo via-secondary to-emerald-500 hover:opacity-95 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all group"
           onclick="quickDemoStudentLogin()">
           <span>🚀 Instant Demo Login (Avinash Verma — Student)</span>
-          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          <span
+            class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
       </div>
 
@@ -203,26 +218,29 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
 
           <!-- Google OAuth Button -->
-          <button type="button" id="google-auth-btn"
-            style="--oauth-glow: rgba(234, 67, 53, 0.35);"
+          <button type="button" id="google-auth-btn" style="--oauth-glow: rgba(234, 67, 53, 0.35);"
             class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
             onclick="handleOAuthLogin('google')">
             <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              <path fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+              <path fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
             </svg>
             <span>Google</span>
           </button>
 
           <!-- GitHub OAuth Button -->
-          <button type="button" id="github-auth-btn"
-            style="--oauth-glow: rgba(255, 255, 255, 0.25);"
+          <button type="button" id="github-auth-btn" style="--oauth-glow: rgba(255, 255, 255, 0.25);"
             class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
             onclick="handleOAuthLogin('github')">
             <svg class="w-4 h-4 flex-shrink-0 fill-current text-white" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
             </svg>
             <span>GitHub</span>
           </button>
@@ -234,8 +252,11 @@
 
       <!-- Divider -->
       <div class="relative flex items-center justify-center my-0.5">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-        <span class="relative px-3 bg-surface-container-low text-[11px] uppercase tracking-wider text-slate-500 font-mono">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-white/10"></div>
+        </div>
+        <span
+          class="relative px-3 bg-surface-container-low text-[11px] uppercase tracking-wider text-slate-500 font-mono">
           Or continue with email
         </span>
       </div>
@@ -265,8 +286,8 @@
             <button type="button" onclick="togglePasswordVisibility('signin-password', this)"
               class="text-[11px] text-slate-400 hover:text-white transition-colors">Show</button>
           </label>
-          <input type="password" id="signin-password" required class="uiverse-input"
-            value="Student@2026" placeholder="Enter your password" />
+          <input type="password" id="signin-password" required class="uiverse-input" value="Student@2026"
+            placeholder="Enter your password" />
         </div>
 
         <div class="flex items-center justify-between text-[12px] text-slate-400 pt-0.5">
@@ -283,12 +304,14 @@
           class="uiverse-btn-3d w-full !py-3 text-[14px] mt-1 flex items-center justify-center gap-2 group">
           <span class="material-symbols-outlined text-[18px]">login</span>
           <span id="signin-btn-text">Sign In to Overview</span>
-          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          <span
+            class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
 
         <div class="text-center text-[12px] text-slate-400 pt-1">
           Don't have an account?
-          <button type="button" class="text-primary font-semibold hover:underline ml-1" onclick="switchAuthTab('signup')">
+          <button type="button" class="text-primary font-semibold hover:underline ml-1"
+            onclick="switchAuthTab('signup')">
             Create an account
           </button>
         </div>
@@ -332,7 +355,8 @@
             <span class="material-symbols-outlined text-[15px] text-secondary">mail</span>
             <span>Email Address</span>
           </label>
-          <input type="email" id="signup-email" required class="uiverse-input" placeholder="e.g. student@smartlearn.edu" />
+          <input type="email" id="signup-email" required class="uiverse-input"
+            placeholder="e.g. student@smartlearn.edu" />
         </div>
 
         <div class="uiverse-input-group">
@@ -357,12 +381,14 @@
           class="uiverse-btn-3d w-full !py-3 text-[14px] mt-1 flex items-center justify-center gap-2 group">
           <span class="material-symbols-outlined text-[18px]">cloud_done</span>
           <span id="signup-btn-text">Create Account &amp; Enter Overview</span>
-          <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          <span
+            class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
 
         <div class="text-center text-[12px] text-slate-400 pt-1">
           Already have an account?
-          <button type="button" class="text-primary font-semibold hover:underline ml-1" onclick="switchAuthTab('signin')">
+          <button type="button" class="text-primary font-semibold hover:underline ml-1"
+            onclick="switchAuthTab('signin')">
             Sign In here
           </button>
         </div>
@@ -449,11 +475,10 @@
     function showAlert(msg, isError = true) {
       const box = document.getElementById("auth-alert");
       if (!box) return;
-      box.className = `p-3 rounded-xl text-[12px] border ${
-        isError
+      box.className = `p-3 rounded-xl text-[12px] border ${isError
           ? "bg-rose-500/15 border-rose-500/30 text-rose-300"
           : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
-      } flex items-center gap-2`;
+        } flex items-center gap-2`;
       box.innerHTML = `
         <span class="material-symbols-outlined text-[16px]">${isError ? 'error' : 'check_circle'}</span>
         <span>${msg}</span>
@@ -472,10 +497,9 @@
 
     // Smooth transition into Overview Dashboard
     function transitionToOverview(user, delayMs = 600) {
-      const destination = (user && user.role === "teacher") ? "teacher.html" : "student.html";
-      showAlert(`Authentication successful! Welcome, ${user?.full_name || 'Learner'}. Entering ${destination === 'teacher.html' ? 'Faculty Portal' : 'Student Overview'}...`, false);
+      showAlert(`Authentication successful! Welcome, ${user.full_name || 'Learner'}. Entering overview dashboard...`, false);
       setTimeout(() => {
-        window.location.href = destination;
+        window.location.href = OVERVIEW_DESTINATION;
       }, delayMs);
     }
 
@@ -614,9 +638,8 @@
         showAlert("Verifying OAuth session from provider...", false);
         try {
           const res = await SmartLearnSupabase.restoreSession();
-          const user = res?.user || res;
-          if (user) {
-            transitionToOverview(user, 500);
+          if (res && res.user) {
+            transitionToOverview(res.user, 500);
           }
         } catch (e) {
           console.warn("Session restore from hash:", e);
