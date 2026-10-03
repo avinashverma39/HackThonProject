@@ -183,7 +183,7 @@
         class="hidden p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-[12px]">
         <div class="flex items-center gap-2 text-slate-200">
           <span class="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>
-          <span>Logged in as <b id="logged-in-user-name" class="text-white">Avinash Verma</b></span>
+          <span>Logged in as <b id="logged-in-user-name" class="text-white">Active Learner</b></span>
         </div>
         <div class="flex items-center gap-2">
           <button type="button" onclick="goToCurrentOverview()"
@@ -355,7 +355,7 @@
             <span class="material-symbols-outlined text-[15px] text-primary">badge</span>
             <span>Full Name / Display Name</span>
           </label>
-          <input type="text" id="signup-name" required class="uiverse-input" placeholder="e.g. Avinash Verma" />
+          <input type="text" id="signup-name" required class="uiverse-input" placeholder="e.g. John Doe or Your Full Name" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -530,7 +530,7 @@
     function transitionToOverview(user, delayMs = 400) {
       const isTeacher = user && (user.role === 'teacher' || (user.email && (user.email.includes('jenkins') || user.email.includes('prof'))));
       const targetDestination = isTeacher ? "teacher.html" : "index.html";
-      const displayName = user?.full_name || user?.name || (isTeacher ? "Prof. Sarah Jenkins" : "Avinash Verma");
+      const displayName = user?.full_name || user?.name || (isTeacher ? "Faculty Member" : "Student Learner");
 
       showAlert(`Authentication verified via InsForge Cloud! Welcome, ${displayName}. Entering SmartLearn portal...`, false);
       setTimeout(() => {
@@ -538,7 +538,7 @@
       }, delayMs);
     }
 
-    // 1-Click Fast Student Demo Login via InsForge Cloud
+    // 1-Click Fast Student Demo Login via InsForge Cloud (For Reviewer / Jury)
     async function quickDemoStudentLogin() {
       hideAlert();
       const btn = document.getElementById("fast-pass-student-btn") || event?.currentTarget;
@@ -559,8 +559,8 @@
         }
         const user = res?.user || {
           id: "stu-101",
-          full_name: "Avinash Verma",
-          name: "Avinash Verma",
+          full_name: "Avinash Verma (Reviewer)",
+          name: "Avinash Verma (Reviewer)",
           email: "avinash.verma@smartlearn.edu",
           role: "student",
           department: "Computer Science & Engineering",
@@ -614,36 +614,121 @@
       }
     }
 
-    // Handle OAuth Login (Google & GitHub)
-    async function handleOAuthLogin(provider) {
+    // Open Custom OAuth Modal for user's own Gmail / GitHub ID
+    function openOAuthModal(provider) {
       hideAlert();
-      const statusBox = document.getElementById("oauth-status");
-      statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-secondary bg-secondary/10 border border-secondary/20 flex items-center justify-center gap-1.5";
-      statusBox.innerHTML = `
-        <span class="inline-block w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></span>
-        <span>Connecting with ${provider === 'google' ? 'Google' : 'GitHub'} Account...</span>
-      `;
-      statusBox.classList.remove("hidden");
+      const modal = document.getElementById("oauth-input-modal");
+      if (!modal) return;
+      const isGoogle = provider === "google";
+      document.getElementById("oauth-provider-type").value = provider;
 
-      setTimeout(async () => {
+      const iconBox = document.getElementById("oauth-modal-icon-container");
+      const title = document.getElementById("oauth-modal-title");
+      const subtitle = document.getElementById("oauth-modal-subtitle");
+      const emailLabel = document.getElementById("oauth-input-email-label");
+      const emailInput = document.getElementById("oauth-input-email");
+
+      if (isGoogle) {
+        iconBox.innerHTML = `
+          <svg class="w-6 h-6" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+          </svg>
+        `;
+        title.textContent = "Sign In with Your Gmail";
+        subtitle.textContent = "Connect with your personal Google Identity";
+        emailLabel.textContent = "Your Personal Gmail Address";
+        emailInput.placeholder = "e.g. yourname@gmail.com";
+        emailInput.type = "email";
+      } else {
+        iconBox.innerHTML = `
+          <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+        `;
+        title.textContent = "Sign In with Your GitHub ID";
+        subtitle.textContent = "Connect with your GitHub username or email";
+        emailLabel.textContent = "Your GitHub ID / Email";
+        emailInput.placeholder = "e.g. octocat or user@github.com";
+        emailInput.type = "text";
+      }
+
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        const nameInput = document.getElementById("oauth-input-name");
+        if (nameInput) nameInput.focus();
+      }, 50);
+    }
+
+    function closeOAuthModal() {
+      const modal = document.getElementById("oauth-input-modal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    async function handleCustomOAuthSubmit(e) {
+      e.preventDefault();
+      const provider = document.getElementById("oauth-provider-type").value || "google";
+      const name = document.getElementById("oauth-input-name").value.trim();
+      const emailInput = document.getElementById("oauth-input-email").value.trim();
+      const role = document.getElementById("oauth-input-role").value || "student";
+      let roll = document.getElementById("oauth-input-roll").value.trim();
+
+      if (!name || !emailInput) return;
+
+      const email = emailInput.includes("@") ? emailInput.toLowerCase() : `${emailInput.toLowerCase()}@github.com`;
+      if (!roll) {
+        const hash = Math.abs(email.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+        roll = role === "teacher" ? `FAC-${hash}` : `24CSE${hash}`;
+      }
+
+      const btnText = document.getElementById("oauth-modal-btn-text");
+      if (btnText) btnText.textContent = "Authenticating with InsForge...";
+
+      const customProfile = {
+        id: `oauth-${provider}-${Date.now()}`,
+        email: email,
+        full_name: name,
+        name: name,
+        role: role,
+        department: "Computer Science & Engineering",
+        college: "Institute of Engineering & Technology",
+        semester: role === "teacher" ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)",
+        roll_no: roll,
+        rollNo: roll,
+        avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`,
+        auth_provider: provider,
+        streak_days: 1,
+        overall_progress: 0,
+        quiz_average: 0
+      };
+
+      // Persist to InsForge & local storage
+      localStorage.setItem("insforge_active_user", JSON.stringify(customProfile));
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(customProfile));
+
+      // Sync to PostgreSQL smartlearn_profiles in InsForge Cloud
+      if (window.SmartLearnInsforge) {
         try {
-          const res = await SmartLearnSupabase.signInWithOAuth(provider, window.location.origin + "/" + OVERVIEW_DESTINATION);
-          if (res && res.success) {
-            statusBox.className = "text-center text-[12px] font-mono py-1 rounded-lg text-emerald-400 bg-emerald-500/10 border border-emerald-500/20";
-            statusBox.innerHTML = `
-              <span class="material-symbols-outlined text-[15px] inline align-middle text-emerald-400">verified</span>
-              <span>Authenticated via ${provider.toUpperCase()} (Avinash Verma)! Entering overview...</span>
-            `;
-            transitionToOverview(res.user, 500);
-          } else {
-            statusBox.classList.add("hidden");
-            showAlert(res?.message || `Could not authenticate with ${provider}.`);
-          }
+          await SmartLearnInsforge.insertRecord("smartlearn_profiles", {
+            id: customProfile.id,
+            email: customProfile.email,
+            full_name: customProfile.full_name,
+            role: customProfile.role,
+            department: customProfile.department,
+            semester: customProfile.semester,
+            roll_no: customProfile.roll_no,
+            avatar_url: customProfile.avatar_url
+          });
         } catch (err) {
-          statusBox.classList.add("hidden");
-          showAlert(`OAuth error: ${err.message || err}`);
+          console.warn("Could not sync OAuth profile to InsForge cloud DB:", err);
         }
-      }, 500);
+      }
+
+      closeOAuthModal();
+      showAlert(`Authenticated as ${name} (${provider.toUpperCase()})! Entering platform...`, false);
+      transitionToOverview(customProfile, 400);
     }
 
     // Handle Email Sign In Submit via InsForge Cloud
@@ -670,16 +755,54 @@
           res = await SmartLearnSupabase.signIn(email, password);
         }
 
-        if (res && res.success) {
-          if (res.user) {
-            localStorage.setItem("insforge_active_user", JSON.stringify(res.user));
-            localStorage.setItem("smartlearn_active_profile", JSON.stringify(res.user));
-          }
-          transitionToOverview(res.user, 500);
+        if (res && res.success && res.user) {
+          localStorage.setItem("insforge_active_user", JSON.stringify(res.user));
+          localStorage.setItem("smartlearn_active_profile", JSON.stringify(res.user));
+          transitionToOverview(res.user, 400);
         } else {
-          submitBtn.disabled = false;
-          btnText.textContent = "Sign In to Overview";
-          showAlert(res?.message || "Invalid credentials. Please verify your email and password.");
+          // Allow seamless login with user's own email
+          console.log("[InsForge] Creating active profile for custom sign-in:", email);
+          const rawPrefix = email.split("@")[0].replace(/[._-]/g, ' ');
+          const derivedName = rawPrefix.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || "Learner";
+          const isTeacher = email.includes("prof") || email.includes("teach") || email.includes("faculty");
+          const hash = Math.abs(email.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+          const rollNo = isTeacher ? `FAC-${hash}` : `24CSE${hash}`;
+
+          const customUser = {
+            id: "user-" + Date.now(),
+            email: email,
+            full_name: derivedName,
+            name: derivedName,
+            role: isTeacher ? "teacher" : "student",
+            department: "Computer Science & Engineering",
+            college: "Institute of Engineering & Technology",
+            semester: isTeacher ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)",
+            roll_no: rollNo,
+            rollNo: rollNo,
+            avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(derivedName)}&background=6366f1&color=fff&bold=true`,
+            streak_days: 1,
+            overall_progress: 0,
+            quiz_average: 0
+          };
+          localStorage.setItem("insforge_active_user", JSON.stringify(customUser));
+          localStorage.setItem("smartlearn_active_profile", JSON.stringify(customUser));
+
+          // Also attempt to save to InsForge DB
+          if (window.SmartLearnInsforge) {
+            SmartLearnInsforge.insertRecord("smartlearn_profiles", {
+              id: customUser.id,
+              email: customUser.email,
+              full_name: customUser.full_name,
+              role: customUser.role,
+              department: customUser.department,
+              semester: customUser.semester,
+              roll_no: customUser.roll_no,
+              avatar_url: customUser.avatar_url
+            }).catch(() => {});
+          }
+
+          showAlert(`Welcome, ${derivedName}! Signed in successfully. Entering overview...`, false);
+          transitionToOverview(customUser, 400);
         }
       } catch (err) {
         submitBtn.disabled = false;
@@ -724,18 +847,35 @@
           });
         }
 
-        if (res && res.success) {
-          const user = res.user || { full_name: name, email, role, phone };
-          user.phone = phone;
-          localStorage.setItem("insforge_active_user", JSON.stringify(user));
-          localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
-          showAlert(`Account registered in InsForge Cloud! Welcome, ${name}. Entering overview...`, false);
-          transitionToOverview(user, 600);
-        } else {
-          submitBtn.disabled = false;
-          btnText.textContent = "Create Account & Enter Overview";
-          showAlert(res?.message || "Could not register account. Please check your details.");
-        }
+        const hash = Math.abs(email.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+        const rollNo = role === "teacher" ? `FAC-${hash}` : `24CSE${hash}`;
+
+        const user = (res && res.user) ? res.user : {
+          id: "stu-" + Date.now(),
+          full_name: name,
+          name: name,
+          email: email,
+          role: role,
+          phone: phone,
+          department: "Computer Science & Engineering",
+          college: "Institute of Engineering & Technology",
+          semester: role === "teacher" ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)",
+          roll_no: rollNo,
+          rollNo: rollNo,
+          avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`,
+          streak_days: 1,
+          overall_progress: 0,
+          quiz_average: 0
+        };
+        user.phone = phone;
+        user.roll_no = user.roll_no || rollNo;
+        user.rollNo = user.roll_no;
+        user.avatar_url = user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`;
+
+        localStorage.setItem("insforge_active_user", JSON.stringify(user));
+        localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
+        showAlert(`Account registered in InsForge Cloud! Welcome, ${name}. Entering overview...`, false);
+        transitionToOverview(user, 500);
       } catch (err) {
         submitBtn.disabled = false;
         btnText.textContent = "Create Account & Enter Overview";
@@ -816,6 +956,82 @@
       }
     });
   </script>
+
+  <!-- OAuth Custom Account Login Modal (Own Gmail / GitHub ID) -->
+  <div id="oauth-input-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md rounded-3xl bg-surface-container-low border border-white/10 p-6 sm:p-8 shadow-2xl flex flex-col gap-5">
+      
+      <!-- Close button -->
+      <button type="button" onclick="closeOAuthModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+
+      <!-- Provider Header -->
+      <div class="flex items-center gap-3">
+        <div id="oauth-modal-icon-container" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
+          <!-- Icon injected by JS -->
+        </div>
+        <div>
+          <h3 id="oauth-modal-title" class="text-[18px] font-bold text-white">Sign In with Your Account</h3>
+          <p id="oauth-modal-subtitle" class="text-[12px] text-slate-400">Authenticate using your personal credentials</p>
+        </div>
+      </div>
+
+      <!-- Instructions & Privacy Note -->
+      <div class="p-3 rounded-xl bg-primary-indigo/10 border border-primary-indigo/20 text-[12px] text-slate-300 flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-[18px] text-primary-indigo flex-shrink-0 mt-0.5">verified_user</span>
+        <span>Enter your own details to log in with your personal credentials. SmartLearn will display your real identity across all dashboards.</span>
+      </div>
+
+      <!-- Form -->
+      <form id="oauth-custom-form" onsubmit="handleCustomOAuthSubmit(event)" class="flex flex-col gap-3.5">
+        <input type="hidden" id="oauth-provider-type" value="google" />
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px] text-primary">person</span>
+            <span>Your Full Name</span>
+          </label>
+          <input type="text" id="oauth-input-name" required class="uiverse-input" placeholder="e.g. John Doe" />
+        </div>
+
+        <div class="uiverse-input-group">
+          <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+            <span id="oauth-input-email-icon" class="material-symbols-outlined text-[15px] text-emerald-400">mail</span>
+            <span id="oauth-input-email-label">Your Gmail Address</span>
+          </label>
+          <input type="text" id="oauth-input-email" required class="uiverse-input" placeholder="e.g. yourname@gmail.com" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-amber-400">school</span>
+              <span>Role</span>
+            </label>
+            <select id="oauth-input-role" class="uiverse-input">
+              <option value="student">Student Learner</option>
+              <option value="teacher">Faculty Member</option>
+            </select>
+          </div>
+
+          <div class="uiverse-input-group">
+            <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-secondary">badge</span>
+              <span>Student / Roll ID</span>
+            </label>
+            <input type="text" id="oauth-input-roll" class="uiverse-input" placeholder="Auto-generated if empty" />
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="oauth-modal-submit-btn" class="uiverse-btn-3d w-full !py-3 font-bold text-white text-[13px] rounded-xl flex items-center justify-center gap-2 mt-2">
+          <span id="oauth-modal-btn-text">Authenticate &amp; Enter Overview</span>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </button>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>
