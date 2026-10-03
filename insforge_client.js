@@ -366,6 +366,198 @@ const SmartLearnInsforge = (function () {
     return { success: true };
   }
 
+  // --- OAUTH AUTHENTICATION (Google & GitHub with PKCE) ---
+
+  function generatePKCEVerifier(length = 64) {
+    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+    let result = '';
+    const values = new Uint8Array(length);
+    crypto.getRandomValues(values);
+    for (let i = 0; i < length; i++) {
+      result += charset[values[i] % charset.length];
+    }
+    return result;
+  }
+
+  async function generatePKCEChallenge(verifier) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(verifier);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function getOAuthRedirectUri() {
+    const origin = window.location.origin;
+    if (origin.includes("insforge.site")) {
+      return "https://r4s69m7b.insforge.site/profile.html";
+    }
+    if (origin.includes(":3000")) {
+      return `${origin}/profile.html`;
+    }
+    if (origin.includes(":5173")) {
+      return `${origin}/profile.html`;
+    }
+    if (origin.includes(":5501")) {
+      return `${origin}/profile.html`;
+    }
+    if (origin.includes(":5500")) {
+      return `${origin}/profile.html`;
+    }
+    return `${origin}/profile.html`;
+  }
+
+  /**
+   * Start Real OAuth Authentication with InsForge AI Cloud (Google or GitHub)
+   */
+  async function signInWithOAuth(provider = "google", { redirectTo = null, skipRedirect = false } = {}) {
+    const cleanProvider = (provider || "google").toLowerCase();
+    const redirectUri = redirectTo || getOAuthRedirectUri();
+
+    try {
+      console.log(`[InsForge] Starting ${cleanProvider.toUpperCase()} OAuth flow via InsForge AI Cloud...`);
+      const verifier = generatePKCEVerifier(64);
+      const challenge = await generatePKCEChallenge(verifier);
+
+      localStorage.setItem("insforge_pkce_verifier", verifier);
+      localStorage.setItem("insforge_oauth_provider", cleanProvider);
+      localStorage.setItem("insforge_oauth_redirect_target", redirectUri);
+
+      let url = `${BASE_URL}/api/auth/oauth/${cleanProvider}?redirect_uri=${encodeURIComponent(redirectUri)}&code_challenge=${encodeURIComponent(challenge)}`;
+      if (cleanProvider === "google") {
+        url += "&prompt=select_account";
+      }
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok || !data.authUrl) {
+        throw new Error(data.message || `Failed to initiate OAuth with ${cleanProvider}`);
+      }
+
+      console.log(`[InsForge] Received OAuth AuthURL for ${cleanProvider}:`, data.authUrl);
+
+      if (skipRedirect) {
+        return { success: true, authUrl: data.authUrl, verifier };
+      }
+
+      // Navigate to real Google or GitHub login interface
+      window.location.href = data.authUrl;
+      return { success: true, authUrl: data.authUrl };
+    } catch (err) {
+      console.error(`[InsForge] OAuth initiation error for ${cleanProvider}:`, err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  /**
+   * Exchange the temporary authorization code (insforge_code) for access token and full profile
+   */
+  async function exchangeOAuthCode(code, verifier = null) {
+    const codeVerifier = verifier || localStorage.getItem("insforge_pkce_verifier");
+    const provider = localStorage.getItem("insforge_oauth_provider") || "oauth";
+
+    if (!code) {
+      return { success: false, error: "Missing authorization code from provider." };
+    }
+
+    try {
+      console.log(`[InsForge] Exchanging OAuth authorization code with InsForge Cloud...`);
+      const res = await fetch(`${BASE_URL}/api/auth/oauth/exchange?client_type=server`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: code,
+          code_verifier: codeVerifier || ""
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.user) {
+        throw new Error(data.message || data.error || "OAuth exchange failed.");
+      }
+
+      const authUser = data.user;
+      const accessToken = data.accessToken;
+      const refreshToken = data.refreshToken;
+
+      if (accessToken) {
+        localStorage.setItem(STORAGE_TOKEN_KEY, accessToken);
+      }
+      if (refreshToken) {
+        localStorage.setItem(STORAGE_REFRESH_KEY, refreshToken);
+      }
+
+      const rawName = authUser.profile?.name || authUser.name || authUser.email?.split("@")[0] || "Learner";
+      const email = authUser.email || "";
+      const avatar = authUser.profile?.avatar_url || authUser.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(rawName)}&background=6366f1&color=fff&bold=true`;
+      const hash = Math.abs(email.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+      const rollNo = `24CSE${hash}`;
+
+      const fullProfile = {
+        id: authUser.id,
+        email: email,
+        full_name: rawName,
+        name: rawName,
+        role: "student",
+        department: "Computer Science & Engineering",
+        college: "Institute of Engineering & Technology",
+        semester: "Semester 5 (3rd Year B.Tech)",
+        roll_no: rollNo,
+        rollNo: rollNo,
+        avatar_url: avatar,
+        auth_provider: provider,
+        email_verified: authUser.emailVerified ?? true,
+        streak_days: 14,
+        overall_progress: 78,
+        quiz_average: 84,
+        cgpa: "8.90",
+        attendance: "94.2%",
+        created_at: authUser.createdAt || new Date().toISOString()
+      };
+
+      activeUser = fullProfile;
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(fullProfile));
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(fullProfile));
+
+      // Clean up verifier
+      localStorage.removeItem("insforge_pkce_verifier");
+
+      // Upsert profile in PostgreSQL database smartlearn_profiles
+      try {
+        await request("/api/database/records/smartlearn_profiles", {
+          method: "POST",
+          body: JSON.stringify({
+            id: fullProfile.id,
+            email: fullProfile.email,
+            full_name: fullProfile.full_name,
+            role: fullProfile.role,
+            department: fullProfile.department,
+            semester: fullProfile.semester,
+            roll_no: fullProfile.roll_no,
+            college: fullProfile.college,
+            avatar_url: fullProfile.avatar_url,
+            streak_days: fullProfile.streak_days,
+            learning_points: 150
+          })
+        });
+      } catch (e) {
+        console.warn("[InsForge] Note on DB upsert:", e);
+      }
+
+      window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: fullProfile } }));
+
+      return {
+        success: true,
+        user: fullProfile,
+        accessToken
+      };
+    } catch (err) {
+      console.error("[InsForge] exchangeOAuthCode error:", err);
+      return { success: false, error: err.message };
+    }
+  }
+
   /**
    * Update student or teacher profile in InsForge database
    */
