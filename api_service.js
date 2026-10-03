@@ -30,14 +30,26 @@ const SmartLearnAPI = (function () {
   // Load state or fallback to default dataset
   function getLocalStore() {
     try {
+      const activeRaw = localStorage.getItem("smartlearn_active_profile") || localStorage.getItem("insforge_active_user");
+      let activeUser = null;
+      if (activeRaw) {
+        try {
+          activeUser = JSON.parse(activeRaw);
+        } catch (e) {}
+      }
+
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed.currentUser && (parsed.currentUser.name === "Alex Rivera" || parsed.currentUser.full_name === "Alex Rivera")) {
-          parsed.currentUser.name = "Avinash Verma";
-          parsed.currentUser.full_name = "Avinash Verma";
-          parsed.currentUser.email = "avinash.verma@smartlearn.edu";
-          parsed.currentUser.rollNo = "24CSE089";
+        if (activeUser && (activeUser.full_name || activeUser.name || activeUser.email)) {
+          parsed.currentUser = {
+            ...parsed.currentUser,
+            ...activeUser,
+            name: activeUser.full_name || activeUser.name,
+            full_name: activeUser.full_name || activeUser.name,
+            email: activeUser.email || parsed.currentUser?.email,
+            rollNo: activeUser.roll_no || activeUser.rollNo || parsed.currentUser?.rollNo
+          };
           saveLocalStore(parsed);
         }
         return parsed;
@@ -119,7 +131,7 @@ const SmartLearnAPI = (function () {
     if (role === "teacher" || email.includes("jenkins") || email.includes("prof")) {
       store.currentUser = { ...store.currentTeacher, role: "teacher" };
     } else {
-      let displayName = store.currentUser?.name || "Avinash Verma";
+      let displayName = store.currentUser?.name || "Student Learner";
       if (email.toLowerCase().includes("avinash")) {
         displayName = "Avinash Verma";
       } else if (email.includes("@")) {
