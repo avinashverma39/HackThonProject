@@ -290,28 +290,28 @@ const SmartLearnSupabase = (function () {
     return handleOAuthFallback(cleanProvider, targetRedirect);
   }
 
-  function handleOAuthFallback(cleanProvider, targetRedirect) {
+  function handleOAuthFallback(cleanProvider, targetRedirect, customProfile = null) {
     const isGoogle = cleanProvider === "google";
-    const oauthProfile = {
-      id: isGoogle ? "google-stu-101" : "github-stu-101",
-      email: isGoogle ? "avinash.verma@gmail.com" : "avinash.verma@github.com",
-      full_name: isGoogle ? "Avinash Verma" : "Avinash Verma (GitHub)",
-      name: "Avinash Verma",
+    let stored = null;
+    try {
+      const raw = localStorage.getItem("smartlearn_active_profile") || localStorage.getItem("insforge_active_user");
+      if (raw) stored = JSON.parse(raw);
+    } catch (e) {}
+
+    const oauthProfile = customProfile || stored || {
+      id: isGoogle ? "google-stu-" + Date.now() : "github-stu-" + Date.now(),
+      email: isGoogle ? "learner@gmail.com" : "developer@github.com",
+      full_name: isGoogle ? "Google Learner" : "GitHub Developer",
+      name: isGoogle ? "Google Learner" : "GitHub Developer",
       role: "student",
       department: "Computer Science & Engineering",
       college: "Institute of Engineering & Technology",
       semester: "Semester 5 (3rd Year B.Tech)",
-      roll_no: isGoogle ? "24CSE089" : "24CSE089-GH",
-      avatar_url: isGoogle
-        ? "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&q=80"
-        : "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=256&q=80",
-      phone: "+91 98765 43210",
-      streak_days: 14,
-      overall_progress: 78,
-      quiz_average: 84,
-      cgpa: "8.90",
-      attendance: "94.2%",
-      enrolled_courses_count: 5,
+      roll_no: "24CSE" + Math.floor(100 + Math.random() * 900),
+      avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(isGoogle ? "Google Learner" : "GitHub Dev")}&background=6366f1&color=fff&bold=true`,
+      streak_days: 1,
+      overall_progress: 0,
+      quiz_average: 0,
       auth_provider: cleanProvider
     };
 
