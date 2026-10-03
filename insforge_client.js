@@ -332,15 +332,19 @@ const SmartLearnInsforge = (function () {
 
     if (cachedUser) {
       try {
-        activeUser = JSON.parse(cachedUser);
-        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(activeUser));
-        localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeUser));
-        return activeUser;
+        const parsed = JSON.parse(cachedUser);
+        if (parsed && (parsed.email || parsed.id)) {
+          activeUser = parsed;
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(activeUser));
+          localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeUser));
+          return activeUser;
+        }
       } catch (e) {}
     }
 
-    // Default student user
-    return await loadDemoProfile("avinash.verma@smartlearn.edu", "student").then(r => r.user);
+    // No user currently logged in
+    activeUser = null;
+    return null;
   }
 
   /**
