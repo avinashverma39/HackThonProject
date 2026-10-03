@@ -38,10 +38,12 @@
   --perspective: 1200px;
 }
 
-/* Base Body Calibration */
+/* Base Body Calibration & Strict Viewport Safety */
 html {
+  max-width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.5rem;
   color-scheme: dark;
 }
 
@@ -53,8 +55,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   letter-spacing: -0.01em;
+  max-width: 100%;
+  width: 100%;
   overflow-x: hidden;
   position: relative;
+  min-width: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, svg, video, canvas, audio, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Headings */
@@ -453,36 +467,38 @@ code, pre, .font-mono {
 .ambient-glow-orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(100px);
-  opacity: 0.18;
+  filter: blur(80px);
+  opacity: 0.16;
   pointer-events: none;
   will-change: transform;
+  max-width: 90vw;
+  max-height: 90vw;
 }
 
 .orb-primary {
-  width: 650px;
-  height: 650px;
+  width: min(650px, 85vw);
+  height: min(650px, 85vw);
   background: #6366f1;
   top: 5%;
-  left: 15%;
+  left: 10%;
   animation: floatOrb 18s ease-in-out infinite alternate;
 }
 
 .orb-cyan {
-  width: 550px;
-  height: 550px;
+  width: min(550px, 75vw);
+  height: min(550px, 75vw);
   background: #38bdf8;
   top: 25%;
-  right: 10%;
+  right: 5%;
   animation: floatOrb 22s ease-in-out infinite alternate-reverse;
 }
 
 .orb-emerald {
-  width: 450px;
-  height: 450px;
+  width: min(450px, 70vw);
+  height: min(450px, 70vw);
   background: #10b981;
   bottom: 10%;
-  left: 30%;
+  left: 20%;
   animation: floatOrb 20s ease-in-out infinite alternate;
 }
 
@@ -1087,7 +1103,73 @@ code, pre, .font-mono {
   }
 }
 
-/* Responsive Tweaks */
+/* ==========================================================================
+   13. COMPREHENSIVE RESPONSIVE DESIGN SYSTEM (ALL VIEWPORTS 320px - 1920px)
+   ========================================================================== */
+
+/* Safe Area Insets for Modern Mobile Devices */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Global Container Constraints */
+.container-responsive {
+  width: min(100% - 24px, 1280px);
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    width: min(100% - 32px, 1280px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    width: min(100% - 48px, 1280px);
+  }
+}
+
+/* Prevent Flex and Grid children from overflowing containers */
+.flex > *, .grid > *, .flex-1 {
+  min-width: 0;
+}
+
+/* Dedicated responsive scroll wrapper for wide tables & code blocks */
+.table-scroll-wrapper, .table-responsive {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive Floating AI Button (Never covers stats or primary content) */
+#floating-ai-assistant-btn {
+  right: max(16px, env(safe-area-inset-right, 16px)) !important;
+  bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+  z-index: 40 !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@media (max-width: 640px) {
+  #floating-ai-assistant-btn {
+    padding: 7px 12px !important;
+    gap: 5px !important;
+    font-size: 11px !important;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35) !important;
+  }
+  #floating-ai-assistant-btn .material-symbols-outlined {
+    font-size: 16px !important;
+  }
+  #floating-ai-assistant-btn #floating-ai-label {
+    font-size: 11px !important;
+  }
+}
+
+/* Tablet & Mobile Layout Refinements (<= 768px) */
 @media (max-width: 768px) {
   .hero-3d-scene {
     perspective: none;
@@ -1097,5 +1179,88 @@ code, pre, .font-mono {
   }
   #ambient-cursor-glow {
     display: none !important;
+  }
+
+  /* Compact section spacing & remove excessive vertical blanks */
+  section {
+    padding-top: clamp(1.75rem, 4.5vw, 3rem) !important;
+    padding-bottom: clamp(1.75rem, 4.5vw, 3rem) !important;
+  }
+
+  .landing-hero-scene, section:first-of-type {
+    padding-top: clamp(1rem, 3vw, 2rem) !important;
+    padding-bottom: clamp(1.75rem, 4vw, 2.5rem) !important;
+  }
+
+  /* Compact modal dialogs on mobile */
+  .app-modal .glass-modal, .app-modal > div:last-child {
+    width: min(100% - 24px, 580px) !important;
+    max-height: 88dvh !important;
+    overflow-y: auto !important;
+    padding: 1rem !important;
+  }
+
+  /* Floating mini badges repositioning to prevent viewport clipping */
+  .floating-mini-card {
+    position: static !important;
+    transform: none !important;
+    margin-bottom: 0.5rem !important;
+    display: inline-flex !important;
+  }
+}
+
+/* Small Mobile Screens (<= 640px) */
+@media (max-width: 640px) {
+  /* Dynamic Island Navbar Mobile Height & Padding */
+  .navbar-wrapper {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .navbar-island {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    height: 3.4rem !important;
+  }
+
+  .navbar-brand-title {
+    font-size: 1.05rem !important;
+  }
+
+  /* Fluid Headings for compact mobile reading */
+  h1, .text-3d-headline {
+    font-size: clamp(1.6rem, 7vw + 0.1rem, 2.5rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 5.5vw, 1.85rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  h3 {
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  p {
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Responsive Buttons on Mobile */
+  .uiverse-btn-3d, .uiverse-btn-secondary-3d {
+    max-width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Ambient mesh scaled down to fit small screens */
+  .auth-mesh-glow-1, .auth-mesh-glow-2, .landing-hero-glow {
+    width: 260px !important;
+    height: 260px !important;
+    filter: blur(50px) !important;
   }
 }

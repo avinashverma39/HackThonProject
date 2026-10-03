@@ -80,28 +80,28 @@
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Ambient background gradient meshes */
+    /* Ambient background gradient meshes with mobile viewport containment */
     .auth-mesh-glow-1 {
       position: absolute;
-      top: 15%;
+      top: 10%;
       left: 50%;
       transform: translateX(-50%);
-      width: 750px;
-      height: 450px;
+      width: min(750px, 92vw);
+      height: min(450px, 50vh);
       background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
-      filter: blur(90px);
+      filter: blur(80px);
       pointer-events: none;
       z-index: 1;
     }
 
     .auth-mesh-glow-2 {
       position: absolute;
-      bottom: 10%;
-      right: 15%;
-      width: 450px;
-      height: 350px;
+      bottom: 5%;
+      right: 5%;
+      width: min(450px, 80vw);
+      height: min(350px, 45vh);
       background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
-      filter: blur(100px);
+      filter: blur(80px);
       pointer-events: none;
       z-index: 1;
     }
@@ -109,15 +109,17 @@
 </head>
 
 <body
-  class="bg-surface font-sans text-slate-100 antialiased overflow-x-hidden min-h-screen flex flex-col justify-between relative selection:bg-primary-indigo selection:text-white">
+  class="bg-surface font-sans text-slate-100 antialiased overflow-x-hidden min-h-[100dvh] flex flex-col justify-start sm:justify-between py-2 sm:py-4 relative selection:bg-primary-indigo selection:text-white">
 
   <!-- Ambient Lighting Effects -->
-  <div class="auth-mesh-glow-1"></div>
-  <div class="auth-mesh-glow-2"></div>
-  <div class="navbar-horizon-glow"></div>
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="auth-mesh-glow-1"></div>
+    <div class="auth-mesh-glow-2"></div>
+    <div class="navbar-horizon-glow"></div>
+  </div>
 
   <!-- Educational Background Particles -->
-  <div class="smartlearn-3d-bg">
+  <div class="smartlearn-3d-bg overflow-hidden pointer-events-none">
     <span class="floating-edu-icon" style="top: 18%; left: 12%; animation-delay: 0s;">∑</span>
     <span class="floating-edu-icon" style="top: 25%; right: 14%; animation-delay: 1.5s;">{ }</span>
     <span class="floating-edu-icon" style="top: 75%; left: 10%; animation-delay: 3s;">λ</span>
@@ -126,54 +128,53 @@
   </div>
 
   <!-- TOP MINIMAL NAVBAR -->
-  <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-20 flex items-center justify-between">
+  <header class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-4 relative z-20 flex items-center justify-between gap-2">
     <!-- Brand Logo -->
-    <a href="index.html" class="flex items-center gap-3 group">
+    <a href="index.html" class="flex items-center gap-2 sm:gap-3 group min-w-0">
       <div
-        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-        <span class="material-symbols-outlined text-[24px]">school</span>
+        class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-transform duration-300 group-hover:scale-105 flex-shrink-0">
+        <span class="material-symbols-outlined text-[20px] sm:text-[24px]">school</span>
       </div>
-      <div class="flex flex-col">
-        <div class="flex items-center gap-2">
-          <span class="text-[20px] font-extrabold text-white tracking-tight">SmartLearn</span>
+      <div class="flex flex-col min-w-0">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span class="text-[18px] sm:text-[20px] font-extrabold text-white tracking-tight truncate">SmartLearn</span>
           <span
-            class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30">SIH
-            2026</span>
+            class="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[9px] sm:text-[10px] font-bold border border-primary-indigo/30 flex-shrink-0">SIH 2026</span>
         </div>
-        <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Adaptive Smart Education</span>
+        <span class="text-[10px] sm:text-[11px] text-slate-400 font-medium hidden md:inline truncate">Adaptive Smart Education</span>
       </div>
     </a>
 
     <!-- Return to Home CTA -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
       <span
         class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-mono">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         Supabase Cloud Active
       </span>
       <a href="index.html"
-        class="px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-300 hover:text-white text-[13px] font-semibold flex items-center gap-1.5 transition-all">
-        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-        <span>Back to Home</span>
+        class="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-300 hover:text-white text-[12px] sm:text-[13px] font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-[15px] sm:text-[16px]">arrow_back</span>
+        <span><span class="hidden xs:inline">Back to </span>Home</span>
       </a>
     </div>
   </header>
 
   <!-- MAIN AUTH CONTAINER -->
-  <main class="w-full max-w-lg mx-auto px-4 py-6 relative z-20 my-auto">
+  <main class="w-full max-w-[min(100%-24px,500px)] mx-auto px-0 py-2 sm:py-5 relative z-20 my-auto">
     <div
-      class="p-6 sm:p-8 rounded-3xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 relative">
+      class="p-4 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl bg-surface-container-low/95 border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-3.5 sm:gap-5 relative">
 
       <!-- Dynamic Header Title -->
-      <div class="flex flex-col items-center text-center gap-1.5">
+      <div class="flex flex-col items-center text-center gap-1">
         <div
-          class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 mb-1">
-          <span class="material-symbols-outlined text-[26px]" id="auth-header-icon">lock_open</span>
+          class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-primary-indigo to-secondary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 mb-0.5">
+          <span class="material-symbols-outlined text-[22px] sm:text-[26px]" id="auth-header-icon">lock_open</span>
         </div>
-        <h1 class="text-[24px] sm:text-[26px] font-extrabold text-white tracking-tight" id="auth-header-title">
+        <h1 class="text-[20px] sm:text-[24px] md:text-[26px] font-extrabold text-white tracking-tight" id="auth-header-title">
           Welcome to SmartLearn
         </h1>
-        <p class="text-[13px] text-slate-400 max-w-xs" id="auth-header-desc">
+        <p class="text-[12px] sm:text-[13px] text-slate-400 max-w-xs" id="auth-header-desc">
           Sign in to access your personalized adaptive dashboard, weak-topic remediation &amp; skill roadmaps.
         </p>
       </div>
@@ -216,8 +217,8 @@
 
       <!-- Instant 1-Click Evaluation Bar (For Judges & Instant Access) -->
       <div
-        class="p-3.5 rounded-2xl bg-gradient-to-r from-primary-indigo/15 via-secondary/10 to-emerald-500/10 border border-primary-indigo/25 flex flex-col gap-2">
-        <div class="flex items-center justify-between text-[11px]">
+        class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-primary-indigo/15 via-secondary/10 to-emerald-500/10 border border-primary-indigo/25 flex flex-col gap-2">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px]">
           <span class="text-slate-200 font-semibold flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             1-Click Reviewer &amp; Jury Access:
@@ -242,13 +243,13 @@
         </div>
       </div>
 
-      <!-- Social Authentication (Google & GitHub via Supabase) -->
+      <!-- Social Authentication (Google & GitHub via InsForge AI Cloud) -->
       <div class="flex flex-col gap-2.5">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
 
           <!-- Google OAuth Button -->
           <button type="button" id="google-auth-btn" style="--oauth-glow: rgba(234, 67, 53, 0.35);"
-            class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
+            class="oauth-btn w-full py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
             onclick="initiateRealOAuth('google')">
             <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4"
@@ -265,7 +266,7 @@
 
           <!-- GitHub OAuth Button -->
           <button type="button" id="github-auth-btn" style="--oauth-glow: rgba(255, 255, 255, 0.25);"
-            class="oauth-btn py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
+            class="oauth-btn w-full py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center justify-center gap-2.5 transition-all"
             onclick="initiateRealOAuth('github')">
             <svg class="w-4 h-4 flex-shrink-0 fill-current text-white" viewBox="0 0 24 24">
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -285,7 +286,7 @@
           <div class="w-full border-t border-white/10"></div>
         </div>
         <span
-          class="relative px-3 bg-surface-container-low text-[11px] uppercase tracking-wider text-slate-500 font-mono">
+          class="relative px-3 bg-surface-container-low text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-500 font-mono">
           Or continue with your own email
         </span>
       </div>
@@ -296,13 +297,13 @@
       <!-- ================================================================
            FORM 1: SIGN IN (EMAIL + PASSWORD)
            ================================================================ -->
-      <form id="form-signin" onsubmit="handleEmailSignIn(event)" class="flex flex-col gap-3.5">
+      <form id="form-signin" onsubmit="handleEmailSignIn(event)" class="flex flex-col gap-3 sm:gap-3.5">
         <div class="uiverse-input-group">
           <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
             <span class="material-symbols-outlined text-[15px] text-primary">mail</span>
             <span>Academic / Personal Email or Gmail</span>
           </label>
-          <input type="email" id="signin-email" required class="uiverse-input"
+          <input type="email" id="signin-email" required class="uiverse-input w-full"
             placeholder="e.g. yourname@gmail.com" />
         </div>
 
@@ -315,14 +316,14 @@
             <button type="button" onclick="togglePasswordVisibility('signin-password', this)"
               class="text-[11px] text-slate-400 hover:text-white transition-colors">Show</button>
           </label>
-          <input type="password" id="signin-password" required class="uiverse-input"
+          <input type="password" id="signin-password" required class="uiverse-input w-full"
             placeholder="Enter your password" />
         </div>
 
-        <div class="flex items-center justify-between text-[12px] text-slate-400 pt-0.5">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-[12px] text-slate-400 pt-0.5">
           <label class="flex items-center gap-1.5 cursor-pointer">
             <input type="checkbox" id="signin-remember" checked class="accent-primary-indigo" />
-            <span>Remember my session</span>
+            <span>Remember session</span>
           </label>
           <button type="button" class="text-secondary hover:underline" onclick="showForgotPasswordAlert()">
             Forgot password?
@@ -349,13 +350,13 @@
       <!-- ================================================================
            FORM 2: CREATE ACCOUNT / SIGN UP
            ================================================================ -->
-      <form id="form-signup" onsubmit="handleEmailSignUp(event)" class="hidden flex flex-col gap-3.5">
+      <form id="form-signup" onsubmit="handleEmailSignUp(event)" class="hidden flex flex-col gap-3 sm:gap-3.5">
         <div class="uiverse-input-group">
           <label class="text-[12px] font-medium text-slate-300 flex items-center gap-1.5">
             <span class="material-symbols-outlined text-[15px] text-primary">badge</span>
             <span>Full Name / Display Name</span>
           </label>
-          <input type="text" id="signup-name" required class="uiverse-input" placeholder="e.g. John Doe or Your Full Name" />
+          <input type="text" id="signup-name" required class="uiverse-input w-full" placeholder="e.g. John Doe or Your Full Name" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -364,7 +365,7 @@
               <span class="material-symbols-outlined text-[15px] text-emerald-400">call</span>
               <span>Phone Number</span>
             </label>
-            <input type="tel" id="signup-phone" required class="uiverse-input" placeholder="e.g. +91 98765 43210" />
+            <input type="tel" id="signup-phone" required class="uiverse-input w-full" placeholder="e.g. +91 98765 43210" />
           </div>
 
           <div class="uiverse-input-group">
@@ -372,7 +373,7 @@
               <span class="material-symbols-outlined text-[15px] text-amber-400">school</span>
               <span>Academic Role</span>
             </label>
-            <select id="signup-role" class="uiverse-input">
+            <select id="signup-role" class="uiverse-input w-full">
               <option value="student">Student Learner</option>
               <option value="teacher">Faculty / Educator</option>
             </select>
@@ -384,7 +385,7 @@
             <span class="material-symbols-outlined text-[15px] text-secondary">mail</span>
             <span>Email Address</span>
           </label>
-          <input type="email" id="signup-email" required class="uiverse-input"
+          <input type="email" id="signup-email" required class="uiverse-input w-full"
             placeholder="e.g. student@smartlearn.edu" />
         </div>
 
@@ -397,7 +398,7 @@
             <button type="button" onclick="togglePasswordVisibility('signup-password', this)"
               class="text-[11px] text-slate-400 hover:text-white transition-colors">Show</button>
           </label>
-          <input type="password" id="signup-password" required minlength="6" class="uiverse-input"
+          <input type="password" id="signup-password" required minlength="6" class="uiverse-input w-full"
             placeholder="Create a strong password" />
         </div>
 
@@ -426,14 +427,14 @@
     </div>
 
     <!-- Security & Encryption Trust Footnote -->
-    <div class="mt-5 text-center flex items-center justify-center gap-3 text-[11px] text-slate-500 font-mono">
+    <div class="mt-3 sm:mt-4 text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] sm:text-[11px] text-slate-500 font-mono px-3">
       <span class="flex items-center gap-1">
         <span class="material-symbols-outlined text-[13px] text-emerald-400">lock</span>
         256-Bit SSL Encryption
       </span>
       <span>•</span>
       <span>InsForge Cloud PostgreSQL</span>
-      <span>•</span>
+      <span class="hidden xs:inline">•</span>
       <span>Dual Auth Cloud</span>
       <span>•</span>
       <span>SIH 2026</span>
@@ -441,7 +442,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="w-full text-center py-4 relative z-20 text-[12px] text-slate-500">
+  <footer class="w-full text-center py-2.5 sm:py-3.5 px-3 relative z-20 text-[11px] sm:text-[12px] text-slate-500">
     Smart India Hackathon 2026 — Theme: Smart Education • Built with passion by Team HACKSMITH
   </footer>
 
