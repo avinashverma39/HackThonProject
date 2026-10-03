@@ -362,7 +362,11 @@ const SmartLearnSupabase = (function () {
     try {
       const cached = localStorage.getItem("smartlearn_active_profile");
       if (cached) {
-        activeProfile = JSON.parse(cached);
+        const parsed = JSON.parse(cached);
+        if (parsed && (parsed.email || parsed.id)) {
+          activeProfile = parsed;
+          return activeProfile;
+        }
       }
     } catch (e) {}
 
@@ -380,6 +384,7 @@ const SmartLearnSupabase = (function () {
           if (profile) {
             activeProfile = profile;
             localStorage.setItem("smartlearn_active_profile", JSON.stringify(profile));
+            return activeProfile;
           }
         }
       } catch (e) {
@@ -387,37 +392,8 @@ const SmartLearnSupabase = (function () {
       }
     }
 
-    // Default to real student Avinash Verma if no session exists yet
-    if (!activeProfile) {
-      activeProfile = {
-        id: "demo-student-avinash",
-        email: "avinash.verma@smartlearn.edu",
-        full_name: "Avinash Verma",
-        role: "student",
-        department: "Computer Science & Engineering",
-        college: "Institute of Engineering & Technology",
-        semester: "Semester 5 (3rd Year B.Tech)",
-        roll_no: "24CSE089",
-        avatar_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
-        streak_days: 12,
-        overall_progress: 72,
-        quiz_average: 78,
-        cgpa: "8.84",
-        attendance: "92.4%",
-        enrolled_courses_count: 5
-      };
-      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
-    }
-
-    if (activeProfile && (activeProfile.full_name === "Alex Rivera" || activeProfile.id === "demo-student-alex")) {
-      activeProfile.full_name = "Avinash Verma";
-      activeProfile.email = "avinash.verma@smartlearn.edu";
-      activeProfile.roll_no = "24CSE089";
-      activeProfile.id = "demo-student-avinash";
-      localStorage.setItem("smartlearn_active_profile", JSON.stringify(activeProfile));
-    }
-
-    return activeProfile;
+    activeProfile = null;
+    return null;
   }
 
   function getActiveUser() {

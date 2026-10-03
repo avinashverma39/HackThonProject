@@ -68,28 +68,41 @@ const SmartLearnApp = (function () {
     setupGlobalEventListeners();
     setupTheme();
 
-    // 1. Restore active InsForge Cloud session
+    // 1. Restore active InsForge Cloud / Supabase session
+    let user = null;
     if (window.SmartLearnInsforge) {
       try {
-        const user = await window.SmartLearnInsforge.restoreSession();
-        if (user) {
-          state.currentUser = user;
-          state.currentRole = user.role;
-          updateUserUI(user);
-        }
+        user = await window.SmartLearnInsforge.restoreSession();
       } catch (err) {
         console.warn("Could not restore InsForge session:", err);
       }
-    } else if (window.SmartLearnSupabase) {
+    }
+    if (!user && window.SmartLearnSupabase) {
       try {
-        const user = await window.SmartLearnSupabase.restoreSession();
-        if (user) {
-          state.currentUser = user;
-          state.currentRole = user.role;
-          updateUserUI(user);
-        }
+        user = await window.SmartLearnSupabase.restoreSession();
       } catch (err) {
         console.warn("Could not restore Supabase session:", err);
+      }
+    }
+
+    if (user) {
+      state.currentUser = user;
+      state.currentRole = user.role || "student";
+      updateUserUI(user);
+    } else {
+      state.currentUser = null;
+      updateUserUI(null);
+
+      // Strict Auth Gate: First login then enter the page
+      const path = (window.location.pathname || "").toLowerCase();
+      const isLoginPage = path.includes("login.html");
+      const urlParams = new URLSearchParams(window.location.search);
+      const isPublic = urlParams.has("public") || urlParams.has("preview");
+
+      if (!isLoginPage && !isPublic) {
+        console.warn("Authentication required: redirecting to login.html...");
+        window.location.replace("login.html");
+        return;
       }
     }
 
@@ -247,16 +260,22 @@ const SmartLearnApp = (function () {
   }
 
   async function signOut() {
-    await SmartLearnAPI.signOut();
+    if (window.SmartLearnInsforge) {
+      try { await window.SmartLearnInsforge.signOut(); } catch (e) {}
+    }
+    if (window.SmartLearnSupabase) {
+      try { await window.SmartLearnSupabase.signOut(); } catch (e) {}
+    }
+    if (window.SmartLearnAPI) {
+      try { await window.SmartLearnAPI.signOut(); } catch (e) {}
+    }
+    localStorage.removeItem("insforge_active_user");
+    localStorage.removeItem("insforge_access_token");
+    localStorage.removeItem("insforge_refresh_token");
+    localStorage.removeItem("smartlearn_active_profile");
     state.currentUser = null;
     updateUserUI(null);
-    notify("Signed Out", "You have been logged out securely.", "info");
-    const isLanding = document.getElementById("public-landing-view");
-    if (!isLanding) {
-      window.location.href = "index.html";
-    } else {
-      showMainView("landing");
-    }
+    window.location.href = "login.html?logout=true";
   }
 
   // --- VIEW SWITCHING ---

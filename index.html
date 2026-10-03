@@ -6,6 +6,19 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>SmartLearn — Personalized Smart Education Platform | Team HACKSMITH (SIH 2026)</title>
 
+  <!-- Authentication Guard: First login then enter the page -->
+  <script>
+    (function () {
+      try {
+        const u = localStorage.getItem("insforge_active_user") || localStorage.getItem("smartlearn_active_profile");
+        const p = new URLSearchParams(window.location.search);
+        if (!u && !p.has("public") && !p.has("preview")) {
+          window.location.replace("login.html");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Fonts & Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
