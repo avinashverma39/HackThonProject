@@ -795,7 +795,10 @@ const SmartLearnInsforge = (function () {
     isEnrolled,
     saveQuizAttempt,
     savePracticeAttempt,
-    getTeacherStudents
+    getTeacherStudents,
+    signInWithOAuth,
+    exchangeOAuthCode,
+    getOAuthRedirectUri
   };
 })();
 
