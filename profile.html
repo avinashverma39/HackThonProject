@@ -73,23 +73,23 @@
 
   <!-- Top Navigation Bar -->
   <header class="sticky top-0 z-40 bg-surface/85 backdrop-blur-xl border-b border-white/10 transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
       
       <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-2.5 group">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-primary flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-[20px]">school</span>
+      <a href="index.html" class="flex items-center gap-2 group min-w-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-primary flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform flex-shrink-0">
+          <span class="material-symbols-outlined text-[18px] sm:text-[20px]">school</span>
         </div>
-        <div class="flex flex-col">
-          <div class="flex items-center gap-1.5">
-            <span class="text-[17px] font-extrabold tracking-tight text-white">Smart<span class="text-secondary">Learn</span></span>
-            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">InsForge AI</span>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <span class="text-[16px] sm:text-[17px] font-extrabold tracking-tight text-white truncate">Smart<span class="text-secondary">Learn</span></span>
+            <span class="px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-bold font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">InsForge AI</span>
           </div>
-          <span class="text-[9px] font-mono text-slate-400">SIH 2026 Theme: Smart Education</span>
+          <span class="text-[9px] font-mono text-slate-400 hidden xs:inline truncate">SIH 2026 Theme: Smart Education</span>
         </div>
       </a>
 
-      <!-- Page Sequence Nav Links -->
+      <!-- Page Sequence Nav Links (Desktop / Tablet) -->
       <nav class="hidden md:flex items-center gap-1 bg-surface-container/60 p-1 rounded-2xl border border-white/5 text-[13px]">
         <a href="index.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
           <span class="material-symbols-outlined text-[16px]">dashboard</span>
@@ -117,14 +117,18 @@
         </a>
       </nav>
 
-      <!-- Right User Pill & Sign Out -->
-      <div class="flex items-center gap-3">
-        <div id="nav-user-badge" class="flex items-center gap-2 px-3 py-1 rounded-xl bg-surface-container border border-white/10 text-[12px]">
-          <img id="nav-avatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20" alt="Avatar" />
-          <span id="nav-username" class="font-medium text-white max-w-[120px] truncate">Active User</span>
+      <!-- Right User Pill & Action CTAs -->
+      <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+        <a href="student.html" class="md:hidden px-2 py-1 rounded-xl bg-surface-container text-secondary text-[11px] font-semibold flex items-center gap-1 border border-white/10">
+          <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+          <span>Portal</span>
+        </a>
+        <div id="nav-user-badge" class="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-xl bg-surface-container border border-white/10 text-[11px] sm:text-[12px]">
+          <img id="nav-avatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" alt="Avatar" />
+          <span id="nav-username" class="font-medium text-white max-w-[80px] sm:max-w-[120px] truncate hidden xs:inline">Active User</span>
         </div>
-        <button type="button" onclick="handleSignOut()" class="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all" title="Sign Out">
-          <span class="material-symbols-outlined text-[20px]">logout</span>
+        <button type="button" onclick="handleSignOut()" class="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all flex-shrink-0" title="Sign Out">
+          <span class="material-symbols-outlined text-[18px] sm:text-[20px]">logout</span>
         </button>
       </div>
     </div>

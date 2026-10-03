@@ -423,26 +423,26 @@ const SmartLearnApp = (function () {
 
   // 1. Landing Page Interactive Elements
   function renderLandingStats() {
-    // Dynamic animated counters on landing
+    // Dynamic animated counters on landing with responsive mobile grid
     const statsContainer = document.getElementById("landing-live-stats");
     if (!statsContainer) return;
     statsContainer.innerHTML = `
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-surface-container/60 border border-white/10 backdrop-blur-xl">
-        <div class="flex flex-col items-center justify-center p-3 text-center border-r border-white/5">
-          <span class="text-[28px] lg:text-[34px] font-bold text-white font-mono">24,800+</span>
-          <span class="text-[12px] text-slate-400 mt-1">Active Students</span>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-5 rounded-2xl bg-surface-container/60 border border-white/10 backdrop-blur-xl">
+        <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center border-r border-white/5">
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-white font-mono leading-tight">24,800+</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Active Students</span>
         </div>
-        <div class="flex flex-col items-center justify-center p-3 text-center border-r border-white/5">
-          <span class="text-[28px] lg:text-[34px] font-bold text-secondary font-mono">94.8%</span>
-          <span class="text-[12px] text-slate-400 mt-1">Concept Mastery</span>
+        <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center md:border-r border-white/5">
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-secondary font-mono leading-tight">94.8%</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Concept Mastery</span>
         </div>
-        <div class="flex flex-col items-center justify-center p-3 text-center border-r border-white/5">
-          <span class="text-[28px] lg:text-[34px] font-bold text-emerald-400 font-mono">3.2x</span>
-          <span class="text-[12px] text-slate-400 mt-1">Faster Weak-Topic Fix</span>
+        <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center border-r border-white/5">
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-emerald-400 font-mono leading-tight">3.2x</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Faster Weak-Topic Fix</span>
         </div>
-        <div class="flex flex-col items-center justify-center p-3 text-center">
-          <span class="text-[28px] lg:text-[34px] font-bold text-indigo-400 font-mono">500+</span>
-          <span class="text-[12px] text-slate-400 mt-1">Curated Modules</span>
+        <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center">
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-indigo-400 font-mono leading-tight">500+</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Curated Modules</span>
         </div>
       </div>
     `;

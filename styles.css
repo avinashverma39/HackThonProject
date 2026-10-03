@@ -1147,24 +1147,30 @@ code, pre, .font-mono {
 }
 
 /* Responsive Floating AI Button (Never covers stats or primary content) */
-#floating-ai-assistant-btn {
-  right: max(16px, env(safe-area-inset-right, 16px)) !important;
-  bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+#floating-ai-assistant-btn,
+#floating-ai-chatbot-btn,
+#floating-ai-chatbot-wrapper {
+  right: max(14px, env(safe-area-inset-right, 14px)) !important;
+  bottom: max(14px, env(safe-area-inset-bottom, 14px)) !important;
   z-index: 40 !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 @media (max-width: 640px) {
-  #floating-ai-assistant-btn {
-    padding: 7px 12px !important;
-    gap: 5px !important;
+  #floating-ai-assistant-btn,
+  #floating-ai-chatbot-btn {
+    padding: 6px 11px !important;
+    gap: 4px !important;
     font-size: 11px !important;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
   }
-  #floating-ai-assistant-btn .material-symbols-outlined {
+  #floating-ai-assistant-btn .material-symbols-outlined,
+  #floating-ai-chatbot-btn .material-symbols-outlined {
     font-size: 16px !important;
   }
-  #floating-ai-assistant-btn #floating-ai-label {
+  #floating-ai-assistant-btn #floating-ai-label,
+  #floating-ai-chatbot-btn > span:nth-child(2) {
     font-size: 11px !important;
   }
 }

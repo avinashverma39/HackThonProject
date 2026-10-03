@@ -329,29 +329,31 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative pt-14 pb-20 overflow-hidden">
-      <!-- Background Glow Effects -->
-      <div
-        class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-primary-indigo/20 blur-[130px] rounded-full pointer-events-none">
-      </div>
-      <div
-        class="absolute top-1/3 left-1/4 w-[450px] h-[350px] bg-secondary/15 blur-[110px] rounded-full pointer-events-none">
+    <section class="relative pt-4 sm:pt-10 md:pt-14 pb-6 sm:pb-12 md:pb-18 overflow-hidden">
+      <!-- Background Glow Effects with strict overflow containment -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(750px,90vw)] h-[min(450px,60vh)] bg-primary-indigo/20 blur-[100px] sm:blur-[130px] rounded-full pointer-events-none">
+        </div>
+        <div
+          class="absolute top-1/3 left-1/4 w-[min(450px,80vw)] h-[min(350px,50vh)] bg-secondary/15 blur-[90px] sm:blur-[110px] rounded-full pointer-events-none">
+        </div>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
+      <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
 
         <!-- Problem Statement Chip (Stagger 1) -->
         <div
-          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-high/90 border border-white/10 text-slate-300 text-[12px] font-medium mb-6 backdrop-blur-md shadow-lg shadow-black/40 reveal-on-scroll stagger-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Theme: Student Innovation – Smart Education</span>
-          <span class="text-slate-500">•</span>
-          <span class="text-primary font-semibold">Team HACKSMITH</span>
+          class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-surface-container-high/90 border border-white/10 text-slate-300 text-[11px] sm:text-[12px] font-medium mb-3 sm:mb-6 backdrop-blur-md shadow-lg shadow-black/40 reveal-on-scroll stagger-1 max-w-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
+          <span class="truncate">Theme: Student Innovation – Smart Education</span>
+          <span class="text-slate-500 hidden xs:inline">•</span>
+          <span class="text-primary font-semibold hidden xs:inline">Team HACKSMITH</span>
         </div>
 
         <!-- Hero Headline (Stagger 2 & 3) -->
         <h1
-          class="text-[38px] sm:text-[54px] lg:text-[66px] font-extrabold text-white tracking-tight leading-[1.12] max-w-4xl text-3d-headline reveal-on-scroll stagger-2">
+          class="text-[26px] xs:text-[34px] sm:text-[50px] lg:text-[64px] font-extrabold text-white tracking-tight leading-[1.14] max-w-4xl text-3d-headline reveal-on-scroll stagger-2">
           Learn Smarter. Improve Faster. <br />
           <span class="bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 bg-clip-text text-transparent">
             Learn Your Way.
@@ -359,35 +361,35 @@
         </h1>
 
         <!-- Hero Description (Stagger 4) -->
-        <p class="mt-6 text-[16px] sm:text-[19px] text-slate-300 max-w-2xl leading-relaxed reveal-on-scroll stagger-3">
+        <p class="mt-3.5 sm:mt-5 text-[14px] sm:text-[17px] md:text-[18px] text-slate-300 max-w-2xl leading-relaxed reveal-on-scroll stagger-3 px-1">
           SmartLearn is a personalized digital learning platform designed to make education more effective, flexible,
           personalized, and accessible through automated performance analysis, weak-topic detection, and adaptive study
           material recommendations.
         </p>
 
-        <!-- Hero CTAs (Stagger 5) -->
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-3.5 reveal-on-scroll stagger-4">
-          <a href="student.html" class="uiverse-btn-3d text-[14px] !py-3.5 !px-7 flex items-center gap-2 shadow-lg shadow-indigo-900/40">
+        <!-- Hero CTAs (Stagger 5) - Responsive Flex Wrap & Stack -->
+        <div class="mt-5 sm:mt-8 flex flex-col xs:flex-row flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 w-full max-w-2xl reveal-on-scroll stagger-4">
+          <a href="student.html" class="uiverse-btn-3d w-full xs:w-auto text-[13px] sm:text-[14px] !py-3 sm:!py-3.5 !px-5 sm:!px-7 flex items-center justify-center gap-2 shadow-lg shadow-indigo-900/40">
             <span class="material-symbols-outlined text-[18px]">person</span>
             <span>Enter Student Portal</span>
             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
-          <a href="#learn-skills" class="uiverse-btn-secondary-3d text-[14px] !py-3.5 !px-6 flex items-center gap-2">
+          <a href="#learn-skills" class="uiverse-btn-secondary-3d w-full xs:w-auto text-[13px] sm:text-[14px] !py-3 sm:!py-3.5 !px-4 sm:!px-6 flex items-center justify-center gap-2">
             <span class="material-symbols-outlined text-[18px] text-emerald-400">psychology</span>
             <span>Explore Learn Skills</span>
           </a>
-          <a href="courses.html" class="px-5 py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center gap-2 transition-all">
-            <span class="material-symbols-outlined text-[17px] text-secondary">menu_book</span>
+          <a href="courses.html" class="w-full xs:w-auto px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[12px] sm:text-[13px] font-semibold flex items-center justify-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-[16px] sm:text-[17px] text-secondary">menu_book</span>
             <span>Browse Courses</span>
           </a>
-          <a href="quizzes.html" class="px-5 py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[13px] font-semibold flex items-center gap-2 transition-all">
-            <span class="material-symbols-outlined text-[17px] text-rose-400">quiz</span>
+          <a href="quizzes.html" class="w-full xs:w-auto px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-white text-[12px] sm:text-[13px] font-semibold flex items-center justify-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-[16px] sm:text-[17px] text-rose-400">quiz</span>
             <span>Quiz &amp; Drills</span>
           </a>
         </div>
 
         <!-- Animated Learning Stats Ticker -->
-        <div class="mt-12 w-full max-w-5xl" id="landing-live-stats">
+        <div class="mt-6 sm:mt-10 md:mt-12 w-full max-w-5xl" id="landing-live-stats">
           <!-- Filled by smartlearn.js -->
         </div>
 
