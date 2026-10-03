@@ -1522,8 +1522,8 @@ const SmartLearnApp = (function () {
       document.getElementById("auth-login-password").value = "Teacher@2026";
       document.getElementById("auth-role-select").value = "teacher";
     } else {
-      document.getElementById("auth-login-email").value = "avinash.verma@smartlearn.edu";
-      document.getElementById("auth-login-password").value = "Student@2026";
+      document.getElementById("auth-login-email").value = "";
+      document.getElementById("auth-login-password").value = "";
       document.getElementById("auth-role-select").value = "student";
     }
   }
@@ -1729,7 +1729,7 @@ const SmartLearnApp = (function () {
     const bioInput = document.getElementById("edit-student-bio");
     const avatarInput = document.getElementById("edit-student-avatar-url");
 
-    if (nameInput) nameInput.value = user.full_name || user.name || "Avinash Verma";
+    if (nameInput) nameInput.value = user.full_name || user.name || "Student Learner";
     if (rollInput) rollInput.value = user.roll_no || user.rollNo || "24CSE089";
     if (deptInput) deptInput.value = user.department || "Computer Science & Engineering";
     if (semInput) semInput.value = user.semester || "Semester 5 (3rd Year B.Tech)";
@@ -1742,7 +1742,7 @@ const SmartLearnApp = (function () {
 
   async function handleProfileUpdateSubmit(event) {
     if (event) event.preventDefault();
-    const name = document.getElementById("edit-student-name")?.value.trim() || "Avinash Verma";
+    const name = document.getElementById("edit-student-name")?.value.trim() || state.currentUser?.full_name || "Student Learner";
     const roll = document.getElementById("edit-student-roll")?.value.trim() || "24CSE089";
     const dept = document.getElementById("edit-student-dept")?.value.trim() || "Computer Science & Engineering";
     const semester = document.getElementById("edit-student-semester")?.value.trim() || "Semester 5 (3rd Year B.Tech)";
@@ -1779,7 +1779,7 @@ const SmartLearnApp = (function () {
 
   function downloadAcademicTranscript() {
     const user = state.currentUser || (window.SmartLearnSupabase ? window.SmartLearnSupabase.getActiveUser() : null) || {};
-    const name = user.full_name || user.name || "Avinash Verma";
+    const name = user.full_name || user.name || "Student Learner";
     const roll = user.roll_no || user.rollNo || "24CSE089";
     const college = user.college || "Institute of Engineering & Technology";
     const dept = user.department || "Computer Science & Engineering";
@@ -1873,7 +1873,7 @@ const SmartLearnApp = (function () {
   }
 
   function getCurrentUserName() {
-    return state.currentUser?.full_name || state.currentUser?.name || "Avinash";
+    return state.currentUser?.full_name || state.currentUser?.name || "Learner";
   }
 
   function closeModal(modalId) {
