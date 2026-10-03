@@ -151,19 +151,26 @@ const SmartLearnApp = (function () {
       return;
     }
 
-    const userName = user.full_name || user.name || "Avinash Verma";
+    const userName = user.full_name || user.name || (user.email ? user.email.split('@')[0] : "Learner");
     const userRole = user.role || "student";
     const isTeacher = userRole === "teacher";
     const avatar = user.avatar_url || user.avatar || (isTeacher
       ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-      : "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80");
+      : `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=6366f1&color=fff&bold=true`);
 
-    const firstName = userName.trim().split(" ")[0] || "Student";
-    const streakDays = user.streak_days || user.streakDays || 12;
-    const rollNo = user.roll_no || user.rollNo || "24CSE089";
+    const firstName = userName.trim().split(" ")[0] || "Learner";
+    const streakDays = user.streak_days || user.streakDays || 1;
+    const nameHash = Math.abs(userName.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+    const rollNo = user.roll_no || user.rollNo || (isTeacher ? `FAC-${nameHash}` : `24CSE${nameHash}`);
     const dept = user.department || "Computer Science & Engineering";
-    const semester = user.semester || "Semester 5 (3rd Year B.Tech)";
+    const semester = user.semester || (isTeacher ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)");
     const college = user.college || "Institute of Engineering & Technology";
+
+    // Update Hero Student Name Tag on index.html
+    const heroStudentTag = document.getElementById("hero-student-name-tag");
+    if (heroStudentTag) {
+      heroStudentTag.textContent = `${userName} • ${userRole.toUpperCase()} ID: #${rollNo}`;
+    }
 
     // 1. Update Navigation Bar Pill
     if (navContainer) {
