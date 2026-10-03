@@ -178,6 +178,26 @@
         </p>
       </div>
 
+      <!-- Already Logged In Session Resume Bar -->
+      <div id="already-logged-in-banner"
+        class="hidden p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-[12px]">
+        <div class="flex items-center gap-2 text-slate-200">
+          <span class="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>
+          <span>Logged in as <b id="logged-in-user-name" class="text-white">Avinash Verma</b></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="goToCurrentOverview()"
+            class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-primary-indigo to-secondary text-white font-bold text-[11px] shadow-sm hover:opacity-90 flex items-center gap-1">
+            <span>Enter Page</span>
+            <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+          </button>
+          <button type="button" onclick="clearSessionForReLogin()"
+            class="px-2 py-1 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 text-[11px] transition-colors">
+            Sign Out
+          </button>
+        </div>
+      </div>
+
       <!-- Tab Switcher (Sign In vs Sign Up) -->
       <div class="flex items-center p-1 rounded-2xl bg-surface-container-lowest/90 border border-white/5 relative">
         <button id="tab-btn-signin" type="button"
