@@ -176,11 +176,11 @@ const SmartLearnApp = (function () {
     if (navContainer) {
       navContainer.innerHTML = `
         <div class="flex items-center gap-2">
-          <button class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-[12px] text-white transition-all shadow-sm" onclick="SmartLearnApp.showMainView('${isTeacher ? 'teacher-dashboard' : 'student-dashboard'}')">
+          <a href="profile.html" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-[12px] text-white transition-all shadow-sm group" title="View Full InsForge Profile & Account Details">
             <img src="${avatar}" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20">
-            <span class="font-medium">${firstName}</span>
+            <span class="font-medium group-hover:text-indigo-300 transition-colors">${firstName}</span>
             <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${isTeacher ? 'bg-emerald-500/20 text-emerald-400' : 'bg-primary-indigo/20 text-primary-indigo'} uppercase">${userRole}</span>
-          </button>
+          </a>
           <button class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" onclick="SmartLearnApp.signOut()" title="Sign Out">
             <span class="material-symbols-outlined text-[18px]">logout</span>
           </button>

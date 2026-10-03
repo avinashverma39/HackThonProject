@@ -255,6 +255,15 @@
             <span class="material-symbols-outlined text-[18px]">person</span>
             <span>Profile</span>
           </button>
+          <a href="profile.html"
+            class="student-nav-item flex items-center justify-between px-3 py-2 rounded-xl text-indigo-300 hover:text-white hover:bg-indigo-600/10 border border-indigo-500/20 transition-all"
+            title="View Full InsForge Cloud Profile">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[18px] text-indigo-400">badge</span>
+              <span class="font-medium">Cloud Profile</span>
+            </div>
+            <span class="px-1.5 py-0.5 rounded bg-indigo-500/20 text-[9px] font-mono text-indigo-300 font-bold">INSFORGE</span>
+          </a>
           <button
             class="student-nav-item flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-surface-container transition-all"
             data-tab="settings" onclick="SmartLearnApp.showStudentTab('settings')">
@@ -820,6 +829,12 @@
               <p class="text-[13px] text-slate-400">Official institutional record, biometric attendance, semester performance, and credentials.</p>
             </div>
             <div class="flex items-center gap-3">
+              <a href="profile.html"
+                class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 hover:from-indigo-500/30 hover:to-purple-500/30 border border-indigo-500/40 text-indigo-300 hover:text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
+                title="View verified InsForge OAuth details and database record">
+                <span class="material-symbols-outlined text-[17px]">cloud_sync</span>
+                <span>InsForge Cloud Profile</span>
+              </a>
               <button
                 class="px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
                 onclick="SmartLearnApp.downloadAcademicTranscript()">
