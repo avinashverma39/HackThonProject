@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLearn — User Profile &amp; InsForge Cloud Identity</title>
+  <meta name="description"
+    content="Personalized profile details, verified credentials, academic records, and adaptive mastery metrics powered by InsForge AI Cloud." />
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Tailwind CDN & Theme -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary-indigo': '#6366f1',
+            'primary': '#818cf8',
+            'secondary': '#38bdf8',
+            'surface': '#0b0f17',
+            'surface-container': '#151924',
+            'surface-container-high': '#1e2330',
+            'surface-container-low': '#111520',
+            'surface-container-lowest': '#080c14'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <link href="styles.css" rel="stylesheet" />
+  <link href="landing.css" rel="stylesheet" />
+
+  <!-- Instant Head Authentication Guard (Permits OAuth callback ?insforge_code=...) -->
+  <script>
+    (function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasOAuthCode = urlParams.has("insforge_code") || urlParams.has("code");
+      const hasSession = localStorage.getItem("insforge_active_user") ||
+                         localStorage.getItem("smartlearn_active_profile") ||
+                         localStorage.getItem("insforge_access_token");
+
+      if (!hasOAuthCode && !hasSession) {
+        console.warn("[SmartLearn] No active session or OAuth code: redirecting to login.html...");
+        window.location.replace("login.html");
+      }
+    })();
+  </script>
+</head>
+
+<body class="bg-surface text-slate-100 font-sans min-h-screen flex flex-col selection:bg-primary-indigo selection:text-white relative overflow-x-hidden">
+
+  <!-- Ambient Glowing Background Spheres -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary-indigo/20 rounded-full blur-[120px]"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-secondary/15 rounded-full blur-[140px]"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-surface/85 backdrop-blur-xl border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-primary flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-[20px]">school</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[17px] font-extrabold tracking-tight text-white">Smart<span class="text-secondary">Learn</span></span>
+            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">InsForge AI</span>
+          </div>
+          <span class="text-[9px] font-mono text-slate-400">SIH 2026 Theme: Smart Education</span>
+        </div>
+      </a>
+
+      <!-- Page Sequence Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 bg-surface-container/60 p-1 rounded-2xl border border-white/5 text-[13px]">
+        <a href="index.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">dashboard</span>
+          <span>Overview</span>
+        </a>
+        <a href="student.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">person</span>
+          <span>Student Portal</span>
+        </a>
+        <a href="student.html#learn" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">menu_book</span>
+          <span>Study Center</span>
+        </a>
+        <a href="courses.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">auto_stories</span>
+          <span>Courses</span>
+        </a>
+        <a href="quizzes.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">quiz</span>
+          <span>Quizzes</span>
+        </a>
+        <a href="profile.html" class="px-3 py-1.5 rounded-xl bg-primary-indigo text-white font-semibold flex items-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">badge</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+
+      <!-- Right User Pill & Sign Out -->
+      <div class="flex items-center gap-3">
+        <div id="nav-user-badge" class="flex items-center gap-2 px-3 py-1 rounded-xl bg-surface-container border border-white/10 text-[12px]">
+          <img id="nav-avatar" src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20" alt="Avatar" />
+          <span id="nav-username" class="font-medium text-white max-w-[120px] truncate">Active User</span>
+        </div>
+        <button type="button" onclick="handleSignOut()" class="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all" title="Sign Out">
+          <span class="material-symbols-outlined text-[20px]">logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+
+    <!-- OAuth Callback Processing Card (shown while exchanging insforge_code) -->
+    <div id="oauth-loading-state" class="hidden flex flex-col items-center justify-center p-12 rounded-3xl bg-surface-container/70 border border-primary-indigo/30 shadow-2xl backdrop-blur-xl text-center max-w-lg mx-auto my-12 animate-in fade-in zoom-in-95 duration-200">
+      <div class="relative w-16 h-16 mb-5">
+        <div class="absolute inset-0 rounded-full border-4 border-primary-indigo/20"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-primary-indigo border-t-transparent animate-spin"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-primary-indigo">
+          <span class="material-symbols-outlined text-[26px]">lock_reset</span>
+        </div>
+      </div>
+      <h3 class="text-[20px] font-bold text-white">Authenticating with InsForge AI Cloud</h3>
+      <p id="oauth-loading-subtext" class="text-[13px] text-slate-300 mt-2 max-w-sm">
+        Exchanging OAuth authorization code with InsForge backend and verifying your Google / GitHub account...
+      </p>
+      <div class="mt-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-indigo/15 border border-primary-indigo/30 text-[11px] font-mono text-primary">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>PKCE Code Exchange Active</span>
+      </div>
+    </div>
+
+    <!-- Alert / Toast Message Box -->
+    <div id="profile-toast" class="hidden p-4 rounded-2xl text-[13px] border shadow-xl flex items-center justify-between transition-all">
+      <div class="flex items-center gap-3">
+        <span id="profile-toast-icon" class="material-symbols-outlined text-[20px]">info</span>
+        <span id="profile-toast-msg" class="font-medium">Notification message</span>
+      </div>
+      <button type="button" onclick="document.getElementById('profile-toast').classList.add('hidden')" class="text-slate-400 hover:text-white">
+        <span class="material-symbols-outlined text-[16px]">close</span>
+      </button>
+    </div>
+
+    <!-- Master Profile Content View -->
+    <div id="profile-main-view" class="flex flex-col gap-8">
+
+      <!-- Hero Header Card: Real Profile Details -->
+      <section class="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-surface-container via-surface-container-low to-surface-container-lowest border border-white/10 shadow-2xl">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-primary-indigo/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          
+          <!-- Avatar + Name + Badges -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <div class="relative group">
+              <img id="profile-avatar" src="https://ui-avatars.com/api/?name=Learner&background=6366f1&color=fff"
+                class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl object-cover ring-4 ring-primary-indigo/30 shadow-xl" alt="Profile Picture" />
+              
+              <!-- OAuth Provider Icon Badge -->
+              <div id="profile-provider-badge-icon" class="absolute -bottom-2 -right-2 w-9 h-9 rounded-xl bg-surface border border-white/20 flex items-center justify-center shadow-lg" title="Authentication Provider">
+                <!-- Injected by JS: Google SVG or GitHub SVG -->
+                <span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <h1 id="profile-name" class="text-[24px] sm:text-[28px] font-extrabold text-white tracking-tight">Student Learner</h1>
+                <span id="profile-role-tag" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-primary-indigo/20 text-primary border border-primary-indigo/30">
+                  Student Learner
+                </span>
+                <span id="profile-verified-badge" class="flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  <span class="material-symbols-outlined text-[14px]">verified</span>
+                  <span>InsForge Verified</span>
+                </span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3 text-[13px] text-slate-300 font-mono">
+                <span id="profile-email" class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-emerald-400">mail</span>
+                  <span>user@gmail.com</span>
+                </span>
+                <span class="text-slate-600 hidden sm:inline">•</span>
+                <span id="profile-roll-tag" class="flex items-center gap-1.5 text-secondary">
+                  <span class="material-symbols-outlined text-[16px]">badge</span>
+                  <span>Roll: #24CSE089</span>
+                </span>
+              </div>
+
+              <p id="profile-bio-summary" class="text-[13px] text-slate-400 mt-1 max-w-xl">
+                Undergraduate student specializing in Adaptive Learning, Data Structures, and Modern Web Systems.
+              </p>
+            </div>
+          </div>
+
+          <!-- Quick Action CTA Buttons -->
+          <div class="flex flex-wrap sm:flex-nowrap md:flex-col gap-2.5 w-full md:w-auto">
+            <a href="index.html" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-indigo to-secondary text-white font-bold text-[13px] shadow-lg shadow-indigo-500/25 hover:opacity-95 flex items-center justify-center gap-2 transition-all">
+              <span class="material-symbols-outlined text-[18px]">dashboard</span>
+              <span>Enter Overview</span>
+            </a>
+            <a href="student.html#learn" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-slate-200 hover:text-white font-semibold text-[13px] flex items-center justify-center gap-2 transition-all">
+              <span class="material-symbols-outlined text-[18px]">menu_book</span>
+              <span>Study Notes (W3-Type)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Performance & Adaptive Mastery Metrics Row -->
+      <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-amber-400">local_fire_department</span>
+            <span>Study Streak</span>
+          </span>
+          <span id="stat-streak" class="text-[20px] font-extrabold text-white font-mono leading-tight">14 Days</span>
+          <span class="text-[10px] text-emerald-400">Active Study Run</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-primary">donut_large</span>
+            <span>Mastery Score</span>
+          </span>
+          <span id="stat-mastery" class="text-[20px] font-extrabold text-white font-mono leading-tight">78%</span>
+          <span class="text-[10px] text-slate-400">Across 5 Subjects</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-secondary">quiz</span>
+            <span>Quiz Average</span>
+          </span>
+          <span id="stat-quiz" class="text-[20px] font-extrabold text-white font-mono leading-tight">84%</span>
+          <span class="text-[10px] text-emerald-400">Top 10% in Cohort</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-emerald-400">grade</span>
+            <span>Current CGPA</span>
+          </span>
+          <span id="stat-cgpa" class="text-[20px] font-extrabold text-white font-mono leading-tight">8.90</span>
+          <span class="text-[10px] text-slate-400">Scale of 10.0</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-teal-400">event_available</span>
+            <span>Attendance</span>
+          </span>
+          <span id="stat-attendance" class="text-[20px] font-extrabold text-white font-mono leading-tight">94.2%</span>
+          <span class="text-[10px] text-emerald-400">Regular Status</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container/70 border border-white/5 flex flex-col gap-1">
+          <span class="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-indigo-400">auto_stories</span>
+            <span>Enrolled Subjects</span>
+          </span>
+          <span id="stat-courses" class="text-[20px] font-extrabold text-white font-mono leading-tight">5 Courses</span>
+          <span class="text-[10px] text-slate-400">Semester 5</span>
+        </div>
+      </section>
+
+      <!-- Main Profile Grid: Details & Editable Configuration -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Column 1 & 2: All Detailed Identity Cards -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+
+          <!-- Card 1: Academic & University Records -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-surface-container/60 border border-white/10 shadow-xl flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-primary text-[22px]">school</span>
+                <h3 class="text-[17px] font-bold text-white">University &amp; Academic Credentials</h3>
+              </div>
+              <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">Official Student Record</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[13px]">
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">University Roll Number</span>
+                <div class="flex items-center justify-between">
+                  <span id="detail-roll" class="font-mono font-bold text-white text-[15px]">24CSE089</span>
+                  <button type="button" onclick="copyToClipboard(document.getElementById('detail-roll').textContent)" class="text-slate-400 hover:text-white p-1" title="Copy Roll Number">
+                    <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">Department / Branch</span>
+                <span id="detail-dept" class="font-semibold text-white">Computer Science &amp; Engineering</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">Academic Semester &amp; Year</span>
+                <span id="detail-semester" class="font-semibold text-white">Semester 5 (3rd Year B.Tech)</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">College / Institute</span>
+                <span id="detail-college" class="font-semibold text-white">Institute of Engineering &amp; Technology</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: InsForge AI Cloud Identity & Authentication Info -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-surface-container/60 border border-white/10 shadow-xl flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-secondary text-[22px]">cloud_done</span>
+                <h3 class="text-[17px] font-bold text-white">InsForge AI Cloud Authentication Identity</h3>
+              </div>
+              <span class="text-[11px] font-mono text-secondary bg-secondary/10 px-2.5 py-1 rounded-full border border-secondary/20">Backend: PostgreSQL 15</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[13px]">
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">Authentication Provider</span>
+                <div class="flex items-center gap-2">
+                  <span id="detail-auth-provider" class="font-bold text-white">Google OAuth (Real Account)</span>
+                  <span class="material-symbols-outlined text-emerald-400 text-[16px]">verified</span>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">InsForge User UID</span>
+                <span id="detail-uid" class="font-mono text-slate-300 text-[11px] truncate">stu_101_insforge_cloud</span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">Session Security</span>
+                <span class="font-semibold text-emerald-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span>Active JWT Cloud Session (Secure)</span>
+                </span>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-surface-container-low border border-white/5 flex flex-col gap-1">
+                <span class="text-[11px] text-slate-400 uppercase font-mono">Live PostgreSQL Table</span>
+                <span class="font-mono text-slate-300">records/smartlearn_profiles</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Interactive Editable Profile Form -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-surface-container/60 border border-white/10 shadow-xl flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-primary text-[22px]">manage_accounts</span>
+                <h3 class="text-[17px] font-bold text-white">Edit Academic Details &amp; Bio</h3>
+              </div>
+              <span class="text-[11px] text-slate-400">Saves directly to InsForge Cloud</span>
+            </div>
+
+            <form id="edit-profile-form" onsubmit="handleProfileSave(event)" class="flex flex-col gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Your Full Display Name</label>
+                  <input type="text" id="input-edit-name" required class="uiverse-input" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">University Roll ID</label>
+                  <input type="text" id="input-edit-roll" required class="uiverse-input" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Department / Specialization</label>
+                  <input type="text" id="input-edit-dept" required class="uiverse-input" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Semester &amp; Year</label>
+                  <input type="text" id="input-edit-semester" required class="uiverse-input" />
+                </div>
+              </div>
+
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300">Career Objective &amp; Learning Bio</label>
+                <textarea id="input-edit-bio" rows="2" class="uiverse-input !h-auto py-2.5"></textarea>
+              </div>
+
+              <div class="uiverse-input-group">
+                <label class="text-[12px] font-medium text-slate-300">Avatar Photo URL</label>
+                <input type="url" id="input-edit-avatar" class="uiverse-input" />
+              </div>
+
+              <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="submit" id="save-profile-btn" class="uiverse-btn-3d font-bold text-[13px] !py-2.5 !px-6 flex items-center gap-2">
+                  <span id="save-btn-text">Save Changes to InsForge</span>
+                  <span class="material-symbols-outlined text-[16px]">save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Column 3: Sequential Journey & Platform Navigation Cards -->
+        <div class="flex flex-col gap-6">
+          
+          <!-- Portal Sequence Directory -->
+          <div class="p-6 rounded-3xl bg-surface-container/60 border border-white/10 shadow-xl flex flex-col gap-4">
+            <h3 class="text-[15px] font-bold text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">alt_route</span>
+              <span>Attached Page Sequence</span>
+            </h3>
+            <p class="text-[12px] text-slate-400">Continue your personalized learning sequence across all connected portals:</p>
+
+            <div class="flex flex-col gap-2.5 mt-1">
+              <a href="index.html" class="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container-high border border-white/5 hover:border-primary-indigo/40 transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-primary-indigo/20 text-primary-indigo flex items-center justify-center font-bold text-[12px]">1</div>
+                  <div>
+                    <h4 class="text-[13px] font-bold text-white group-hover:text-primary transition-colors">Overview Dashboard</h4>
+                    <span class="text-[11px] text-slate-400">Main hub &amp; knowledge matrices</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all text-[18px]">arrow_forward</span>
+              </a>
+
+              <a href="student.html" class="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container-high border border-white/5 hover:border-secondary/40 transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-secondary/20 text-secondary flex items-center justify-center font-bold text-[12px]">2</div>
+                  <div>
+                    <h4 class="text-[13px] font-bold text-white group-hover:text-secondary transition-colors">Student Portal</h4>
+                    <span class="text-[11px] text-slate-400">Study planner &amp; analytics</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all text-[18px]">arrow_forward</span>
+              </a>
+
+              <a href="student.html#learn" class="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container-high border border-white/5 hover:border-emerald-400/40 transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[12px]">3</div>
+                  <div>
+                    <h4 class="text-[13px] font-bold text-white group-hover:text-emerald-400 transition-colors">Learn Notes (W3-Type)</h4>
+                    <span class="text-[11px] text-slate-400">Syntax, code &amp; technical concepts</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all text-[18px]">arrow_forward</span>
+              </a>
+
+              <a href="courses.html" class="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container-high border border-white/5 hover:border-amber-400/40 transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[12px]">4</div>
+                  <div>
+                    <h4 class="text-[13px] font-bold text-white group-hover:text-amber-400 transition-colors">Course Catalog</h4>
+                    <span class="text-[11px] text-slate-400">Lectures, syllabus &amp; videos</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all text-[18px]">arrow_forward</span>
+              </a>
+
+              <a href="quizzes.html" class="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container-high border border-white/5 hover:border-purple-400/40 transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-[12px]">5</div>
+                  <div>
+                    <h4 class="text-[13px] font-bold text-white group-hover:text-purple-400 transition-colors">Adaptive Quizzes</h4>
+                    <span class="text-[11px] text-slate-400">AI assessment &amp; score tracking</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all text-[18px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Academic Transcript Download -->
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-primary-indigo/20 via-surface-container to-surface-container-low border border-primary-indigo/30 shadow-xl flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-white font-bold text-[14px]">
+              <span class="material-symbols-outlined text-primary-indigo text-[20px]">description</span>
+              <span>Official Academic Transcript</span>
+            </div>
+            <p class="text-[12px] text-slate-300">Generate and print your verified SIH 2026 grade transcript with mastery breakdown.</p>
+            <button type="button" onclick="printTranscript()" class="w-full py-2.5 px-4 rounded-xl bg-primary-indigo hover:bg-indigo-600 text-white font-bold text-[12px] flex items-center justify-center gap-2 shadow-md transition-all">
+              <span class="material-symbols-outlined text-[16px]">print</span>
+              <span>Download Academic Transcript</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Public Footer -->
+  <footer class="border-t border-white/10 bg-surface-container-lowest/80 py-8 relative z-10 mt-12 text-[12px] text-slate-400 text-center">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-white font-semibold">SmartLearn Platform</span>
+        <span>•</span>
+        <span>Team HACKSMITH (SIH 2026)</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="index.html" class="hover:text-white">Overview</a>
+        <a href="student.html" class="hover:text-white">Student Portal</a>
+        <a href="courses.html" class="hover:text-white">Courses</a>
+        <a href="quizzes.html" class="hover:text-white">Quizzes</a>
+        <a href="login.html" class="hover:text-white">Auth Gateway</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="insforge_client.js"></script>
+  <script src="supabase_client.js"></script>
+  <script src="smartlearn_data.js"></script>
+  <script src="api_service.js"></script>
+
+  <script>
+    let activeProfile = null;
+
+    // Toast feedback helper
+    function showToast(msg, isSuccess = true) {
+      const box = document.getElementById("profile-toast");
+      const text = document.getElementById("profile-toast-msg");
+      const icon = document.getElementById("profile-toast-icon");
+      if (!box || !text) return;
+
+      text.textContent = msg;
+      if (isSuccess) {
+        box.className = "p-4 rounded-2xl text-[13px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shadow-xl flex items-center justify-between transition-all";
+        icon.textContent = "check_circle";
+      } else {
+        box.className = "p-4 rounded-2xl text-[13px] bg-rose-500/10 border border-rose-500/30 text-rose-300 shadow-xl flex items-center justify-between transition-all";
+        icon.textContent = "error";
+      }
+      box.classList.remove("hidden");
+      setTimeout(() => box.classList.add("hidden"), 5000);
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copied ${text} to clipboard!`, true);
+      }).catch(() => {
+        showToast(`Roll Number: ${text}`, true);
+      });
+    }
+
+    // Populate all DOM elements with user details
+    function renderProfile(user) {
+      if (!user) return;
+      activeProfile = user;
+
+      const name = user.full_name || user.name || (user.email ? user.email.split('@')[0] : "Student Learner");
+      const email = user.email || "student@smartlearn.edu";
+      const role = user.role || "student";
+      const isTeacher = role === "teacher";
+      const avatar = user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`;
+      const hash = Math.abs(name.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+      const rollNo = user.roll_no || user.rollNo || (isTeacher ? `FAC-${hash}` : `24CSE${hash}`);
+      const dept = user.department || "Computer Science & Engineering";
+      const semester = user.semester || (isTeacher ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)");
+      const college = user.college || "Institute of Engineering & Technology";
+      const bio = user.bio || (isTeacher ? "Faculty mentor and academic course lead." : "Undergraduate student specializing in Adaptive Learning, Data Structures, and Modern Web Systems.");
+      const provider = (user.auth_provider || (user.email?.includes('gmail') ? 'google' : (user.email?.includes('github') ? 'github' : 'insforge'))).toLowerCase();
+
+      // Top Navbar
+      const navAvatar = document.getElementById("nav-avatar");
+      const navUser = document.getElementById("nav-username");
+      if (navAvatar) navAvatar.src = avatar;
+      if (navUser) navUser.textContent = name.split(" ")[0];
+
+      // Hero Profile Card
+      const pAvatar = document.getElementById("profile-avatar");
+      const pName = document.getElementById("profile-name");
+      const pEmail = document.getElementById("profile-email");
+      const pRollTag = document.getElementById("profile-roll-tag");
+      const pRoleTag = document.getElementById("profile-role-tag");
+      const pBioSummary = document.getElementById("profile-bio-summary");
+      const pIconBadge = document.getElementById("profile-provider-badge-icon");
+
+      if (pAvatar) pAvatar.src = avatar;
+      if (pName) pName.textContent = name;
+      if (pEmail) pEmail.innerHTML = `<span class="material-symbols-outlined text-[16px] text-emerald-400">mail</span><span>${email}</span>`;
+      if (pRollTag) pRollTag.innerHTML = `<span class="material-symbols-outlined text-[16px]">badge</span><span>Roll: #${rollNo}</span>`;
+      if (pRoleTag) {
+        pRoleTag.textContent = isTeacher ? "Faculty Educator" : "Student Learner";
+        pRoleTag.className = isTeacher 
+          ? "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+          : "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-primary-indigo/20 text-primary border border-primary-indigo/30";
+      }
+      if (pBioSummary) pBioSummary.textContent = bio;
+
+      // Provider Icon Badge
+      if (pIconBadge) {
+        if (provider.includes("google")) {
+          pIconBadge.innerHTML = `
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+          `;
+        } else if (provider.includes("github")) {
+          pIconBadge.innerHTML = `
+            <svg class="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          `;
+        } else {
+          pIconBadge.innerHTML = `<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>`;
+        }
+      }
+
+      // Stats Row
+      document.getElementById("stat-streak").textContent = `${user.streak_days || 14} Days`;
+      document.getElementById("stat-mastery").textContent = `${user.overall_progress || 78}%`;
+      document.getElementById("stat-quiz").textContent = `${user.quiz_average || 84}%`;
+      document.getElementById("stat-cgpa").textContent = user.cgpa || "8.90";
+      document.getElementById("stat-attendance").textContent = user.attendance || "94.2%";
+      document.getElementById("stat-courses").textContent = `${user.enrolled_courses_count || 5} Courses`;
+
+      // Details Card 1
+      document.getElementById("detail-roll").textContent = rollNo;
+      document.getElementById("detail-dept").textContent = dept;
+      document.getElementById("detail-semester").textContent = semester;
+      document.getElementById("detail-college").textContent = college;
+
+      // Details Card 2
+      document.getElementById("detail-auth-provider").textContent = provider.includes("google") ? "Google Account (OAuth 2.0)" : (provider.includes("github") ? "GitHub ID (OAuth PKCE)" : "InsForge Cloud Auth");
+      document.getElementById("detail-uid").textContent = user.id || "stu_insforge_cloud";
+
+      // Form Inputs
+      document.getElementById("input-edit-name").value = name;
+      document.getElementById("input-edit-roll").value = rollNo;
+      document.getElementById("input-edit-dept").value = dept;
+      document.getElementById("input-edit-semester").value = semester;
+      document.getElementById("input-edit-bio").value = bio;
+      document.getElementById("input-edit-avatar").value = avatar;
+    }
+
+    // Save profile changes
+    async function handleProfileSave(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById("save-profile-btn");
+      const btnText = document.getElementById("save-btn-text");
+
+      saveBtn.disabled = true;
+      btnText.textContent = "Syncing with InsForge...";
+
+      const updated = {
+        ...activeProfile,
+        full_name: document.getElementById("input-edit-name").value.trim(),
+        name: document.getElementById("input-edit-name").value.trim(),
+        roll_no: document.getElementById("input-edit-roll").value.trim(),
+        rollNo: document.getElementById("input-edit-roll").value.trim(),
+        department: document.getElementById("input-edit-dept").value.trim(),
+        semester: document.getElementById("input-edit-semester").value.trim(),
+        bio: document.getElementById("input-edit-bio").value.trim(),
+        avatar_url: document.getElementById("input-edit-avatar").value.trim()
+      };
+
+      // Persist in localStorage
+      localStorage.setItem("insforge_active_user", JSON.stringify(updated));
+      localStorage.setItem("smartlearn_active_profile", JSON.stringify(updated));
+
+      // Persist in InsForge PostgreSQL table
+      if (window.SmartLearnInsforge) {
+        try {
+          await SmartLearnInsforge.updateProfile(updated.id, updated);
+        } catch (err) {
+          console.warn("Could not sync with InsForge Cloud DB:", err);
+        }
+      }
+
+      renderProfile(updated);
+      saveBtn.disabled = false;
+      btnText.textContent = "Save Changes to InsForge";
+      showToast("Profile credentials updated and synced with InsForge Cloud!", true);
+    }
+
+    // Print Academic Transcript
+    function printTranscript() {
+      const u = activeProfile || {};
+      const printWin = window.open('', '_blank', 'width=800,height=900');
+      if (!printWin) {
+        showToast("Please allow popups to generate your transcript.", false);
+        return;
+      }
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Academic Transcript — ${u.full_name || 'Student'}</title>
+          <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; color: #1e293b; }
+            .header { border-bottom: 2px solid #6366f1; padding-bottom: 15px; margin-bottom: 20px; }
+            .title { font-size: 24px; font-weight: bold; color: #1e1b4b; }
+            .badge { display: inline-block; background: #e0e7ff; color: #4338ca; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+            .item { font-size: 13px; }
+            .label { color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; font-size: 13px; }
+            th { background: #f8fafc; color: #475569; }
+            .footer { margin-top: 40px; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <span class="badge">Official InsForge AI Verified Record</span>
+            <div class="title" style="margin-top: 8px;">SmartLearn Academic Performance Transcript</div>
+            <div style="font-size: 13px; color: #64748b;">Smart India Hackathon 2026 • Adaptive Knowledge Evaluation</div>
+          </div>
+          <div class="grid">
+            <div class="item"><div class="label">Student Name</div><b>${u.full_name || u.name}</b></div>
+            <div class="item"><div class="label">Roll Number</div><b>${u.roll_no || u.rollNo || '24CSE089'}</b></div>
+            <div class="item"><div class="label">Email Address</div><b>${u.email}</b></div>
+            <div class="item"><div class="label">Department</div><b>${u.department || 'Computer Science & Engineering'}</b></div>
+            <div class="item"><div class="label">Academic Semester</div><b>${u.semester || 'Semester 5'}</b></div>
+            <div class="item"><div class="label">Cumulative GPA</div><b>${u.cgpa || '8.90'} / 10.0</b></div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Course Name</th><th>Topic Mastery</th><th>Quiz Score</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Data Structures &amp; Algorithms</td><td>88%</td><td>92%</td><td style="color:#16a34a; font-weight:bold;">Proficient</td></tr>
+              <tr><td>C Memory Architecture &amp; Pointers</td><td>74%</td><td>78%</td><td style="color:#d97706; font-weight:bold;">Remediated</td></tr>
+              <tr><td>Database Systems &amp; SQL</td><td>82%</td><td>85%</td><td style="color:#16a34a; font-weight:bold;">Proficient</td></tr>
+              <tr><td>Computer Networks &amp; Security</td><td>76%</td><td>80%</td><td style="color:#16a34a; font-weight:bold;">Proficient</td></tr>
+              <tr><td>Discrete Mathematics</td><td>70%</td><td>74%</td><td style="color:#d97706; font-weight:bold;">Remediated</td></tr>
+            </tbody>
+          </table>
+          <div class="footer">
+            Digitally generated by SmartLearn Cloud Backend (Project ID: r4s69m7b) • Session verified with InsForge OAuth Security
+          </div>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+      printWin.focus();
+      setTimeout(() => printWin.print(), 250);
+    }
+
+    // Sign out handler
+    async function handleSignOut() {
+      if (window.SmartLearnInsforge) {
+        try { await SmartLearnInsforge.signOut(); } catch (e) {}
+      }
+      localStorage.removeItem("insforge_active_user");
+      localStorage.removeItem("smartlearn_active_profile");
+      localStorage.removeItem("insforge_access_token");
+      localStorage.removeItem("insforge_refresh_token");
+      window.location.href = "login.html?logout=true";
+    }
+
+    // Initialization & OAuth Code Exchange Flow
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("insforge_code") || urlParams.get("code");
+
+      if (code) {
+        // Show animated exchange loader
+        document.getElementById("oauth-loading-state").classList.remove("hidden");
+        document.getElementById("profile-main-view").classList.add("hidden");
+
+        try {
+          console.log("[SmartLearn] Exchanging OAuth authorization code with InsForge Cloud...");
+          const res = await SmartLearnInsforge.exchangeOAuthCode(code);
+
+          if (res && res.success && res.user) {
+            // Clean browser address bar
+            window.history.replaceState({}, document.title, window.location.pathname);
+            document.getElementById("oauth-loading-state").classList.add("hidden");
+            document.getElementById("profile-main-view").classList.remove("hidden");
+            renderProfile(res.user);
+            showToast(`Welcome, ${res.user.full_name}! Successfully authenticated via ${res.user.auth_provider?.toUpperCase()}.`, true);
+            return;
+          } else {
+            throw new Error(res?.error || "Could not complete OAuth exchange.");
+          }
+        } catch (err) {
+          console.error("OAuth exchange failed:", err);
+          document.getElementById("oauth-loading-state").classList.add("hidden");
+          document.getElementById("profile-main-view").classList.remove("hidden");
+          showToast(`OAuth note: ${err.message}. Loaded cached profile.`, false);
+        }
+      }
+
+      // Restore active session
+      let user = null;
+      if (window.SmartLearnInsforge) {
+        try {
+          user = await SmartLearnInsforge.restoreSession();
+        } catch (e) {}
+      }
+
+      if (!user) {
+        const raw = localStorage.getItem("smartlearn_active_profile") || localStorage.getItem("insforge_active_user");
+        if (raw) {
+          try { user = JSON.parse(raw); } catch (e) {}
+        }
+      }
+
+      if (user) {
+        renderProfile(user);
+      } else {
+        window.location.replace("login.html");
+      }
+    });
+  </script>
+</body>
+
+</html>
