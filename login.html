@@ -455,7 +455,7 @@
   <!-- PAGE LOGIC & OAUTH HANDLER -->
   <script>
     // Overview Destination Path
-    const OVERVIEW_DESTINATION = "student.html";
+    const OVERVIEW_DESTINATION = "index.html";
 
     // Switch between Sign In and Sign Up tabs
     function switchAuthTab(mode) {
@@ -527,12 +527,12 @@
     }
 
     // Smooth transition into Overview Dashboard (Student vs Faculty)
-    function transitionToOverview(user, delayMs = 500) {
+    function transitionToOverview(user, delayMs = 400) {
       const isTeacher = user && (user.role === 'teacher' || (user.email && (user.email.includes('jenkins') || user.email.includes('prof'))));
-      const targetDestination = isTeacher ? "teacher.html" : "student.html";
+      const targetDestination = isTeacher ? "teacher.html" : "index.html";
       const displayName = user?.full_name || user?.name || (isTeacher ? "Prof. Sarah Jenkins" : "Avinash Verma");
 
-      showAlert(`Authentication verified via InsForge Cloud! Welcome, ${displayName}. Entering overview dashboard...`, false);
+      showAlert(`Authentication verified via InsForge Cloud! Welcome, ${displayName}. Entering SmartLearn portal...`, false);
       setTimeout(() => {
         window.location.href = targetDestination;
       }, delayMs);
@@ -569,10 +569,10 @@
         };
         localStorage.setItem("insforge_active_user", JSON.stringify(user));
         localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
-        transitionToOverview(user, 350);
+        transitionToOverview(user, 300);
       } catch (e) {
         console.warn("Student fast-pass fallback:", e);
-        window.location.href = "student.html";
+        window.location.href = "index.html";
       }
     }
 
