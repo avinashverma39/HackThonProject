@@ -132,6 +132,175 @@ const SmartLearnApp = (function () {
     }
   }
 
+  // 0. Dynamic Hero 3D Centerpiece Dashboard Update (Matches Screenshot exactly)
+  function updateHeroDashboardUI(user) {
+    const heroContainer = document.getElementById("hero-interactive-container");
+    if (!heroContainer) return;
+
+    const userName = user?.full_name || user?.name || (user?.email ? user.email.split('@')[0] : "Learner");
+    const userEmail = (user?.email || "").toLowerCase();
+    const isAvinash = !user || (
+      userEmail.includes("avinash") ||
+      userName.toLowerCase().includes("avinash") ||
+      userEmail === "avinash.verma@smartlearn.edu"
+    );
+    const userRole = (user?.role || "student").toUpperCase();
+    const isTeacher = user?.role === "teacher";
+
+    // New user check: logged in user who is not Avinash and has 0 progress or is newly registered
+    const isNewUser = !!user && !isAvinash && !isTeacher && (
+      user.is_new === true ||
+      user.isNew === true ||
+      (
+        (user.overall_progress === 0 || user.overallProgress === 0 || user.overall_progress === undefined) &&
+        (user.quiz_average === 0 || user.quizAverage === 0 || user.quiz_average === undefined) &&
+        (!user.streak_days || user.streak_days <= 1)
+      )
+    );
+
+    const showZero = isNewUser;
+
+    const streakDays = showZero ? 0 : (user?.streak_days ?? user?.streakDays ?? 12);
+    const xp = showZero ? 0 : (user?.learning_points ?? (streakDays > 0 ? streakDays * 20 + 10 : 250));
+    const overallProgress = showZero ? 0 : (user?.overall_progress ?? user?.overallProgress ?? 78);
+    const perfLift = showZero ? "0%" : "+18%";
+    const perfLabel = showZero ? "New Student Baseline" : "Above Cohort Benchmark";
+
+    const nameHash = Math.abs(userName.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
+    const defaultRoll = isAvinash ? "2503610100068" : (isTeacher ? `FAC-${nameHash}` : `24CSE${nameHash}`);
+    const rollNo = user?.roll_no || user?.rollNo || defaultRoll;
+
+    // 1. Student Name Tag & Roll No
+    const heroTag = document.getElementById("hero-student-name-tag");
+    if (heroTag) {
+      if (user) {
+        heroTag.textContent = `${userName.toUpperCase()} • ${userRole} ID: #${rollNo}`;
+      } else {
+        heroTag.textContent = "AVINASH VERMA • STUDENT ID: #2503610100068";
+      }
+    }
+
+    // 2. Floating Streak Badge (Top-Left)
+    const streakDaysEl = document.getElementById("hero-streak-days");
+    const streakXpEl = document.getElementById("hero-streak-xp");
+    if (streakDaysEl) streakDaysEl.textContent = `${streakDays} Days Streak`;
+    if (streakXpEl) streakXpEl.textContent = showZero ? "+0 XP • Start your streak today" : `+${xp} XP • Daily Consistency`;
+
+    // 3. Floating Performance Lift Badge (Top-Right)
+    const perfValEl = document.getElementById("hero-perf-val");
+    const perfLabelEl = document.getElementById("hero-perf-label");
+    if (perfValEl) perfValEl.textContent = `Performance: ${perfLift}`;
+    if (perfLabelEl) perfLabelEl.textContent = perfLabel;
+
+    // 4. Overall Progress Gauge & Radial SVG Circle
+    const overallProgEl = document.getElementById("hero-overall-progress");
+    const overallCircle = document.getElementById("hero-overall-circle");
+    if (overallProgEl) overallProgEl.textContent = `${overallProgress}%`;
+    if (overallCircle) {
+      const offset = Math.max(0, Math.min(100, 100 - overallProgress));
+      overallCircle.setAttribute("stroke-dashoffset", offset.toString());
+    }
+
+    // 5. Subject Masteries
+    // Subject 1: Mathematics
+    const s1Name = document.getElementById("hero-subj-1-name");
+    const s1Score = document.getElementById("hero-subj-1-score");
+    const s1Bar = document.getElementById("hero-subj-1-bar");
+    const s1Sub = document.getElementById("hero-subj-1-sub");
+    const s1Val = showZero ? 0 : 84;
+    if (s1Name) s1Name.textContent = "Mathematics";
+    if (s1Score) s1Score.textContent = `${s1Val}%`;
+    if (s1Bar) s1Bar.style.width = `${s1Val}%`;
+    if (s1Sub) s1Sub.textContent = showZero ? "0 Completed • Not Started" : "Calculus & Graph Theory";
+
+    // Subject 2: Programming
+    const s2Name = document.getElementById("hero-subj-2-name");
+    const s2Score = document.getElementById("hero-subj-2-score");
+    const s2Bar = document.getElementById("hero-subj-2-bar");
+    const s2Sub = document.getElementById("hero-subj-2-sub");
+    const s2Val = showZero ? 0 : 72;
+    if (s2Name) s2Name.textContent = "Programming";
+    if (s2Score) s2Score.textContent = `${s2Val}%`;
+    if (s2Bar) s2Bar.style.width = `${s2Val}%`;
+    if (s2Sub) s2Sub.textContent = showZero ? "0 Completed • Not Started" : "OOP & Core C++";
+
+    // Subject 3: Science & Systems
+    const s3Name = document.getElementById("hero-subj-3-name");
+    const s3Score = document.getElementById("hero-subj-3-score");
+    const s3Bar = document.getElementById("hero-subj-3-bar");
+    const s3Sub = document.getElementById("hero-subj-3-sub");
+    const s3Val = showZero ? 0 : 91;
+    if (s3Name) s3Name.textContent = "Science & Systems";
+    if (s3Score) s3Score.textContent = `${s3Val}%`;
+    if (s3Bar) s3Bar.style.width = `${s3Val}%`;
+    if (s3Sub) s3Sub.textContent = showZero ? "0 Completed • Not Started" : "Digital Logic & Memory";
+
+    // 6. Weak Topic Card
+    const weakBadge = document.getElementById("hero-weak-badge");
+    const weakDot = document.getElementById("hero-weak-dot");
+    const weakTag = document.getElementById("hero-weak-tag");
+    const weakTitle = document.getElementById("hero-weak-title");
+    const weakDesc = document.getElementById("hero-weak-desc");
+    const weakBar = document.getElementById("hero-weak-bar");
+
+    if (showZero) {
+      if (weakTag) weakTag.textContent = "Diagnostic Status";
+      if (weakDot) weakDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
+      if (weakBadge) {
+        weakBadge.className = "text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block mb-1 flex items-center gap-1.5";
+      }
+      if (weakTitle) weakTitle.textContent = "No Weak Topics Detected";
+      if (weakDesc) weakDesc.textContent = "Quiz Score: 0% (Diagnostic Required). Take your first quiz to identify focus areas.";
+      if (weakBar) {
+        weakBar.style.width = "0%";
+        weakBar.className = "h-full bg-emerald-500 rounded-full transition-all duration-500";
+      }
+    } else {
+      if (weakTag) weakTag.textContent = "Weak Topic Detected";
+      if (weakDot) weakDot.className = "w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse";
+      if (weakBadge) {
+        weakBadge.className = "text-[11px] font-semibold text-rose-400 uppercase tracking-wider block mb-1 flex items-center gap-1.5";
+      }
+      if (weakTitle) weakTitle.textContent = "Data Structures";
+      if (weakDesc) weakDesc.textContent = "Quiz Score: 48% (Target: 75%). Confusion in pointers & memory allocation.";
+      if (weakBar) {
+        weakBar.style.width = "48%";
+        weakBar.className = "h-full bg-rose-500 rounded-full transition-all duration-500";
+      }
+    }
+
+    // 7. Recommended Material Card
+    const recTitle = document.getElementById("hero-rec-title");
+    const recDesc = document.getElementById("hero-rec-desc");
+    const recGain = document.getElementById("hero-rec-gain");
+    if (showZero) {
+      if (recTitle) recTitle.textContent = "Getting Started with CS";
+      if (recDesc) recDesc.textContent = "Beginner starter module: platform orientation, core concepts & study roadmap.";
+      if (recGain) recGain.textContent = "Expected Retention Gain: +0%";
+    } else {
+      if (recTitle) recTitle.textContent = "Arrays & Linked Lists";
+      if (recDesc) recDesc.textContent = "15-Min Pointer Deconstruction + step-by-step memory frame visualizations.";
+      if (recGain) recGain.textContent = "Expected Retention Gain: +18%";
+    }
+
+    // 8. Adaptive Drill Card
+    const drillTitle = document.getElementById("hero-drill-title");
+    const drillDesc = document.getElementById("hero-drill-desc");
+    const drillBtn = document.getElementById("hero-drill-btn");
+    const drillBtnText = document.getElementById("hero-drill-btn-text");
+    if (showZero) {
+      if (drillTitle) drillTitle.textContent = "Diagnostic Concept Practice";
+      if (drillDesc) drillDesc.textContent = "3 quick starter questions to benchmark your starting knowledge level.";
+      if (drillBtnText) drillBtnText.textContent = "Start Diagnostic Quiz";
+      if (drillBtn) drillBtn.onclick = () => { window.location.href = "quizzes.html"; };
+    } else {
+      if (drillTitle) drillTitle.textContent = "Instant Concept Practice";
+      if (drillDesc) drillDesc.textContent = "3 targeted questions with memory diagrams and instant explanations.";
+      if (drillBtnText) drillBtnText.textContent = "Launch Interactive Demo";
+      if (drillBtn) drillBtn.onclick = () => { SmartLearnApp.showMainView('student-dashboard'); };
+    }
+  }
+
   // Dynamic User UI Sync across Header, Navbar, and Dashboards
   function updateUserUI(user) {
     const navContainer = document.getElementById("nav-auth-container");
@@ -148,29 +317,47 @@ const SmartLearnApp = (function () {
           </a>
         `;
       }
+      updateHeroDashboardUI(null);
+      renderLandingStats();
       return;
     }
 
     const userName = user.full_name || user.name || (user.email ? user.email.split('@')[0] : "Learner");
     const userRole = user.role || "student";
     const isTeacher = userRole === "teacher";
+    const userEmail = (user.email || "").toLowerCase();
+    const isAvinash = (
+      userEmail.includes("avinash") ||
+      userName.toLowerCase().includes("avinash") ||
+      userEmail === "avinash.verma@smartlearn.edu"
+    );
+
+    const isNewUser = !isAvinash && !isTeacher && (
+      user.is_new === true ||
+      user.isNew === true ||
+      (
+        (user.overall_progress === 0 || user.overallProgress === 0 || user.overall_progress === undefined) &&
+        (user.quiz_average === 0 || user.quizAverage === 0 || user.quiz_average === undefined) &&
+        (!user.streak_days || user.streak_days <= 1)
+      )
+    );
+
     const avatar = user.avatar_url || user.avatar || (isTeacher
       ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
       : `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=6366f1&color=fff&bold=true`);
 
     const firstName = userName.trim().split(" ")[0] || "Learner";
-    const streakDays = user.streak_days || user.streakDays || 1;
+    const streakDays = isNewUser ? 0 : (user.streak_days ?? user.streakDays ?? 12);
     const nameHash = Math.abs(userName.split("").reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 900 + 100;
-    const rollNo = user.roll_no || user.rollNo || (isTeacher ? `FAC-${nameHash}` : `24CSE${nameHash}`);
+    const defaultRoll = isAvinash ? "2503610100068" : (isTeacher ? `FAC-${nameHash}` : `24CSE${nameHash}`);
+    const rollNo = user.roll_no || user.rollNo || defaultRoll;
     const dept = user.department || "Computer Science & Engineering";
     const semester = user.semester || (isTeacher ? "Faculty Member" : "Semester 5 (3rd Year B.Tech)");
     const college = user.college || "Institute of Engineering & Technology";
 
-    // Update Hero Student Name Tag on index.html
-    const heroStudentTag = document.getElementById("hero-student-name-tag");
-    if (heroStudentTag) {
-      heroStudentTag.textContent = `${userName} • ${userRole.toUpperCase()} ID: #${rollNo}`;
-    }
+    // 0. Update Hero Centerpiece Dashboard on index.html
+    updateHeroDashboardUI(user);
+    renderLandingStats();
 
     // 1. Update Navigation Bar Pill (Responsive: Logo | Badge | Avatar | Hamburger on mobile)
     if (navContainer) {
@@ -206,7 +393,11 @@ const SmartLearnApp = (function () {
 
     if (heroGreeting) heroGreeting.textContent = `Welcome back, ${firstName}!`;
     if (heroSubtitle) {
-      heroSubtitle.textContent = `You've maintained your ${streakDays}-day study streak. You have 1 prioritized weak topic ready for remediation and 3 pending quizzes.`;
+      if (isNewUser) {
+        heroSubtitle.textContent = `Welcome to SmartLearn! Complete your first module and diagnostic quiz to calibrate your mastery profile.`;
+      } else {
+        heroSubtitle.textContent = `You've maintained your ${streakDays}-day study streak. You have 1 prioritized weak topic ready for remediation and 3 pending quizzes.`;
+      }
     }
     if (heroDept) heroDept.textContent = `${dept} • Roll: ${rollNo}`;
     if (heroSemester) heroSemester.textContent = `Active ${semester.split(' ')[0] + ' ' + (semester.split(' ')[1] || '')} • Week 6`;
@@ -218,9 +409,9 @@ const SmartLearnApp = (function () {
     const studyStreak = document.getElementById("dashboard-study-streak");
     const progressStreak = document.getElementById("progress-streak-count");
 
-    if (overallProg) overallProg.textContent = `${user.overall_progress || user.overallProgress || 72}%`;
-    if (quizAvg) quizAvg.textContent = `${user.quiz_average || user.quizAverage || 78}%`;
-    if (enrolledCourses) enrolledCourses.textContent = `${user.enrolled_courses_count || user.enrolledCoursesCount || 5}`;
+    if (overallProg) overallProg.textContent = `${isNewUser ? 0 : (user.overall_progress ?? user.overallProgress ?? 78)}%`;
+    if (quizAvg) quizAvg.textContent = `${isNewUser ? 0 : (user.quiz_average ?? user.quizAverage ?? 78)}%`;
+    if (enrolledCourses) enrolledCourses.textContent = `${isNewUser ? 0 : (user.enrolled_courses_count ?? user.enrolledCoursesCount ?? 5)}`;
     if (studyStreak) studyStreak.textContent = `${streakDays} Days`;
     if (progressStreak) progressStreak.textContent = `${streakDays} Days`;
 
@@ -248,7 +439,7 @@ const SmartLearnApp = (function () {
     if (profSemester) profSemester.textContent = semester;
     if (profCollege) profCollege.textContent = college;
     if (profBio && user.bio) profBio.textContent = user.bio;
-    if (profMastery) profMastery.textContent = `${user.overall_progress || user.overallProgress || 72}%`;
+    if (profMastery) profMastery.textContent = `${isNewUser ? 0 : (user.overall_progress ?? user.overallProgress ?? 78)}%`;
     if (profStreak) profStreak.textContent = `${streakDays} Days`;
 
     // 7. Update Copilot Initial Welcome Message
