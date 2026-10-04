@@ -307,11 +307,11 @@ const SmartLearnApp = (function () {
     if (!user) {
       if (navContainer) {
         navContainer.innerHTML = `
-          <a href="login.html" class="uiverse-btn-tactile text-slate-300 hover:text-white !px-2.5 sm:!px-3 !py-1 sm:!py-1.5 text-[11px] sm:text-[13px] flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
+          <a href="login.html" class="uiverse-btn-tactile text-slate-300 hover:text-white !px-3 sm:!px-3.5 !py-1.5 text-[11px] sm:text-[13px] flex items-center gap-1.5 whitespace-nowrap">
             <span class="material-symbols-outlined text-[15px]">login</span>
             <span>Sign In</span>
           </a>
-          <a href="login.html?tab=signup" class="hidden sm:flex uiverse-btn-3d text-[12px] sm:text-[13px] !py-1.5 sm:!py-2 !px-3 sm:!px-4 navbar-cta-shimmer items-center gap-1 whitespace-nowrap">
+          <a href="login.html?tab=signup" class="hidden sm:flex uiverse-btn-3d text-[12px] sm:text-[13px] !py-1.5 sm:!py-2 !px-3.5 sm:!px-4 navbar-cta-shimmer items-center gap-1 whitespace-nowrap">
             <span class="relative z-10 font-bold whitespace-nowrap">Sign Up</span>
             <span class="material-symbols-outlined text-[15px] relative z-10 hidden md:inline">arrow_forward</span>
           </a>
@@ -363,12 +363,12 @@ const SmartLearnApp = (function () {
     if (navContainer) {
       navContainer.innerHTML = `
         <div class="flex items-center gap-1 sm:gap-2">
-          <a href="profile.html" class="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-[11px] sm:text-[12px] text-white transition-all shadow-sm group" title="View Full InsForge Profile & Account Details">
-            <img src="${avatar}" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0">
-            <span class="font-medium group-hover:text-indigo-300 transition-colors hidden sm:inline max-w-[85px] truncate">${firstName}</span>
-            <span class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold ${isTeacher ? 'bg-emerald-500/20 text-emerald-400' : 'bg-primary-indigo/20 text-primary-indigo'} uppercase hidden md:inline">${userRole}</span>
+          <a href="profile.html" class="flex items-center gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-indigo-400/40 text-[11px] sm:text-[12px] text-white transition-all shadow-md group" title="View Full Account Profile">
+            <img src="${avatar}" class="w-6 h-6 rounded-full object-cover ring-1 ring-white/30 flex-shrink-0">
+            <span class="font-semibold group-hover:text-indigo-300 transition-colors hidden sm:inline max-w-[90px] truncate">${firstName}</span>
+            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${isTeacher ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-primary-indigo/25 text-indigo-300 border border-primary-indigo/30'} uppercase hidden md:inline tracking-wider">${userRole}</span>
           </a>
-          <button class="hidden sm:flex p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors flex-shrink-0" onclick="SmartLearnApp.signOut()" title="Sign Out">
+          <button class="hidden sm:flex p-1.5 rounded-full text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all flex-shrink-0" onclick="SmartLearnApp.signOut()" title="Sign Out">
             <span class="material-symbols-outlined text-[18px]">logout</span>
           </button>
         </div>

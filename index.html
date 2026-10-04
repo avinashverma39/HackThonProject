@@ -140,27 +140,29 @@
       <!-- Main Navbar Container / Floating Pill Island -->
       <div class="navbar-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 transition-all duration-500 ease-out">
         <div
-          class="navbar-island flex items-center justify-between px-4 sm:px-6 h-16 sm:h-[68px] rounded-2xl transition-all duration-500 ease-out relative">
+          class="navbar-island flex items-center justify-between px-3.5 sm:px-6 h-16 sm:h-[68px] rounded-2xl transition-all duration-500 ease-out relative">
 
           <!-- Brand & SIH Live Badge -->
           <div class="flex items-center gap-3 cursor-pointer group flex-shrink-0"
             onclick="SmartLearnApp.showMainView('landing')" title="SmartLearn Home">
             <div class="relative">
               <div
-                class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-indigo via-secondary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary-indigo/30 transition-all duration-300 group-hover:scale-105 group-hover:rotate-6 group-hover:shadow-primary-indigo/50">
-                <span class="material-symbols-outlined text-[24px] navbar-logo-icon">school</span>
+                class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-primary-indigo to-cyan-400 p-[1px] shadow-lg shadow-primary-indigo/30 transition-all duration-300 group-hover:scale-105 group-hover:rotate-6 group-hover:shadow-primary-indigo/50">
+                <div class="w-full h-full rounded-[11px] bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-white">
+                  <span class="material-symbols-outlined text-[22px] navbar-logo-icon text-cyan-300">school</span>
+                </div>
               </div>
               <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                 <span
                   class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-sm shadow-emerald-400/80"></span>
               </span>
             </div>
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
                 <span class="text-[20px] font-extrabold text-white tracking-tight navbar-brand-title">SmartLearn</span>
                 <span
-                  class="px-2 py-0.5 rounded-full bg-primary-indigo/20 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30 uiverse-badge-3d flex items-center gap-1">
+                  class="px-2 py-0.5 rounded-full bg-primary-indigo/15 text-primary-indigo text-[10px] font-bold border border-primary-indigo/30 shadow-sm shadow-primary-indigo/20 flex items-center gap-1">
                   <span class="w-1.5 h-1.5 rounded-full bg-primary-indigo animate-pulse"></span>
                   SIH 2026
                 </span>
@@ -172,7 +174,7 @@
 
           <!-- Dynamic Gliding Navigation Links Dock (Desktop) -->
           <nav
-            class="hidden lg:flex items-center relative p-1 rounded-xl bg-surface-container-lowest/70 border border-white/5 backdrop-blur-md nav-dock"
+            class="hidden lg:flex items-center relative p-1 rounded-full bg-surface-container-lowest/80 border border-white/10 backdrop-blur-xl nav-dock"
             id="dynamic-nav-dock">
             <div id="nav-glider-pill" class="nav-glider-pill"></div>
 
@@ -193,16 +195,12 @@
               <span>Profile</span>
             </a>
             <a href="courses.html" class="dynamic-nav-item">
-              <span class="material-symbols-outlined nav-icon">menu_book</span>
+              <span class="material-symbols-outlined nav-icon text-amber-400">menu_book</span>
               <span>Courses</span>
             </a>
             <a href="quizzes.html" class="dynamic-nav-item">
-              <span class="material-symbols-outlined nav-icon">quiz</span>
+              <span class="material-symbols-outlined nav-icon text-rose-400">quiz</span>
               <span>Quizzes</span>
-            </a>
-            <a href="teacher.html" class="dynamic-nav-item">
-              <span class="material-symbols-outlined nav-icon text-purple-400">school</span>
-              <span>Faculty</span>
             </a>
           </nav>
 
