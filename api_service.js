@@ -210,12 +210,17 @@ const SmartLearnAPI = (function () {
       email: userData.email,
       role: userData.role || "student",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-      streakDays: 1,
+      streakDays: 0,
+      streak_days: 0,
       overallProgress: 0,
+      overall_progress: 0,
       quizAverage: 0,
-      enrolledCoursesCount: 1,
+      quiz_average: 0,
+      enrolledCoursesCount: 0,
+      enrolled_courses_count: 0,
       completedLessons: 0,
-      pendingQuizzes: 1
+      pendingQuizzes: 0,
+      is_new: true
     };
     store.currentUser = newUser;
     saveLocalStore(store);

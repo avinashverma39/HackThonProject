@@ -561,14 +561,25 @@
         }
         const user = res?.user || {
           id: "stu-101",
-          full_name: "Avinash Verma (Reviewer)",
-          name: "Avinash Verma (Reviewer)",
+          full_name: "Avinash Verma",
+          name: "Avinash Verma",
           email: "avinash.verma@smartlearn.edu",
           role: "student",
           department: "Computer Science & Engineering",
           semester: "Semester 5 (3rd Year B.Tech)",
-          roll_no: "24CSE089"
+          roll_no: "2503610100068",
+          rollNo: "2503610100068",
+          streak_days: 12,
+          overall_progress: 78,
+          quiz_average: 78,
+          enrolled_courses_count: 5
         };
+        user.roll_no = "2503610100068";
+        user.rollNo = "2503610100068";
+        user.streak_days = 12;
+        user.overall_progress = 78;
+        user.quiz_average = 78;
+        user.is_new = false;
         localStorage.setItem("insforge_active_user", JSON.stringify(user));
         localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
         transitionToOverview(user, 300);
@@ -812,9 +823,11 @@
             roll_no: rollNo,
             rollNo: rollNo,
             avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(derivedName)}&background=6366f1&color=fff&bold=true`,
-            streak_days: 1,
+            streak_days: 0,
             overall_progress: 0,
-            quiz_average: 0
+            quiz_average: 0,
+            enrolled_courses_count: 0,
+            is_new: true
           };
           localStorage.setItem("insforge_active_user", JSON.stringify(customUser));
           localStorage.setItem("smartlearn_active_profile", JSON.stringify(customUser));
@@ -895,14 +908,21 @@
           roll_no: rollNo,
           rollNo: rollNo,
           avatar_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`,
-          streak_days: 1,
+          streak_days: 0,
           overall_progress: 0,
-          quiz_average: 0
+          quiz_average: 0,
+          enrolled_courses_count: 0,
+          is_new: true
         };
         user.phone = phone;
         user.roll_no = user.roll_no || rollNo;
         user.rollNo = user.roll_no;
         user.avatar_url = user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`;
+        user.streak_days = 0;
+        user.overall_progress = 0;
+        user.quiz_average = 0;
+        user.enrolled_courses_count = 0;
+        user.is_new = true;
 
         localStorage.setItem("insforge_active_user", JSON.stringify(user));
         localStorage.setItem("smartlearn_active_profile", JSON.stringify(user));
