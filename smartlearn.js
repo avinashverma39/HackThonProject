@@ -617,23 +617,58 @@ const SmartLearnApp = (function () {
     // Dynamic animated counters on landing with responsive mobile grid
     const statsContainer = document.getElementById("landing-live-stats");
     if (!statsContainer) return;
+
+    const user = state.currentUser;
+    const userName = user?.full_name || user?.name || (user?.email ? user.email.split('@')[0] : "");
+    const userEmail = (user?.email || "").toLowerCase();
+    const isAvinash = !user || (
+      userEmail.includes("avinash") ||
+      userName.toLowerCase().includes("avinash") ||
+      userEmail === "avinash.verma@smartlearn.edu"
+    );
+    const isTeacher = user?.role === "teacher";
+
+    const isNewUser = !!user && !isAvinash && !isTeacher && (
+      user.is_new === true ||
+      user.isNew === true ||
+      (
+        (user.overall_progress === 0 || user.overallProgress === 0 || user.overall_progress === undefined) &&
+        (user.quiz_average === 0 || user.quizAverage === 0 || user.quiz_average === undefined) &&
+        (!user.streak_days || user.streak_days <= 1)
+      )
+    );
+
+    const showZero = isNewUser;
+
+    const val1 = showZero ? "0" : "24,800+";
+    const lbl1 = showZero ? "Active Courses" : "Active Students";
+
+    const val2 = showZero ? "0%" : "94.8%";
+    const lbl2 = "Concept Mastery";
+
+    const val3 = showZero ? "0.0x" : "3.2x";
+    const lbl3 = "Faster Weak-Topic Fix";
+
+    const val4 = showZero ? "0" : "500+";
+    const lbl4 = showZero ? "Curated Modules Completed" : "Curated Modules";
+
     statsContainer.innerHTML = `
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-5 rounded-2xl bg-surface-container/60 border border-white/10 backdrop-blur-xl">
         <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center border-r border-white/5">
-          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-white font-mono leading-tight">24,800+</span>
-          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Active Students</span>
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-white font-mono leading-tight">${val1}</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">${lbl1}</span>
         </div>
         <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center md:border-r border-white/5">
-          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-secondary font-mono leading-tight">94.8%</span>
-          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Concept Mastery</span>
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-secondary font-mono leading-tight">${val2}</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">${lbl2}</span>
         </div>
         <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center border-r border-white/5">
-          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-emerald-400 font-mono leading-tight">3.2x</span>
-          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Faster Weak-Topic Fix</span>
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-emerald-400 font-mono leading-tight">${val3}</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">${lbl3}</span>
         </div>
         <div class="flex flex-col items-center justify-center p-2 sm:p-3 text-center">
-          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-indigo-400 font-mono leading-tight">500+</span>
-          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">Curated Modules</span>
+          <span class="text-[20px] xs:text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-indigo-400 font-mono leading-tight">${val4}</span>
+          <span class="text-[10px] sm:text-[12px] text-slate-400 mt-0.5 sm:mt-1 truncate max-w-full">${lbl4}</span>
         </div>
       </div>
     `;
