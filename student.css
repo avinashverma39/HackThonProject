@@ -116,7 +116,7 @@
   box-shadow: 0 12px 25px -8px rgba(56, 189, 248, 0.2);
 }
 
-/* Mobile Sidebar Drawer */
+/* Mobile Sidebar Drawer & Bottom Dock */
 @media (max-width: 1023px) {
   #student-sidebar {
     transform: translateX(-100%);
@@ -128,3 +128,36 @@
     padding-left: 0 !important;
   }
 }
+
+/* Mobile Bottom Dock Active Pill */
+.student-mobile-nav-btn.active-mobile-tab {
+  color: #ffffff;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 0.75rem;
+}
+
+.student-mobile-nav-btn.active-mobile-tab span.material-symbols-outlined {
+  color: #818cf8;
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Responsive Table Styling with Smooth Horizontal Touch */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+

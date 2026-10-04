@@ -380,7 +380,7 @@
                 <span class="material-symbols-outlined text-primary text-[22px]">manage_accounts</span>
                 <h3 class="text-[17px] font-bold text-white">Edit Academic Details &amp; Bio</h3>
               </div>
-              <span class="text-[11px] text-slate-400">Saves directly to InsForge Cloud</span>
+              <span class="text-[11px] text-slate-400">All fields customizable • Saves to InsForge Cloud</span>
             </div>
 
             <form id="edit-profile-form" onsubmit="handleProfileSave(event)" class="flex flex-col gap-4">
@@ -395,6 +395,21 @@
                 </div>
               </div>
 
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">University Registration No</label>
+                  <input type="text" id="input-edit-regno" class="uiverse-input" placeholder="e.g. AKTU-2022-0914" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Email Address</label>
+                  <input type="email" id="input-edit-email" class="uiverse-input" placeholder="e.g. student@smartlearn.edu" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Phone Number</label>
+                  <input type="tel" id="input-edit-phone" class="uiverse-input" placeholder="e.g. +91 98765 43210" />
+                </div>
+              </div>
+
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="uiverse-input-group">
                   <label class="text-[12px] font-medium text-slate-300">Department / Specialization</label>
@@ -406,6 +421,32 @@
                 </div>
               </div>
 
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">College / Institute Name</label>
+                  <input type="text" id="input-edit-college" required class="uiverse-input" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Faculty Mentor Name</label>
+                  <input type="text" id="input-edit-mentor" class="uiverse-input" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Academic CGPA</label>
+                  <input type="text" id="input-edit-cgpa" class="uiverse-input" placeholder="e.g. 8.90" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Attendance %</label>
+                  <input type="text" id="input-edit-attendance" class="uiverse-input" placeholder="e.g. 94.2%" />
+                </div>
+                <div class="uiverse-input-group">
+                  <label class="text-[12px] font-medium text-slate-300">Role / Specialization</label>
+                  <input type="text" id="input-edit-role" class="uiverse-input" placeholder="e.g. Student Learner" />
+                </div>
+              </div>
+
               <div class="uiverse-input-group">
                 <label class="text-[12px] font-medium text-slate-300">Career Objective &amp; Learning Bio</label>
                 <textarea id="input-edit-bio" rows="2" class="uiverse-input !h-auto py-2.5"></textarea>
@@ -414,10 +455,29 @@
               <div class="uiverse-input-group">
                 <label class="text-[12px] font-medium text-slate-300">Avatar Photo URL</label>
                 <input type="url" id="input-edit-avatar" class="uiverse-input" />
+                <div class="flex items-center gap-2 mt-2 flex-wrap">
+                  <span class="text-[11px] text-slate-400">Quick Avatars:</span>
+                  <button type="button" class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+                    onclick="document.getElementById('input-edit-avatar').value='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+                  </button>
+                  <button type="button" class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+                    onclick="document.getElementById('input-edit-avatar').value='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+                  </button>
+                  <button type="button" class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+                    onclick="document.getElementById('input-edit-avatar').value='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+                  </button>
+                  <button type="button" class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
+                    onclick="document.getElementById('input-edit-avatar').value='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+                  </button>
+                </div>
               </div>
 
               <div class="flex items-center justify-end gap-3 pt-2">
-                <button type="submit" id="save-profile-btn" class="uiverse-btn-3d font-bold text-[13px] !py-2.5 !px-6 flex items-center gap-2">
+                <button type="submit" id="save-profile-btn" class="uiverse-btn-3d font-bold text-[13px] !py-2.5 !px-6 flex items-center gap-2 shadow-lg">
                   <span id="save-btn-text">Save Changes to InsForge</span>
                   <span class="material-symbols-outlined text-[16px]">save</span>
                 </button>
@@ -795,12 +855,20 @@
       document.getElementById("detail-uid").textContent = user.id || "stu_insforge_cloud";
 
       // Form Inputs
-      document.getElementById("input-edit-name").value = name;
-      document.getElementById("input-edit-roll").value = rollNo;
-      document.getElementById("input-edit-dept").value = dept;
-      document.getElementById("input-edit-semester").value = semester;
-      document.getElementById("input-edit-bio").value = bio;
-      document.getElementById("input-edit-avatar").value = avatar;
+      if (document.getElementById("input-edit-name")) document.getElementById("input-edit-name").value = name;
+      if (document.getElementById("input-edit-roll")) document.getElementById("input-edit-roll").value = rollNo;
+      if (document.getElementById("input-edit-regno")) document.getElementById("input-edit-regno").value = user.reg_no || user.regNo || "AKTU-2022-0914";
+      if (document.getElementById("input-edit-email")) document.getElementById("input-edit-email").value = email;
+      if (document.getElementById("input-edit-phone")) document.getElementById("input-edit-phone").value = user.phone || user.phone_number || "+91 98765 43210";
+      if (document.getElementById("input-edit-dept")) document.getElementById("input-edit-dept").value = dept;
+      if (document.getElementById("input-edit-semester")) document.getElementById("input-edit-semester").value = semester;
+      if (document.getElementById("input-edit-college")) document.getElementById("input-edit-college").value = college;
+      if (document.getElementById("input-edit-mentor")) document.getElementById("input-edit-mentor").value = user.mentor || user.mentor_name || "Prof. Sarah Jenkins";
+      if (document.getElementById("input-edit-cgpa")) document.getElementById("input-edit-cgpa").value = user.cgpa || "8.90";
+      if (document.getElementById("input-edit-attendance")) document.getElementById("input-edit-attendance").value = user.attendance || "94.2%";
+      if (document.getElementById("input-edit-role")) document.getElementById("input-edit-role").value = user.role_title || (isTeacher ? "Faculty Member" : "Student Learner");
+      if (document.getElementById("input-edit-bio")) document.getElementById("input-edit-bio").value = bio;
+      if (document.getElementById("input-edit-avatar")) document.getElementById("input-edit-avatar").value = avatar;
     }
 
     // Save profile changes
@@ -818,10 +886,21 @@
         name: document.getElementById("input-edit-name").value.trim(),
         roll_no: document.getElementById("input-edit-roll").value.trim(),
         rollNo: document.getElementById("input-edit-roll").value.trim(),
+        reg_no: document.getElementById("input-edit-regno")?.value.trim() || "AKTU-2022-0914",
+        regNo: document.getElementById("input-edit-regno")?.value.trim() || "AKTU-2022-0914",
+        email: document.getElementById("input-edit-email")?.value.trim() || activeProfile.email,
+        phone: document.getElementById("input-edit-phone")?.value.trim() || "+91 98765 43210",
+        phone_number: document.getElementById("input-edit-phone")?.value.trim() || "+91 98765 43210",
         department: document.getElementById("input-edit-dept").value.trim(),
         semester: document.getElementById("input-edit-semester").value.trim(),
+        college: document.getElementById("input-edit-college")?.value.trim() || "Institute of Engineering & Technology",
+        mentor: document.getElementById("input-edit-mentor")?.value.trim() || "Prof. Sarah Jenkins",
+        cgpa: document.getElementById("input-edit-cgpa")?.value.trim() || "8.90",
+        attendance: document.getElementById("input-edit-attendance")?.value.trim() || "94.2%",
+        role_title: document.getElementById("input-edit-role")?.value.trim() || "Student Learner",
         bio: document.getElementById("input-edit-bio").value.trim(),
-        avatar_url: document.getElementById("input-edit-avatar").value.trim()
+        avatar_url: document.getElementById("input-edit-avatar").value.trim(),
+        avatar: document.getElementById("input-edit-avatar").value.trim()
       };
 
       // Persist in localStorage

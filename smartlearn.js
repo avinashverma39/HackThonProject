@@ -422,23 +422,35 @@ const SmartLearnApp = (function () {
     // 6. Update Profile Subview Elements
     const profName = document.getElementById("profile-student-name");
     const profEmail = document.getElementById("profile-student-email");
+    const profPhone = document.getElementById("profile-student-phone");
     const profAvatar = document.getElementById("profile-student-avatar");
     const profRoll = document.getElementById("profile-student-roll");
+    const profRegNo = document.getElementById("profile-student-regno");
     const profDept = document.getElementById("profile-student-dept");
     const profSemester = document.getElementById("profile-student-semester");
     const profCollege = document.getElementById("profile-student-college");
+    const profCgpa = document.getElementById("profile-student-cgpa");
+    const profAttendance = document.getElementById("profile-student-attendance");
+    const profMentor = document.getElementById("profile-student-mentor");
+    const profRole = document.getElementById("profile-student-role");
     const profBio = document.getElementById("profile-student-bio");
     const profMastery = document.getElementById("profile-student-mastery");
     const profStreak = document.getElementById("profile-student-streak");
 
     if (profName) profName.textContent = userName;
     if (profEmail) profEmail.textContent = user.email || `${userName.toLowerCase().replace(/\s+/g, '.')}@smartlearn.edu`;
+    if (profPhone) profPhone.textContent = user.phone || user.phone_number || "+91 98765 43210";
     if (profAvatar) profAvatar.src = avatar;
     if (profRoll) profRoll.textContent = rollNo;
+    if (profRegNo) profRegNo.textContent = user.reg_no || user.regNo || (isAvinash ? "AKTU-2022-0914" : `AKTU-2024-${nameHash}`);
     if (profDept) profDept.textContent = dept;
     if (profSemester) profSemester.textContent = semester;
     if (profCollege) profCollege.textContent = college;
-    if (profBio && user.bio) profBio.textContent = user.bio;
+    if (profCgpa) profCgpa.textContent = user.cgpa ? `${user.cgpa} / 10.0` : (isNewUser ? "0.00 / 10.0" : "8.84 / 10.0 (A+)");
+    if (profAttendance) profAttendance.textContent = user.attendance || (isNewUser ? "0.0% (Enrolling)" : "92.4% (Eligible)");
+    if (profMentor) profMentor.textContent = user.mentor || user.mentor_name || "Prof. Sarah Jenkins";
+    if (profRole) profRole.textContent = user.role_title || (isTeacher ? "Faculty Course Mentor" : "SIH Lead Developer");
+    if (profBio) profBio.textContent = user.bio || (isTeacher ? "Faculty mentor and curriculum lead." : "Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms.");
     if (profMastery) profMastery.textContent = `${isNewUser ? 0 : (user.overall_progress ?? user.overallProgress ?? 78)}%`;
     if (profStreak) profStreak.textContent = `${streakDays} Days`;
 
@@ -529,6 +541,16 @@ const SmartLearnApp = (function () {
       } else {
         btn.classList.remove("bg-primary-indigo", "text-white", "font-semibold");
         btn.classList.add("text-slate-400", "hover:bg-surface-container");
+      }
+    });
+
+    // Update active state in mobile bottom bar
+    document.querySelectorAll(".student-mobile-nav-btn").forEach(btn => {
+      const isTarget = btn.getAttribute("data-mobile-tab") === tabName;
+      if (isTarget) {
+        btn.classList.add("active-mobile-tab");
+      } else {
+        btn.classList.remove("active-mobile-tab");
       }
     });
 
@@ -1949,58 +1971,149 @@ const SmartLearnApp = (function () {
 
     const nameInput = document.getElementById("edit-student-name");
     const rollInput = document.getElementById("edit-student-roll");
+    const regInput = document.getElementById("edit-student-regno");
+    const emailInput = document.getElementById("edit-student-email");
+    const phoneInput = document.getElementById("edit-student-phone");
     const deptInput = document.getElementById("edit-student-dept");
     const semInput = document.getElementById("edit-student-semester");
     const collegeInput = document.getElementById("edit-student-college");
+    const mentorInput = document.getElementById("edit-student-mentor");
+    const cgpaInput = document.getElementById("edit-student-cgpa");
+    const attInput = document.getElementById("edit-student-attendance");
+    const roleInput = document.getElementById("edit-student-role");
     const bioInput = document.getElementById("edit-student-bio");
     const avatarInput = document.getElementById("edit-student-avatar-url");
+    const avatarPreview = document.getElementById("edit-avatar-preview-img");
 
-    if (nameInput) nameInput.value = user.full_name || user.name || "Student Learner";
-    if (rollInput) rollInput.value = user.roll_no || user.rollNo || "24CSE089";
-    if (deptInput) deptInput.value = user.department || "Computer Science & Engineering";
-    if (semInput) semInput.value = user.semester || "Semester 5 (3rd Year B.Tech)";
-    if (collegeInput) collegeInput.value = user.college || "Institute of Engineering & Technology";
-    if (bioInput) bioInput.value = user.bio || "Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms.";
-    if (avatarInput) avatarInput.value = user.avatar_url || user.avatar || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80";
+    const name = user.full_name || user.name || "Student Learner";
+    const roll = user.roll_no || user.rollNo || "24CSE089";
+    const reg = user.reg_no || user.regNo || "AKTU-2022-0914";
+    const email = user.email || "student@smartlearn.edu";
+    const phone = user.phone || user.phone_number || "+91 98765 43210";
+    const dept = user.department || "Computer Science & Engineering";
+    const sem = user.semester || "Semester 5 (3rd Year B.Tech)";
+    const college = user.college || "Institute of Engineering & Technology";
+    const mentor = user.mentor || user.mentor_name || "Prof. Sarah Jenkins";
+    const cgpa = user.cgpa || "8.84 / 10.0";
+    const att = user.attendance || "92.4% (Eligible)";
+    const roleTitle = user.role_title || "SIH Lead Developer";
+    const bio = user.bio || "Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms.";
+    const avatar = user.avatar_url || user.avatar || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80";
+
+    if (nameInput) nameInput.value = name;
+    if (rollInput) rollInput.value = roll;
+    if (regInput) regInput.value = reg;
+    if (emailInput) emailInput.value = email;
+    if (phoneInput) phoneInput.value = phone;
+    if (deptInput) deptInput.value = dept;
+    if (semInput) semInput.value = sem;
+    if (collegeInput) collegeInput.value = college;
+    if (mentorInput) mentorInput.value = mentor;
+    if (cgpaInput) cgpaInput.value = cgpa;
+    if (attInput) attInput.value = att;
+    if (roleInput) roleInput.value = roleTitle;
+    if (bioInput) bioInput.value = bio;
+    if (avatarInput) avatarInput.value = avatar;
+    if (avatarPreview) avatarPreview.src = avatar;
 
     modal.classList.remove("hidden");
+  }
+
+  function handleAvatarFileUpload(event) {
+    const file = event?.target?.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      notify("Invalid File", "Please select an image file (PNG, JPG, WEBP).", "error");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const avatarInput = document.getElementById("edit-student-avatar-url");
+      const avatarPreview = document.getElementById("edit-avatar-preview-img");
+      if (avatarInput) avatarInput.value = dataUrl;
+      if (avatarPreview) avatarPreview.src = dataUrl;
+      notify("Photo Selected", "Custom avatar photo loaded. Click Save Profile to apply.", "info");
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleProfileUpdateSubmit(event) {
     if (event) event.preventDefault();
     const name = document.getElementById("edit-student-name")?.value.trim() || state.currentUser?.full_name || "Student Learner";
     const roll = document.getElementById("edit-student-roll")?.value.trim() || "24CSE089";
+    const regNo = document.getElementById("edit-student-regno")?.value.trim() || "AKTU-2022-0914";
+    const email = document.getElementById("edit-student-email")?.value.trim() || state.currentUser?.email || "student@smartlearn.edu";
+    const phone = document.getElementById("edit-student-phone")?.value.trim() || "+91 98765 43210";
     const dept = document.getElementById("edit-student-dept")?.value.trim() || "Computer Science & Engineering";
     const semester = document.getElementById("edit-student-semester")?.value.trim() || "Semester 5 (3rd Year B.Tech)";
     const college = document.getElementById("edit-student-college")?.value.trim() || "Institute of Engineering & Technology";
+    const mentor = document.getElementById("edit-student-mentor")?.value.trim() || "Prof. Sarah Jenkins";
+    const cgpa = document.getElementById("edit-student-cgpa")?.value.trim() || "8.84";
+    const attendance = document.getElementById("edit-student-attendance")?.value.trim() || "92.4%";
+    const roleTitle = document.getElementById("edit-student-role")?.value.trim() || "SIH Lead Developer";
     const bio = document.getElementById("edit-student-bio")?.value.trim() || "";
     const avatarUrl = document.getElementById("edit-student-avatar-url")?.value.trim() || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80";
 
     const updatedData = {
+      ...(state.currentUser || {}),
       full_name: name,
+      name: name,
       roll_no: roll,
+      rollNo: roll,
+      reg_no: regNo,
+      regNo: regNo,
+      email: email,
+      phone: phone,
+      phone_number: phone,
       department: dept,
       semester: semester,
       college: college,
+      mentor: mentor,
+      mentor_name: mentor,
+      cgpa: cgpa,
+      attendance: attendance,
+      role_title: roleTitle,
       bio: bio,
-      avatar_url: avatarUrl
+      avatar_url: avatarUrl,
+      avatar: avatarUrl
     };
 
-    if (window.SmartLearnAPI && window.SmartLearnAPI.updateProfile) {
-      await window.SmartLearnAPI.updateProfile(state.currentUser?.id, updatedData);
+    // 1. Persist in local storage
+    localStorage.setItem("insforge_active_user", JSON.stringify(updatedData));
+    localStorage.setItem("smartlearn_active_profile", JSON.stringify(updatedData));
+
+    // 2. Persist in Supabase / InsForge Cloud
+    if (window.SmartLearnInsforge && window.SmartLearnInsforge.updateProfile) {
+      try {
+        await window.SmartLearnInsforge.updateProfile(updatedData.id || "stu_active", updatedData);
+      } catch (err) {
+        console.warn("Could not sync profile to InsForge Cloud:", err);
+      }
+    } else if (window.SmartLearnAPI && window.SmartLearnAPI.updateProfile) {
+      try {
+        await window.SmartLearnAPI.updateProfile(state.currentUser?.id, updatedData);
+      } catch (err) {
+        console.warn("Could not sync profile via API:", err);
+      }
     } else if (window.SmartLearnSupabase && window.SmartLearnSupabase.updateProfile) {
-      await window.SmartLearnSupabase.updateProfile(updatedData);
+      try {
+        await window.SmartLearnSupabase.updateProfile(updatedData);
+      } catch (err) {
+        console.warn("Could not sync profile via Supabase:", err);
+      }
     }
 
-    if (state.currentUser) {
-      state.currentUser = { ...state.currentUser, ...updatedData };
-    } else {
-      state.currentUser = updatedData;
-    }
-
+    state.currentUser = updatedData;
     updateUserUI(state.currentUser);
+
+    // Dispatch global event for other components and windows
+    window.dispatchEvent(new CustomEvent("smartlearn:auth_changed", { detail: { user: updatedData } }));
+
     closeModal("modal-edit-profile");
-    notify("Profile Updated", `Your academic credentials for ${name} have been updated across the dashboard.`, "success");
+    notify("Profile Successfully Saved! 🎉", `All identity, academic, and contact records updated for ${name}.`, "success");
   }
 
   function downloadAcademicTranscript() {
@@ -2860,6 +2973,7 @@ const SmartLearnApp = (function () {
     openForgotPasswordModal,
     openEditProfileModal,
     handleProfileUpdateSubmit,
+    handleAvatarFileUpload,
     downloadAcademicTranscript,
     getCurrentUserName,
     handleLoginSubmit,

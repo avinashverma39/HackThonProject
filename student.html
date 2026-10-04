@@ -571,38 +571,37 @@
 
         <!-- SUBVIEW 2: MY COURSES -->
         <div id="subview-courses" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-[24px] font-bold text-white">My Enrolled Courses</h2>
-              <p class="text-[13px] text-slate-400">Track syllabus progress and continue video lessons &amp; labs.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white">My Enrolled Courses</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Track syllabus progress and continue video lessons &amp; labs.</p>
             </div>
           </div>
           <!-- Courses Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="courses-grid"></div>
         </div>
 
         <!-- SUBVIEW 3: SUBJECTS -->
         <div id="subview-subjects" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-[24px] font-bold text-white">Subjects Catalog</h2>
-              <p class="text-[13px] text-slate-400">C, C++, Data Structures, Java, DBMS, and Web Development.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white">Subjects Catalog</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">C, C++, Data Structures, Java, DBMS, and Web Development.</p>
             </div>
           </div>
           <!-- Subjects Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="subjects-grid"></div>
         </div>
 
         <!-- SUBVIEW 4: STUDY MATERIALS -->
         <div id="subview-materials" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-[24px] font-bold text-white">Study Materials &amp; Notes</h2>
-              <p class="text-[13px] text-slate-400">Download verified lecture notes, formula cheatsheets, and question
-                banks.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white">Study Materials &amp; Notes</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Download verified lecture notes, formula cheatsheets, and question banks.</p>
             </div>
             <!-- Filter Tabs -->
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <button class="px-3 py-1.5 rounded-xl bg-primary-indigo text-white text-[12px] font-medium"
                 onclick="SmartLearnApp.resetMaterialFilters()">All Types</button>
               <button
@@ -617,30 +616,28 @@
             </div>
           </div>
           <!-- Materials Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materials-grid"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="materials-grid"></div>
         </div>
 
 
         <!-- SUBVIEW 5: VIDEO LEARNING -->
         <div id="subview-videos" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-[24px] font-bold text-white">Video Learning Library</h2>
-              <p class="text-[13px] text-slate-400">Timestamped lectures with synchronized transcripts and concept
-                reviews.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white">Video Learning Library</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Timestamped lectures with synchronized transcripts and concept reviews.</p>
             </div>
           </div>
           <!-- Videos Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videos-grid"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="videos-grid"></div>
         </div>
 
         <!-- SUBVIEW 6: QUIZZES -->
         <div id="subview-quizzes" class="student-subview hidden flex flex-col gap-6 max-w-7xl mx-auto">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-[24px] font-bold text-white">Interactive Quizzes</h2>
-              <p class="text-[13px] text-slate-400">Assess your concept retention. Weak topics are automatically
-                diagnosed upon submission.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white">Interactive Quizzes</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Assess your concept retention. Weak topics are automatically diagnosed upon submission.</p>
             </div>
           </div>
           <!-- Quizzes List -->
@@ -649,15 +646,13 @@
 
         <!-- SUBVIEW 7: PRACTICE DRILLS -->
         <div id="subview-practice" class="student-subview hidden flex flex-col gap-6 max-w-5xl mx-auto">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-[24px] font-bold text-white" id="practice-active-topic-title">Adaptive Practice Drills
-              </h2>
-              <p class="text-[13px] text-slate-400">Step-by-step problem solving with instant feedback and deep
-                explanations.</p>
+              <h2 class="text-[22px] sm:text-[24px] font-bold text-white" id="practice-active-topic-title">Adaptive Practice Drills</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Step-by-step problem solving with instant feedback and deep explanations.</p>
             </div>
             <!-- Topic Selector -->
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <button
                 class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[12px] font-medium text-slate-200"
                 onclick="SmartLearnApp.startPracticeSession('Pointers')">Pointers</button>
@@ -825,51 +820,51 @@
                 </span>
                 <span class="text-[12px] text-slate-400">SIH 2026 Active Scholar</span>
               </div>
-              <h2 class="text-[26px] font-extrabold text-white mt-1">Student Academic Profile</h2>
-              <p class="text-[13px] text-slate-400">Official institutional record, biometric attendance, semester performance, and credentials.</p>
+              <h2 class="text-[24px] sm:text-[28px] font-extrabold text-white mt-1">Student Academic Profile</h2>
+              <p class="text-[12px] sm:text-[13px] text-slate-400">Official institutional record, biometric attendance, semester performance, and credentials.</p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2.5">
               <a href="profile.html"
-                class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 hover:from-indigo-500/30 hover:to-purple-500/30 border border-indigo-500/40 text-indigo-300 hover:text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
+                class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 hover:from-indigo-500/30 hover:to-purple-500/30 border border-indigo-500/40 text-indigo-300 hover:text-white text-[12px] font-semibold transition-all flex items-center gap-1.5 shadow-sm"
                 title="View verified InsForge OAuth details and database record">
                 <span class="material-symbols-outlined text-[17px]">cloud_sync</span>
-                <span>InsForge Cloud Profile</span>
+                <span class="hidden xs:inline">InsForge Cloud</span>
               </a>
               <button
-                class="px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-sm"
+                class="px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-white text-[12px] font-semibold transition-all flex items-center gap-1.5 shadow-sm"
                 onclick="SmartLearnApp.downloadAcademicTranscript()">
                 <span class="material-symbols-outlined text-[17px]">download</span>
-                <span>Download Transcript</span>
+                <span class="hidden xs:inline">Transcript</span>
               </button>
               <button
-                class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] font-semibold transition-all flex items-center gap-2 shadow-md"
+                class="px-4 py-2 rounded-xl bg-primary-indigo hover:bg-indigo-500 text-white text-[12px] font-bold transition-all flex items-center gap-1.5 shadow-md active:scale-95"
                 onclick="SmartLearnApp.openEditProfileModal()">
                 <span class="material-symbols-outlined text-[17px]">edit</span>
-                <span>Edit Profile</span>
+                <span>Edit All Details</span>
               </button>
             </div>
           </div>
 
           <!-- Real-Life Digital College Student ID Card -->
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-lowest p-6 sm:p-8 border border-white/10 shadow-2xl">
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-lowest p-5 sm:p-8 border border-white/10 shadow-2xl">
             <!-- Background Security Watermark & Holographic Shimmer -->
             <div class="absolute -right-12 -bottom-12 w-72 h-72 rounded-full bg-primary-indigo/10 blur-3xl pointer-events-none"></div>
-            <div class="absolute top-0 right-0 p-6 opacity-10 font-black text-6xl tracking-widest select-none pointer-events-none text-white">
+            <div class="absolute top-0 right-0 p-6 opacity-10 font-black text-6xl tracking-widest select-none pointer-events-none text-white hidden sm:block">
               SMARTLEARN
             </div>
 
             <!-- Card Top Header -->
-            <div class="flex items-center justify-between pb-6 border-b border-white/10 relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 sm:pb-6 border-b border-white/10 relative z-10">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
+                <div class="w-10 h-10 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo flex-shrink-0">
                   <span class="material-symbols-outlined text-[24px]">school</span>
                 </div>
                 <div>
-                  <h4 class="text-[14px] font-bold text-white tracking-wide uppercase" id="profile-student-college">Institute of Engineering &amp; Technology</h4>
-                  <span class="text-[11px] text-slate-400">Affiliated to National Technical University • Smart Education Hub</span>
+                  <h4 class="text-[13px] sm:text-[14px] font-bold text-white tracking-wide uppercase" id="profile-student-college">Institute of Engineering &amp; Technology</h4>
+                  <span class="text-[10px] sm:text-[11px] text-slate-400">Affiliated to National Technical University • Smart Education Hub</span>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 self-start sm:self-auto">
                 <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   Active Student ID
@@ -881,19 +876,19 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 relative z-10">
               <!-- Avatar Column with Quick Edit -->
               <div class="md:col-span-4 flex flex-col items-center text-center border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:pr-6">
-                <div class="relative group">
+                <div class="relative group cursor-pointer" onclick="SmartLearnApp.openEditProfileModal()">
                   <img id="profile-student-avatar"
                     src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80"
-                    class="w-32 h-32 rounded-2xl object-cover ring-4 ring-primary-indigo/40 shadow-xl" alt="Student Photo">
-                  <button
-                    class="absolute inset-0 bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[11px] font-semibold gap-1"
-                    onclick="SmartLearnApp.openEditProfileModal()">
+                    class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover ring-4 ring-primary-indigo/40 shadow-xl" alt="Student Photo">
+                  <div
+                    class="absolute inset-0 bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[11px] font-semibold gap-1">
                     <span class="material-symbols-outlined text-[20px]">photo_camera</span>
-                    <span>Change</span>
-                  </button>
+                    <span>Change Photo</span>
+                  </div>
                 </div>
-                <h3 id="profile-student-name" class="text-[20px] font-extrabold text-white mt-3 leading-tight">Student Learner</h3>
-                <span id="profile-student-email" class="text-[12px] text-slate-400 font-mono mt-0.5">student@smartlearn.edu</span>
+                <h3 id="profile-student-name" class="text-[18px] sm:text-[20px] font-extrabold text-white mt-3 leading-tight">Student Learner</h3>
+                <span id="profile-student-email" class="text-[11px] sm:text-[12px] text-slate-400 font-mono mt-0.5 break-all">student@smartlearn.edu</span>
+                <span id="profile-student-phone" class="text-[11px] text-slate-500 font-mono mt-0.5">+91 98765 43210</span>
 
                 <div class="mt-4 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
                   <span class="text-slate-400">Roll Number:</span>
@@ -901,13 +896,13 @@
                 </div>
                 <div class="mt-2 px-3 py-1.5 rounded-xl bg-surface-container-highest/80 border border-white/5 w-full flex items-center justify-between text-[11px]">
                   <span class="text-slate-400">Univ Reg No:</span>
-                  <span class="font-mono font-bold text-primary-indigo">AKTU-2022-0914</span>
+                  <span id="profile-student-regno" class="font-mono font-bold text-primary-indigo">AKTU-2022-0914</span>
                 </div>
               </div>
 
               <!-- Academic Details Grid -->
               <div class="md:col-span-8 flex flex-col justify-between space-y-4">
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
                     <span class="text-[10px] uppercase font-semibold text-slate-400 block">Department</span>
                     <span id="profile-student-dept" class="text-[12px] font-bold text-white block mt-0.5">Computer Science &amp; Engg</span>
@@ -918,25 +913,28 @@
                   </div>
                   <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
                     <span class="text-[10px] uppercase font-semibold text-slate-400 block">Academic CGPA</span>
-                    <span class="text-[12px] font-mono font-extrabold text-emerald-400 block mt-0.5">8.84 / 10.0 (A+)</span>
+                    <span id="profile-student-cgpa" class="text-[12px] font-mono font-extrabold text-emerald-400 block mt-0.5">8.84 / 10.0 (A+)</span>
                   </div>
                   <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
                     <span class="text-[10px] uppercase font-semibold text-slate-400 block">Attendance</span>
-                    <span class="text-[12px] font-mono font-bold text-emerald-400 block mt-0.5">92.4% (Eligible)</span>
+                    <span id="profile-student-attendance" class="text-[12px] font-mono font-bold text-emerald-400 block mt-0.5">92.4% (Eligible)</span>
                   </div>
                   <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
                     <span class="text-[10px] uppercase font-semibold text-slate-400 block">Faculty Mentor</span>
-                    <span class="text-[12px] font-bold text-slate-200 block mt-0.5">Prof. Sarah Jenkins</span>
+                    <span id="profile-student-mentor" class="text-[12px] font-bold text-slate-200 block mt-0.5">Prof. Sarah Jenkins</span>
                   </div>
                   <div class="p-3 rounded-xl bg-surface-container-highest/50 border border-white/5">
-                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Hackathon Role</span>
-                    <span class="text-[12px] font-bold text-secondary block mt-0.5">SIH Lead Developer</span>
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Role / Specialization</span>
+                    <span id="profile-student-role" class="text-[12px] font-bold text-secondary block mt-0.5">SIH Lead Developer</span>
                   </div>
                 </div>
 
                 <!-- Bio / Personal Statement -->
                 <div class="p-3.5 rounded-xl bg-surface-container-highest/30 border border-white/5">
-                  <span class="text-[10px] uppercase font-semibold text-slate-400 block mb-1">Learning Statement &amp; Career Objective</span>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Learning Statement &amp; Career Objective</span>
+                    <button class="text-[10px] text-primary hover:underline font-semibold" onclick="SmartLearnApp.openEditProfileModal()">Edit Bio</button>
+                  </div>
                   <p id="profile-student-bio" class="text-[12px] text-slate-300 leading-relaxed">
                     Undergraduate Computer Science engineer specializing in Data Structures, C Memory Architecture, and Intelligent Web Platforms. Currently targeting 95%+ concept mastery and SIH 2026 Grand Finale.
                   </p>
@@ -946,9 +944,9 @@
                 <div class="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-slate-400">
                   <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-[16px] text-emerald-400">verified</span>
-                    <span>NCTE &amp; AICTE Digitally Verified Credential</span>
+                    <span class="text-[10px] sm:text-[11px]">NCTE &amp; AICTE Digitally Verified Credential</span>
                   </div>
-                  <div class="font-mono tracking-widest text-[9px] text-slate-500 uppercase">
+                  <div class="font-mono tracking-widest text-[8px] sm:text-[9px] text-slate-500 uppercase hidden xs:block">
                     |||||||| | ||||| |||||| | ||||||||||
                   </div>
                 </div>
@@ -957,7 +955,7 @@
           </div>
 
           <!-- Academic Performance Overview & Enrolled Subjects -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <!-- Real Attendance & Exam Eligibility Card -->
             <div class="p-6 rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between">
               <div>
@@ -1249,20 +1247,20 @@
   </div>
 
   <!-- STUDENT RELEVANT MODALS -->
-  <div id="modal-edit-profile" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="modal-edit-profile" class="app-modal hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
     <div class="fixed inset-0 bg-black/85 backdrop-blur-md"
       onclick="SmartLearnApp.closeModal('modal-edit-profile')"></div>
-    <div class="relative w-full max-w-lg rounded-3xl glass-modal p-7 shadow-2xl z-10 flex flex-col gap-5 border border-white/15 max-h-[90vh] overflow-y-auto">
+    <div class="relative w-full max-w-2xl rounded-3xl glass-modal p-5 sm:p-7 shadow-2xl z-10 flex flex-col gap-4 border border-white/15 max-h-[92vh] overflow-y-auto">
 
       <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo">
-            <span class="material-symbols-outlined text-[20px]">badge</span>
+          <div class="w-9 h-9 rounded-xl bg-primary-indigo/20 border border-primary-indigo/40 flex items-center justify-center text-primary-indigo flex-shrink-0">
+            <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
           </div>
           <div>
-            <h3 class="text-[18px] font-bold text-white leading-tight">Edit Academic Profile</h3>
-            <span class="text-[11px] text-slate-400">Update your verified student identity details</span>
+            <h3 class="text-[17px] sm:text-[18px] font-bold text-white leading-tight">Edit Student Academic Profile</h3>
+            <span class="text-[11px] text-slate-400">All fields are 100% customizable &amp; sync across all portals</span>
           </div>
         </div>
         <button class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-surface-container"
@@ -1273,68 +1271,152 @@
 
       <!-- Edit Form -->
       <form onsubmit="SmartLearnApp.handleProfileUpdateSubmit(event)" class="flex flex-col gap-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Full Name</label>
-            <input type="text" id="edit-student-name" required class="uiverse-input" placeholder="e.g. Your Full Name">
+        
+        <!-- Section 1: Basic Identity -->
+        <div class="space-y-3">
+          <span class="text-[11px] font-bold font-mono text-primary uppercase tracking-wider block border-b border-white/5 pb-1">1. Student Identity &amp; Contact</span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Full Name</label>
+              <input type="text" id="edit-student-name" required class="uiverse-input" placeholder="e.g. Your Full Name">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">University Roll Number</label>
+              <input type="text" id="edit-student-roll" required class="uiverse-input" placeholder="e.g. 24CSE089">
+            </div>
           </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">University Roll Number</label>
-            <input type="text" id="edit-student-roll" required class="uiverse-input" placeholder="e.g. 24CSE089">
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">University Registration No</label>
+              <input type="text" id="edit-student-regno" class="uiverse-input" placeholder="e.g. AKTU-2022-0914">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Email Address</label>
+              <input type="email" id="edit-student-email" class="uiverse-input" placeholder="e.g. user@gmail.com">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Phone Number</label>
+              <input type="tel" id="edit-student-phone" class="uiverse-input" placeholder="e.g. +91 98765 43210">
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Department / Branch</label>
-            <input type="text" id="edit-student-dept" required class="uiverse-input" placeholder="e.g. Computer Science & Engineering">
+        <!-- Section 2: Academic Program & College -->
+        <div class="space-y-3">
+          <span class="text-[11px] font-bold font-mono text-secondary uppercase tracking-wider block border-b border-white/5 pb-1">2. Academic Program &amp; Institution</span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Department / Specialization</label>
+              <input type="text" id="edit-student-dept" required class="uiverse-input" placeholder="e.g. Computer Science & Engineering">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Current Semester &amp; Year</label>
+              <input type="text" id="edit-student-semester" required class="uiverse-input" placeholder="e.g. Semester 5 (3rd Year B.Tech)">
+            </div>
           </div>
-          <div class="uiverse-input-group">
-            <label class="text-[12px] font-medium text-slate-300">Current Semester &amp; Year</label>
-            <input type="text" id="edit-student-semester" required class="uiverse-input" placeholder="e.g. Semester 5 (3rd Year B.Tech)">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">College / Institute Name</label>
+              <input type="text" id="edit-student-college" required class="uiverse-input" placeholder="e.g. Institute of Engineering & Technology">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Faculty Mentor / Advisor</label>
+              <input type="text" id="edit-student-mentor" class="uiverse-input" placeholder="e.g. Prof. Sarah Jenkins">
+            </div>
           </div>
         </div>
 
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">College / Institute Name</label>
-          <input type="text" id="edit-student-college" required class="uiverse-input" placeholder="e.g. Institute of Engineering & Technology">
+        <!-- Section 3: Performance Metrics & Role -->
+        <div class="space-y-3">
+          <span class="text-[11px] font-bold font-mono text-emerald-400 uppercase tracking-wider block border-b border-white/5 pb-1">3. Academic Targets &amp; Role</span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Academic CGPA (Scale 10)</label>
+              <input type="text" id="edit-student-cgpa" class="uiverse-input" placeholder="e.g. 8.84 / 10.0 (A+)">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Attendance Percentage</label>
+              <input type="text" id="edit-student-attendance" class="uiverse-input" placeholder="e.g. 92.4% (Eligible)">
+            </div>
+            <div class="uiverse-input-group">
+              <label class="text-[11px] font-medium text-slate-300">Role / Specialization</label>
+              <input type="text" id="edit-student-role" class="uiverse-input" placeholder="e.g. SIH Lead Developer">
+            </div>
+          </div>
+
+          <div class="uiverse-input-group">
+            <label class="text-[11px] font-medium text-slate-300">Learning Bio &amp; Career Objective</label>
+            <textarea id="edit-student-bio" rows="2" class="uiverse-input !h-auto py-2" placeholder="Tell mentors about your learning objectives, SIH goals, or target companies..."></textarea>
+          </div>
         </div>
 
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Learning Bio &amp; Career Objective</label>
-          <textarea id="edit-student-bio" rows="2" class="uiverse-input !h-auto py-2" placeholder="Tell mentors about your learning objectives, SIH goals, or target companies..."></textarea>
-        </div>
+        <!-- Section 4: Profile Avatar -->
+        <div class="space-y-2">
+          <span class="text-[11px] font-bold font-mono text-amber-400 uppercase tracking-wider block border-b border-white/5 pb-1">4. Profile Picture &amp; Avatar</span>
 
-        <div class="uiverse-input-group">
-          <label class="text-[12px] font-medium text-slate-300">Avatar Photo Preset / URL</label>
-          <input type="url" id="edit-student-avatar-url" class="uiverse-input" placeholder="Enter image URL or pick below">
-          <div class="flex items-center gap-2 mt-2">
-            <span class="text-[11px] text-slate-400">Quick Avatars:</span>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
-            <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo"
-              onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
-            </button>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl overflow-hidden ring-2 ring-primary-indigo/40 flex-shrink-0 bg-surface-container">
+              <img id="edit-avatar-preview-img" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 w-full space-y-2">
+              <input type="url" id="edit-student-avatar-url" class="uiverse-input text-[12px]" 
+                placeholder="Enter image URL" 
+                oninput="document.getElementById('edit-avatar-preview-img').src = this.value || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
+              
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer px-3 py-1 rounded-xl bg-surface-container-high hover:bg-surface-variant text-[11px] font-medium text-slate-300 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-[15px]">upload_file</span>
+                  <span>Upload Local Photo</span>
+                  <input type="file" id="edit-student-avatar-file" accept="image/*" class="hidden" onchange="SmartLearnApp.handleAvatarFileUpload(event)">
+                </label>
+                <span class="text-[10px] text-slate-400">PNG/JPG supported</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Avatars Selection Strip -->
+          <div class="flex items-center gap-2 pt-1">
+            <span class="text-[11px] text-slate-400">Quick Presets:</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+              <button type="button" class="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-primary-indigo transition-all"
+                onclick="document.getElementById('edit-student-avatar-url').value='https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80'; document.getElementById('edit-avatar-preview-img').src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80'">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=64&q=80" class="w-full h-full object-cover">
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
           <button type="button" class="px-4 py-2 rounded-xl text-slate-300 hover:text-white text-[13px]"
             onclick="SmartLearnApp.closeModal('modal-edit-profile')">Cancel</button>
-          <button type="submit" class="uiverse-btn-3d !py-2 !px-5 text-[13px] flex items-center gap-2">
-            <span>Save Profile</span>
-            <span class="material-symbols-outlined text-[16px]">check</span>
+          <button type="submit" class="uiverse-btn-3d !py-2.5 !px-6 text-[13px] flex items-center gap-2 font-bold shadow-lg">
+            <span>Save &amp; Update Profile</span>
+            <span class="material-symbols-outlined text-[17px]">check</span>
           </button>
         </div>
       </form>
@@ -1727,8 +1809,50 @@
     </div>
   </aside>
 
+  <!-- MOBILE / TABLET BOTTOM NAVIGATION DOCK (VISIBLE ON < 1024px) -->
+  <nav id="student-mobile-bottom-bar" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-white/10 px-2 py-1.5 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-slate-400 hover:text-white transition-all flex-1"
+      data-mobile-tab="dashboard" onclick="SmartLearnApp.showStudentTab('dashboard')">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span>
+      <span class="text-[10px] font-medium mt-0.5">Dashboard</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-slate-400 hover:text-white transition-all flex-1"
+      data-mobile-tab="courses" onclick="SmartLearnApp.showStudentTab('courses')">
+      <span class="material-symbols-outlined text-[20px]">menu_book</span>
+      <span class="text-[10px] font-medium mt-0.5">Courses</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-slate-400 hover:text-white transition-all flex-1"
+      data-mobile-tab="quizzes" onclick="SmartLearnApp.showStudentTab('quizzes')">
+      <span class="material-symbols-outlined text-[20px]">quiz</span>
+      <span class="text-[10px] font-medium mt-0.5">Quizzes</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-rose-300 hover:text-white transition-all flex-1 relative"
+      data-mobile-tab="weak-topics" onclick="SmartLearnApp.showStudentTab('weak-topics')">
+      <div class="relative">
+        <span class="material-symbols-outlined text-[20px] text-rose-400">crisis_alert</span>
+        <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+      </div>
+      <span class="text-[10px] font-medium mt-0.5 text-rose-300">Weak Topics</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-emerald-300 hover:text-white transition-all flex-1"
+      data-mobile-tab="learn-skills" onclick="SmartLearnApp.showStudentTab('learn-skills')">
+      <span class="material-symbols-outlined text-[20px] text-emerald-400">terminal</span>
+      <span class="text-[10px] font-medium mt-0.5 text-emerald-300">Skills</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-slate-400 hover:text-white transition-all flex-1"
+      data-mobile-tab="profile" onclick="SmartLearnApp.showStudentTab('profile')">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span class="text-[10px] font-medium mt-0.5">Profile</span>
+    </button>
+    <button class="student-mobile-nav-btn flex flex-col items-center justify-center p-1 rounded-xl text-slate-400 hover:text-white transition-all flex-1"
+      onclick="SmartLearnApp.toggleStudentMobileSidebar()" title="Open full 14 tabs navigation drawer">
+      <span class="material-symbols-outlined text-[20px]">apps</span>
+      <span class="text-[10px] font-medium mt-0.5">All Tabs</span>
+    </button>
+  </nav>
+
   <!-- FLOATING AI CHATBOT BUTTON (RESPONSIVE & NON-OBTRUSIVE) -->
-  <div id="floating-ai-chatbot-wrapper" class="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-1.5 sm:gap-2">
+  <div id="floating-ai-chatbot-wrapper" class="fixed bottom-16 lg:bottom-6 right-3 sm:right-6 z-40 flex items-center gap-1.5 sm:gap-2">
     <!-- Collapse / Expand Toggle Button -->
     <button id="floating-ai-toggle-btn"
       class="hidden md:flex w-7 h-7 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest border border-white/10 items-center justify-center text-slate-400 hover:text-white shadow-md transition-all text-[13px]"
@@ -1738,11 +1862,11 @@
     </button>
 
     <button id="floating-ai-chatbot-btn"
-      class="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[12px] sm:text-[13px] shadow-[0_4px_24px_rgba(99,102,241,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
+      class="flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r from-primary-indigo via-secondary to-emerald-400 text-white font-bold text-[11px] sm:text-[13px] shadow-[0_4px_24px_rgba(99,102,241,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-white/20"
       onclick="document.getElementById('copilot-drawer').classList.remove('translate-x-full'); document.getElementById('copilot-input').focus();">
-      <span class="material-symbols-outlined text-[18px] sm:text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
-      <span id="floating-ai-label" class="whitespace-nowrap">Ask AI (GPT / Gemini)</span>
-      <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+      <span class="material-symbols-outlined text-[17px] sm:text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
+      <span id="floating-ai-label" class="whitespace-nowrap">Ask AI</span>
+      <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white animate-ping"></span>
     </button>
   </div>
 
