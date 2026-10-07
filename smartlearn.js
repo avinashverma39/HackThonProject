@@ -516,7 +516,9 @@ const SmartLearnApp = (function () {
     if (studentApp) studentApp.classList.toggle("hidden", viewName !== "student-dashboard");
     if (teacherApp) teacherApp.classList.toggle("hidden", viewName !== "teacher-dashboard");
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
     if (viewName === "student-dashboard") {
       showStudentTab(state.currentStudentTab || "dashboard");
@@ -590,7 +592,9 @@ const SmartLearnApp = (function () {
     if (tabName === "practice") startPracticeSession(state.activePracticeTopic || "Pointers");
     if (tabName === "progress") renderProgressDashboard();
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   function showTeacherTab(tabName) {
@@ -617,7 +621,9 @@ const SmartLearnApp = (function () {
     if (tabName === "teacher-quizzes") renderTeacherQuizzes();
     if (tabName === "teacher-students") renderTeacherStudents();
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   // --- RENDER ALL VIEWS ---
