@@ -281,6 +281,7 @@ const SmartLearn3D = (function () {
     // Helper: Position the sliding glider pill behind target link
     function moveGliderPill(targetEl) {
       if (!gliderPill || !targetEl || !navDock) return;
+      if (typeof navDock.getBoundingClientRect !== 'function' || typeof targetEl.getBoundingClientRect !== 'function') return;
       const dockRect = navDock.getBoundingClientRect();
       const targetRect = targetEl.getBoundingClientRect();
       
