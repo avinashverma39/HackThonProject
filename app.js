@@ -247,9 +247,10 @@ function initRouter() {
 }
 
 // Global programmatic navigation helper
-window.navigateTo = function(path) {
+function navigateTo(path) {
   window.location.hash = path;
-};
+}
+window.navigateTo = navigateTo;
 
 /* ==========================================================================
    GLOBAL SEARCH SPOTLIGHT (⌘K)
@@ -768,7 +769,7 @@ function initLectureNotesCenter() {
 }
 
 // Switch between courses
-window.switchLectureCourse = function(courseId, showNotification = true) {
+function switchLectureCourse(courseId, showNotification = true) {
   const data = (window.CourseLecturesData && window.CourseLecturesData[courseId]) || (AppState.customCourses && AppState.customCourses[courseId]);
   if (!data) return;
 
@@ -878,7 +879,8 @@ window.switchLectureCourse = function(courseId, showNotification = true) {
   if (showNotification) {
     showToast(`Loaded ${data.code}`, `${data.lectureTitle} study guide and notes ready`, 'success');
   }
-};
+}
+window.switchLectureCourse = switchLectureCourse;
 
 function formatTimestamp(seconds) {
   const m = Math.floor(seconds / 60).toString().padStart(2, '0');
