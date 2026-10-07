@@ -205,6 +205,18 @@ const SmartLearn3D = (function () {
     const countElements = document.querySelectorAll('[data-countup]');
     if (!countElements.length) return;
 
+    if (typeof IntersectionObserver === 'undefined') {
+      countElements.forEach(el => {
+        const target = parseFloat(el.getAttribute('data-countup'));
+        const prefix = el.getAttribute('data-prefix') || '';
+        const suffix = el.getAttribute('data-suffix') || '';
+        const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        const numStr = decimals > 0 ? target.toFixed(decimals) : Math.floor(target).toLocaleString();
+        el.textContent = `${prefix}${numStr}${suffix}`;
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -233,6 +245,11 @@ const SmartLearn3D = (function () {
   function initScrollReveal() {
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     if (!revealElements.length) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      revealElements.forEach(el => el.classList.add('revealed'));
+      return;
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

@@ -94,12 +94,14 @@ const SmartLearnApp = (function () {
       updateUserUI(null);
 
       // Strict Auth Gate: First login then enter the page
-      const path = (window.location.pathname || "").toLowerCase();
+      const path = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname.toLowerCase() : "";
       const isLoginPage = path.includes("login.html");
-      const urlParams = new URLSearchParams(window.location.search);
+      const urlParams = (typeof URLSearchParams !== 'undefined' && typeof window !== 'undefined' && window.location) 
+        ? new URLSearchParams(window.location.search) 
+        : { has: () => false, get: () => null };
       const isPublic = urlParams.has("public") || urlParams.has("preview");
 
-      if (!isLoginPage && !isPublic) {
+      if (!isLoginPage && !isPublic && typeof window !== 'undefined' && window.location && window.location.replace) {
         console.warn("Authentication required: redirecting to login.html...");
         window.location.replace("login.html");
         return;
@@ -1292,9 +1294,12 @@ const SmartLearnApp = (function () {
     if (!modal) return;
     modal.classList.remove("hidden");
 
-    document.getElementById("quiz-result-title").textContent = quiz.title;
-    document.getElementById("quiz-result-score").textContent = `${result.score} / ${result.total}`;
-    document.getElementById("quiz-result-pct").textContent = `${result.percentage}%`;
+    const tEl = document.getElementById("quiz-result-title");
+    if (tEl) tEl.textContent = quiz.title;
+    const sEl = document.getElementById("quiz-result-score");
+    if (sEl) sEl.textContent = `${result.score} / ${result.total}`;
+    const pEl = document.getElementById("quiz-result-pct");
+    if (pEl) pEl.textContent = `${result.percentage}%`;
 
     const statusBadge = document.getElementById("quiz-result-status-badge");
     const isPassed = result.percentage >= (quiz.passingScore || 70);
@@ -1476,6 +1481,23 @@ const SmartLearnApp = (function () {
       .join("");
   }
 
+  async function editCourse(courseId) {
+    const course = await SmartLearnAPI.getCourseById(courseId);
+    if (!course) return;
+    openCreateCourseModal();
+    const titleEl = document.getElementById("create-course-title");
+    const subEl = document.getElementById("create-course-subject");
+    const diffEl = document.getElementById("create-course-difficulty");
+    const lesEl = document.getElementById("create-course-lessons");
+    const thumbEl = document.getElementById("create-course-thumbnail");
+    if (titleEl) titleEl.value = course.title || "";
+    if (subEl) subEl.value = course.subjectId || "cs";
+    if (diffEl) diffEl.value = course.difficulty || "Intermediate";
+    if (lesEl) lesEl.value = course.totalLessons || 16;
+    if (thumbEl) thumbEl.value = course.thumbnail || "";
+    notify("Course Editor", `Editing "${course.title}". Save changes to update curriculum.`, "info");
+  }
+
   async function renderTeacherStudents() {
     const students = await SmartLearnAPI.getTeacherStudents();
     const container = document.getElementById("teacher-students-table-body");
@@ -1557,9 +1579,12 @@ const SmartLearnApp = (function () {
     if (!modal) return;
     modal.classList.remove("hidden");
 
-    document.getElementById("reader-material-title").textContent = mat.title;
-    document.getElementById("reader-material-badge").textContent = mat.badge;
-    document.getElementById("reader-material-author").textContent = mat.author;
+    const tEl = document.getElementById("reader-material-title");
+    if (tEl) tEl.textContent = mat.title;
+    const bEl = document.getElementById("reader-material-badge");
+    if (bEl) bEl.textContent = mat.badge;
+    const aEl = document.getElementById("reader-material-author");
+    if (aEl) aEl.textContent = mat.author;
 
     const body = document.getElementById("reader-material-content");
     if (body) {
@@ -1601,10 +1626,14 @@ const SmartLearnApp = (function () {
     if (!modal) return;
     modal.classList.remove("hidden");
 
-    document.getElementById("course-detail-title").textContent = course.title;
-    document.getElementById("course-detail-instructor").textContent = `Instructor: ${course.instructor}`;
-    document.getElementById("course-detail-difficulty").textContent = course.difficulty || "Intermediate";
-    document.getElementById("course-detail-progress").textContent = `${course.progress || 0}%`;
+    const tEl = document.getElementById("course-detail-title");
+    if (tEl) tEl.textContent = course.title;
+    const iEl = document.getElementById("course-detail-instructor");
+    if (iEl) iEl.textContent = `Instructor: ${course.instructor}`;
+    const dEl = document.getElementById("course-detail-difficulty");
+    if (dEl) dEl.textContent = course.difficulty || "Intermediate";
+    const pEl = document.getElementById("course-detail-progress");
+    if (pEl) pEl.textContent = `${course.progress || 0}%`;
 
     const isEnrolled = await SmartLearnAPI.isEnrolled(course.id);
     const actions = document.getElementById("course-detail-actions");
@@ -1695,8 +1724,10 @@ const SmartLearnApp = (function () {
     if (!modal) return;
     modal.classList.remove("hidden");
 
-    document.getElementById("video-modal-title").textContent = vid.title;
-    document.getElementById("video-modal-instructor").textContent = vid.instructor;
+    const tEl = document.getElementById("video-modal-title");
+    if (tEl) tEl.textContent = vid.title;
+    const iEl = document.getElementById("video-modal-instructor");
+    if (iEl) iEl.textContent = vid.instructor;
 
     const videoElement = document.getElementById("video-modal-player-source");
     if (videoElement) {
@@ -1766,13 +1797,19 @@ const SmartLearnApp = (function () {
     if (errBox) errBox.classList.add("hidden");
 
     if (prefillRole === "teacher") {
-      document.getElementById("auth-login-email").value = "s.jenkins@smartlearn.edu";
-      document.getElementById("auth-login-password").value = "Teacher@2026";
-      document.getElementById("auth-role-select").value = "teacher";
+      const em = document.getElementById("auth-login-email");
+      if (em) em.value = "s.jenkins@smartlearn.edu";
+      const pw = document.getElementById("auth-login-password");
+      if (pw) pw.value = "Teacher@2026";
+      const rl = document.getElementById("auth-role-select");
+      if (rl) rl.value = "teacher";
     } else {
-      document.getElementById("auth-login-email").value = "";
-      document.getElementById("auth-login-password").value = "";
-      document.getElementById("auth-role-select").value = "student";
+      const em = document.getElementById("auth-login-email");
+      if (em) em.value = "";
+      const pw = document.getElementById("auth-login-password");
+      if (pw) pw.value = "";
+      const rl = document.getElementById("auth-role-select");
+      if (rl) rl.value = "student";
     }
   }
 
@@ -1794,9 +1831,9 @@ const SmartLearnApp = (function () {
 
   async function handleLoginSubmit(event) {
     if (event) event.preventDefault();
-    const email = document.getElementById("auth-login-email").value;
-    const password = document.getElementById("auth-login-password").value;
-    const role = document.getElementById("auth-role-select").value;
+    const email = document.getElementById("auth-login-email")?.value || "";
+    const password = document.getElementById("auth-login-password")?.value || "";
+    const role = document.getElementById("auth-role-select")?.value || "student";
     const errBox = document.getElementById("auth-login-error");
     const submitBtn = document.getElementById("auth-login-btn");
 
@@ -1845,10 +1882,10 @@ const SmartLearnApp = (function () {
 
   async function handleRegisterSubmit(event) {
     if (event) event.preventDefault();
-    const name = document.getElementById("auth-reg-name").value;
+    const name = document.getElementById("auth-reg-name")?.value || "";
     const phone = document.getElementById("auth-reg-phone")?.value || "";
-    const email = document.getElementById("auth-reg-email").value;
-    const role = document.getElementById("auth-reg-role").value;
+    const email = document.getElementById("auth-reg-email")?.value || "";
+    const role = document.getElementById("auth-reg-role")?.value || "student";
     const password = document.getElementById("auth-reg-password")?.value || "";
     const errBox = document.getElementById("auth-reg-error");
     const submitBtn = document.getElementById("auth-reg-btn");
@@ -1912,12 +1949,12 @@ const SmartLearnApp = (function () {
 
   async function handleCreateCourseSubmit(event) {
     if (event) event.preventDefault();
-    const title = document.getElementById("create-course-title").value;
-    const subjectId = document.getElementById("create-course-subject").value;
-    const difficulty = document.getElementById("create-course-difficulty").value;
-    const totalLessons = parseInt(document.getElementById("create-course-lessons").value) || 16;
-    const thumbnail = document.getElementById("create-course-thumbnail").value;
-    const module1 = document.getElementById("create-course-module1").value || "Foundations";
+    const title = document.getElementById("create-course-title")?.value || "";
+    const subjectId = document.getElementById("create-course-subject")?.value || "cs";
+    const difficulty = document.getElementById("create-course-difficulty")?.value || "Intermediate";
+    const totalLessons = parseInt(document.getElementById("create-course-lessons")?.value) || 16;
+    const thumbnail = document.getElementById("create-course-thumbnail")?.value || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80";
+    const module1 = document.getElementById("create-course-module1")?.value || "Foundations";
 
     const submitBtn = document.getElementById("create-course-btn");
     if (submitBtn) {
@@ -2927,6 +2964,9 @@ const SmartLearnApp = (function () {
     scrollTechBar,
     switchSkillTech,
     selectSkillConcept,
+    showMainView,
+    switchView: showMainView,
+    filterSkills,
     filterSkillsDocList,
     toggleMobileSkillsTopics,
     toggleAiButtonSize,
@@ -2935,23 +2975,41 @@ const SmartLearnApp = (function () {
     runSkillCodeSandbox,
     markConceptCompleted,
     checkMiniQuiz,
+    scrollTechBar,
+    selectSkillConcept,
+    switchSkillTech,
     showStudentTab,
     setCourseSubjectFilter,
     filterCoursesByKeyword,
     showTeacherTab,
     openAIChatbot,
+    openAIChatAssistant: openAIChatbot,
     previewMaterial,
     downloadMaterial,
     openCourseDetail,
     enrollInCourse,
     signOut,
     updateUserUI,
+    renderAllViews,
+    renderLandingStats,
+    renderLandingFeatures,
     renderCourses,
+    renderSubjects,
+    renderMaterials,
+    renderVideos,
+    renderQuizzes,
+    renderWeakTopics,
+    renderRecommendations,
     renderTeacherCourses,
     renderTeacherStudents,
     renderNotifications,
+    renderProgressDashboard,
+    renderSkillsW3TechSwitcher,
+    renderSkillsW3Nav,
+    renderSkillsW3Reader,
     openCreateCourseModal,
     handleCreateCourseSubmit,
+    editCourse,
     launchLessonVideo,
     openVideoPlayer,
     seekVideoTo,
@@ -2982,9 +3040,13 @@ const SmartLearnApp = (function () {
     closeModal,
     toggleTheme,
     handleGlobalSearch,
-    notify
+    notify,
+    getState: () => state
   };
 })();
+
+// Attach to window globally for all SPA pages
+window.SmartLearnApp = SmartLearnApp;
 
 // Auto-run on DOMContentLoaded
 window.addEventListener("DOMContentLoaded", () => {
