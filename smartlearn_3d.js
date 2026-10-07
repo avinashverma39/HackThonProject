@@ -6,8 +6,10 @@
  */
 
 const SmartLearn3D = (function () {
-  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isReducedMotion = (typeof window !== 'undefined' && typeof window.matchMedia === 'function') 
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+    : false;
+  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || (navigator && navigator.maxTouchPoints > 0));
 
   // --- 1. REUSABLE 3D TILT ENGINE ---
   class TiltInstance {
