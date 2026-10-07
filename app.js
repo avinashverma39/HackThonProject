@@ -247,10 +247,9 @@ function initRouter() {
 }
 
 // Global programmatic navigation helper
-function navigateTo(path) {
+window.navigateTo = function(path) {
   window.location.hash = path;
-}
-window.navigateTo = navigateTo;
+};
 
 /* ==========================================================================
    GLOBAL SEARCH SPOTLIGHT (⌘K)
@@ -769,7 +768,7 @@ function initLectureNotesCenter() {
 }
 
 // Switch between courses
-function switchLectureCourse(courseId, showNotification = true) {
+window.switchLectureCourse = function(courseId, showNotification = true) {
   const data = (window.CourseLecturesData && window.CourseLecturesData[courseId]) || (AppState.customCourses && AppState.customCourses[courseId]);
   if (!data) return;
 
@@ -879,8 +878,7 @@ function switchLectureCourse(courseId, showNotification = true) {
   if (showNotification) {
     showToast(`Loaded ${data.code}`, `${data.lectureTitle} study guide and notes ready`, 'success');
   }
-}
-window.switchLectureCourse = switchLectureCourse;
+};
 
 function formatTimestamp(seconds) {
   const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -2194,31 +2192,28 @@ function initThemeToggles() {
 /* ==========================================================================
    MODAL UTILITIES & TOAST NOTIFICATIONS
    ========================================================================== */
-function openModal(modalId) {
+window.openModal = function(modalId) {
   const el = document.getElementById(modalId);
   if (el) {
     el.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
-}
-window.openModal = openModal;
+};
 
-function closeModal(modalId) {
+window.closeModal = function(modalId) {
   const el = document.getElementById(modalId);
   if (el) {
     el.classList.add('hidden');
     document.body.style.overflow = '';
   }
-}
-window.closeModal = closeModal;
+};
 
-function closeAllModals() {
+window.closeAllModals = function() {
   document.querySelectorAll('.app-modal').forEach(m => m.classList.add('hidden'));
   document.body.style.overflow = '';
-}
-window.closeAllModals = closeAllModals;
+};
 
-function showToast(title, message, type = 'info') {
+window.showToast = function(title, message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
 
@@ -2253,13 +2248,9 @@ function showToast(title, message, type = 'info') {
 
   setTimeout(() => {
     toast.classList.add('translate-y-2', 'opacity-0');
-    setTimeout(() => {
-      if (toast && toast.remove) toast.remove();
-      else if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
-    }, 300);
+    setTimeout(() => toast.remove(), 300);
   }, 4000);
-}
-window.showToast = showToast;
+};
 
 function escapeHtml(str) {
   if (!str) return '';
