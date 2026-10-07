@@ -2248,7 +2248,10 @@ window.showToast = function(title, message, type = 'info') {
 
   setTimeout(() => {
     toast.classList.add('translate-y-2', 'opacity-0');
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(() => {
+      if (toast && toast.remove) toast.remove();
+      else if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 300);
   }, 4000);
 };
 
