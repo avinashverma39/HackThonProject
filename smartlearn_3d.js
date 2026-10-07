@@ -464,10 +464,18 @@ const SmartLearn3D = (function () {
       circle.classList.add('click-ripple');
 
       const existingRipple = btn.querySelector('.click-ripple');
-      if (existingRipple) existingRipple.remove();
+      if (existingRipple) {
+        if (existingRipple.remove) existingRipple.remove();
+        else if (existingRipple.parentNode) existingRipple.parentNode.removeChild(existingRipple);
+      }
 
       btn.appendChild(circle);
-      setTimeout(() => circle.remove(), 600);
+      setTimeout(() => {
+        if (circle) {
+          if (circle.remove) circle.remove();
+          else if (circle.parentNode) circle.parentNode.removeChild(circle);
+        }
+      }, 600);
     });
   }
 
@@ -490,7 +498,13 @@ const SmartLearn3D = (function () {
         clearInterval(interval);
         setTimeout(() => {
           preloader.classList.add('fade-out');
-          setTimeout(() => preloader.remove(), 500);
+          setTimeout(() => {
+            if (preloader) {
+              if (preloader.remove) preloader.remove();
+              else if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+              else preloader.style.display = 'none';
+            }
+          }, 500);
         }, 200);
       }
     }, 60);

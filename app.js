@@ -2194,28 +2194,31 @@ function initThemeToggles() {
 /* ==========================================================================
    MODAL UTILITIES & TOAST NOTIFICATIONS
    ========================================================================== */
-window.openModal = function(modalId) {
+function openModal(modalId) {
   const el = document.getElementById(modalId);
   if (el) {
     el.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
-};
+}
+window.openModal = openModal;
 
-window.closeModal = function(modalId) {
+function closeModal(modalId) {
   const el = document.getElementById(modalId);
   if (el) {
     el.classList.add('hidden');
     document.body.style.overflow = '';
   }
-};
+}
+window.closeModal = closeModal;
 
-window.closeAllModals = function() {
+function closeAllModals() {
   document.querySelectorAll('.app-modal').forEach(m => m.classList.add('hidden'));
   document.body.style.overflow = '';
-};
+}
+window.closeAllModals = closeAllModals;
 
-window.showToast = function(title, message, type = 'info') {
+function showToast(title, message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
 
@@ -2250,9 +2253,13 @@ window.showToast = function(title, message, type = 'info') {
 
   setTimeout(() => {
     toast.classList.add('translate-y-2', 'opacity-0');
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(() => {
+      if (toast && toast.remove) toast.remove();
+      else if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 300);
   }, 4000);
-};
+}
+window.showToast = showToast;
 
 function escapeHtml(str) {
   if (!str) return '';

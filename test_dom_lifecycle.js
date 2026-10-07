@@ -162,7 +162,19 @@ function parseHTMLAndBuildDOM(htmlString) {
     }
   };
 
-  const winListeners = {};
+  class MockIntersectionObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+
+  class MockURLSearchParams {
+    constructor(init) { this.params = new Map(); }
+    get(k) { return null; }
+    set(k, v) { this.params.set(k, v); }
+    has(k) { return false; }
+  }
+
   const mockWindow = {
     location: { href: 'http://localhost:3000/', pathname: '/', search: '', hash: '' },
     localStorage: {
@@ -215,13 +227,16 @@ function parseHTMLAndBuildDOM(htmlString) {
     },
     renderMathInElement: () => {},
     katex: { renderToString: (str) => str },
-    scrollTo: () => {}
+    scrollTo: () => {},
+    IntersectionObserver: MockIntersectionObserver,
+    URLSearchParams: MockURLSearchParams,
+    tailwind: { config: {} }
   };
 
   mockWindow.window = mockWindow;
   mockDoc.defaultView = mockWindow;
 
-  return { mockWindow, mockDoc };
+  return { mockWindow, mockDoc, MockIntersectionObserver, MockURLSearchParams };
 }
 
 const vm = require('vm');
@@ -241,6 +256,9 @@ htmlFiles.forEach(file => {
     location: mockWindow.location,
     navigator: mockWindow.navigator,
     console: console,
+    IntersectionObserver: MockIntersectionObserver,
+    URLSearchParams: MockURLSearchParams,
+    tailwind: mockWindow.tailwind,
     setTimeout: (fn, ms) => setTimeout(() => {
       try { fn(); } catch (e) { console.error(`[ASYNC TIMEOUT ERROR in ${file}]:`, e.message); }
     }, ms),

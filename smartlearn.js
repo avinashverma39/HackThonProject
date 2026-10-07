@@ -1765,14 +1765,18 @@ const SmartLearnApp = (function () {
     const errBox = document.getElementById("auth-login-error");
     if (errBox) errBox.classList.add("hidden");
 
+    const emailInput = document.getElementById("auth-login-email");
+    const passInput = document.getElementById("auth-login-password");
+    const roleSelect = document.getElementById("auth-role-select");
+
     if (prefillRole === "teacher") {
-      document.getElementById("auth-login-email").value = "s.jenkins@smartlearn.edu";
-      document.getElementById("auth-login-password").value = "Teacher@2026";
-      document.getElementById("auth-role-select").value = "teacher";
+      if (emailInput) emailInput.value = "s.jenkins@smartlearn.edu";
+      if (passInput) passInput.value = "Teacher@2026";
+      if (roleSelect) roleSelect.value = "teacher";
     } else {
-      document.getElementById("auth-login-email").value = "";
-      document.getElementById("auth-login-password").value = "";
-      document.getElementById("auth-role-select").value = "student";
+      if (emailInput) emailInput.value = "";
+      if (passInput) passInput.value = "";
+      if (roleSelect) roleSelect.value = "student";
     }
   }
 
@@ -1794,9 +1798,9 @@ const SmartLearnApp = (function () {
 
   async function handleLoginSubmit(event) {
     if (event) event.preventDefault();
-    const email = document.getElementById("auth-login-email").value;
-    const password = document.getElementById("auth-login-password").value;
-    const role = document.getElementById("auth-role-select").value;
+    const email = document.getElementById("auth-login-email")?.value || "";
+    const password = document.getElementById("auth-login-password")?.value || "";
+    const role = document.getElementById("auth-role-select")?.value || "student";
     const errBox = document.getElementById("auth-login-error");
     const submitBtn = document.getElementById("auth-login-btn");
 
@@ -1845,10 +1849,10 @@ const SmartLearnApp = (function () {
 
   async function handleRegisterSubmit(event) {
     if (event) event.preventDefault();
-    const name = document.getElementById("auth-reg-name").value;
+    const name = document.getElementById("auth-reg-name")?.value || "";
     const phone = document.getElementById("auth-reg-phone")?.value || "";
-    const email = document.getElementById("auth-reg-email").value;
-    const role = document.getElementById("auth-reg-role").value;
+    const email = document.getElementById("auth-reg-email")?.value || "";
+    const role = document.getElementById("auth-reg-role")?.value || "student";
     const password = document.getElementById("auth-reg-password")?.value || "";
     const errBox = document.getElementById("auth-reg-error");
     const submitBtn = document.getElementById("auth-reg-btn");
@@ -1912,12 +1916,12 @@ const SmartLearnApp = (function () {
 
   async function handleCreateCourseSubmit(event) {
     if (event) event.preventDefault();
-    const title = document.getElementById("create-course-title").value;
-    const subjectId = document.getElementById("create-course-subject").value;
-    const difficulty = document.getElementById("create-course-difficulty").value;
-    const totalLessons = parseInt(document.getElementById("create-course-lessons").value) || 16;
-    const thumbnail = document.getElementById("create-course-thumbnail").value;
-    const module1 = document.getElementById("create-course-module1").value || "Foundations";
+    const title = document.getElementById("create-course-title")?.value || "";
+    const subjectId = document.getElementById("create-course-subject")?.value || "cs";
+    const difficulty = document.getElementById("create-course-difficulty")?.value || "Intermediate";
+    const totalLessons = parseInt(document.getElementById("create-course-lessons")?.value) || 16;
+    const thumbnail = document.getElementById("create-course-thumbnail")?.value || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80";
+    const module1 = document.getElementById("create-course-module1")?.value || "Foundations";
 
     const submitBtn = document.getElementById("create-course-btn");
     if (submitBtn) {
@@ -2940,16 +2944,30 @@ const SmartLearnApp = (function () {
     filterCoursesByKeyword,
     showTeacherTab,
     openAIChatbot,
+    openAIChatAssistant: openAIChatbot,
     previewMaterial,
     downloadMaterial,
     openCourseDetail,
     enrollInCourse,
     signOut,
     updateUserUI,
+    renderAllViews,
+    renderLandingStats,
+    renderLandingFeatures,
     renderCourses,
+    renderSubjects,
+    renderMaterials,
+    renderVideos,
+    renderQuizzes,
+    renderWeakTopics,
+    renderRecommendations,
     renderTeacherCourses,
     renderTeacherStudents,
     renderNotifications,
+    renderProgressDashboard,
+    renderSkillsW3TechSwitcher,
+    renderSkillsW3Nav,
+    renderSkillsW3Reader,
     openCreateCourseModal,
     handleCreateCourseSubmit,
     launchLessonVideo,
